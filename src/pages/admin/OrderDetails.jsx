@@ -14,7 +14,6 @@ const OrderDetails = () => {
   const [selectedStatus, setSelectedStatus] = useState();
 
   let { id } = useParams();
-  console.log(id);
   /**
    * The fetchOrder function is an asynchronous function that fetches order data from a server using
    * axios, updates state based on the response, and handles loading and error states.

@@ -7,7 +7,6 @@ export const AuthProvider = ({ children }) => {
     // Load from localStorage or use initial client details
     const storedAuthData = localStorage.getItem("authData");
 
-    console.log(JSON.stringify(storedAuthData));
     return storedAuthData ? JSON.parse(storedAuthData) : JSON.parse(storedAuthData);
   });
 

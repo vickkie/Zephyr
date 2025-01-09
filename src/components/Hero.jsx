@@ -17,7 +17,7 @@ const Hero = () => {
       </div>
       <div className="banner-image position-relative overflow-hidden">
         <div className="image-backdrop position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>
-        <img className="object-fit-cover w-100 h-100" src="/images/10.jpg" alt="home banner" />
+        <img className="object-fit-cover w-100 h-100" src="/images/22.webp" alt="home banner" />
       </div>
     </section>
   );
