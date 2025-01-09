@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import IsAuthenticatedContext from './IsAuthenticatedContext';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import IsAuthenticatedContext from "./IsAuthenticatedContext";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 /**
  * The `IsAuthenticatedContextProvider` function manages user authentication state in a React
@@ -11,35 +11,37 @@ import { useNavigate } from 'react-router-dom';
  * its children components.
  */
 const IsAuthenticatedContextProvider = ({ children }) => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
 
-    const login = (userData) => {
-        setUser(userData);
-        setIsAuthenticated(true);
-        // toast.success("logged in successfully!", { className: "toastify" })
-    };
+  const login = (userData) => {
+    setUser(userData);
+    setIsAuthenticated(true);
+    // toast.success("logged in successfully!", { className: "toastify" })
+  };
 
-    const logout = () => {
-        setUser(null)
-        setIsAuthenticated(false);
-        toast.success("logged out!", { className: "toastify" })
-        navigate("/login");
-    };
+  const logout = () => {
+    setUser(null);
+    setIsAuthenticated(false);
+    toast.dismiss();
+    toast.success("logged out!", { className: "toastify" });
+    navigate("/login");
+  };
 
-    return (
-        <IsAuthenticatedContext.Provider
-            value={{
-                isAuthenticated,
-                user,
-                login,
-                logout,
-            }}>
-            {children}
-        </IsAuthenticatedContext.Provider>
-    );
+  return (
+    <IsAuthenticatedContext.Provider
+      value={{
+        isAuthenticated,
+        user,
+        login,
+        logout,
+      }}
+    >
+      {children}
+    </IsAuthenticatedContext.Provider>
+  );
 };
 
 export default IsAuthenticatedContextProvider;

@@ -1,62 +1,71 @@
 /* Fonts  */
 @font-face {
-  font-family: 'Satoshi';
-  src: url('https://assets.website-files.com/63cffb7c16ab3347fc9734c8/63cffb7c16ab33e6ba973511_Satoshi-Regular.woff') format('woff');
+  font-family: "Satoshi";
+  src: url("/fonts/63cffb7c16ab33e6ba973511_Satoshi-Regular.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Chillax';
-  src: url('https://assets.website-files.com/63cffb7c16ab3347fc9734c8/63cffc0a3942456e003bc265_Chillax-Regular.woff') format('woff');
+  font-family: "Chillax";
+  src: url("/fonts/63cffc0a3942456e003bc265_Chillax-Regular.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Satoshi';
-  src: url('https://assets.website-files.com/63cffb7c16ab3347fc9734c8/63cffc20aa8997095067596f_Satoshi-Light.woff') format('woff');
+  font-family: "Satoshi";
+  src: url("/fonts/63cffc20aa8997095067596f_Satoshi-Light.woff") format("woff");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Chillax';
-  src: url('https://assets.website-files.com/63cffb7c16ab3347fc9734c8/63d00abf6efb9571dd71dd95_Chillax-Light.woff') format('woff');
+  font-family: "Chillax";
+  src: url("/fonts/63d00abf6efb9571dd71dd95_Chillax-Light.woff") format("woff");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
 :root {
+  /* light mode  */
   --primary-color: #cebd63;
-  --secondary-color: #121212;
-  --font-color: #f4f2ed;
-  --heading-font: 'Chillax', sans-serif;
-  --paragraph-font: 'Satoshi', sans-serif;
+  --secondary-color: #f4f2ed;
+  --font-color: #121212;
+  --light-hover: rgb(50 44 44 / 20%);
+  --light: rgb(65 65 65 / 5%);
+
+  /* dark mode  */
+
+  /* --secondary-color: #121212;
+  --font-color: #f4f2ed; 
+  --light-hover:  rgba(255, 255, 255, 0.1);
+   --light:rgba(255, 255, 255, 0.05);*/
+
+  --heading-font: "Chillax", sans-serif;
+  --paragraph-font: "Satoshi", sans-serif;
   --toastify-icon-color-success: var(--secondary-color);
   --toastify-color-progress-success: var(--secondary-color);
   --toastify-icon-color-error: var(--secondary-color);
   --toastify-color-progress-error: var(--secondary-color);
 }
 
-
 .font-color {
   color: var(--font-color);
 }
 
 .bg-color {
-  background-color: rgba(255, 255, 255, .05);
+  background-color: var(--light);
 }
 
 .bg-color:hover {
-  background-color: rgba(255, 255, 255, .1);
+  background-color: var(--light-hover);
   transition: 400ms;
 }
-
 
 body {
   background-color: var(--secondary-color);
@@ -68,7 +77,6 @@ body {
   line-height: 160%;
 }
 
-
 /* Header styling  */
 .navbar-brand {
   font-family: var(--heading-font);
@@ -79,24 +87,23 @@ body {
   color: var(--font-color);
 }
 
-
 .search input::placeholder {
   color: rgba(113, 113, 113, 0.874);
-  font-family: 'Roboto Mono', monospace;
-  font-family: monospace, 'Font Awesome 5 Free';
+  font-family: "Roboto Mono", monospace;
+  font-family: monospace, "Font Awesome 5 Free";
   font-weight: lighter;
   text-align: center;
 }
 
 .search input:focus {
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   background-color: rgba(255, 255, 255, 0.1);
   color: var(--font-color);
   box-shadow: none;
 }
 
 .btn {
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
 }
 
 .bag {
@@ -114,12 +121,12 @@ body {
   color: var(--font-color);
   padding: 0;
   font-size: 0.88rem;
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   border-radius: 5px;
 }
 
 .navbar-toggler:focus {
-  box-shadow: none
+  box-shadow: none;
 }
 
 .nav-link:hover {
@@ -128,7 +135,9 @@ body {
   font-weight: bold;
 }
 
-.nav-item .active, .nav-link:focus, #login.active {
+.nav-item .active,
+.nav-link:focus,
+#login.active {
   /* color: var(--font-color); */
   /* background-color: rgba(255, 255, 255, .05); */
   color: var(--secondary-color);
@@ -147,9 +156,9 @@ body {
   background-color: var(--secondary-color);
   /* background-color: var(--primary-color); */
   text-align: center;
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   font-size: 0.88rem;
-  box-shadow: 0 0 50px rgba(0, 0, 0, .1);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
 }
 
 .dropdown-item {
@@ -158,13 +167,12 @@ body {
 
 .dropdown-item:hover {
   color: var(--font-color);
-  background-color: rgba(255, 255, 255, .05);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 /* Login Page */
 
 .login-card {
-
   z-index: 1;
   justify-content: center;
   align-items: center;
@@ -173,16 +181,15 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
 }
 
 .login-form {
   text-align: center;
-  background-color: rgba(255, 255, 255, .05);
+  background-color: rgba(255, 255, 255, 0.05);
   border-radius: 1rem;
   flex-direction: column;
   padding: 2rem;
-  box-shadow: 0 0 50px rgba(0, 0, 0, .1);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
   min-width: 300px;
   width: 400px;
 }
@@ -193,13 +200,13 @@ body {
 
 .login-input {
   min-height: 3.2rem;
-  background-color: rgba(255, 255, 255, .05);
-  border: 1px solid rgba(255, 255, 255, .15);
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 0.5rem;
   padding: 0 1rem 0 1rem;
   font-size: 16px;
   line-height: 140%;
-  transition: background-color .2s, border .2s;
+  transition: background-color 0.2s, border 0.2s;
 }
 
 .login-input:focus-visible {
@@ -213,7 +220,6 @@ body {
   background-color: var(--primary-color);
   color: var(--secondary-color);
   /* border: 2px solid --primary-color; */
-
 }
 
 .login-form .btn:hover,
@@ -253,7 +259,7 @@ body {
 
 .footer-link,
 .copyright {
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   color: rgb(145, 145, 145);
   font-size: 0.88rem;
   line-height: 150%;
@@ -277,12 +283,12 @@ body {
 }
 
 .product-card:hover {
-  background-color: rgba(255, 255, 255, .1);
+  background-color: rgba(255, 255, 255, 0.1);
   transition: 300ms;
 }
 
 .product-card-price {
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   font-size: 0.88rem;
 }
 
@@ -321,7 +327,7 @@ body {
 
 /* single product page */
 .product-image {
-    border-radius: 1rem;
+  border-radius: 1rem;
 }
 
 /* Orders */
@@ -331,7 +337,7 @@ body {
 } */
 
 .hover-text-primary:hover {
-  color: var(--primary-color)
+  color: var(--primary-color);
 }
 
 .border {
@@ -368,7 +374,6 @@ body {
   max-width: 80px;
   display: flex;
   justify-content: center;
-
 }
 
 .table-image img {
@@ -398,14 +403,12 @@ body {
   max-width: 500px;
 }
 
-
 /* Responsive Media Queries */
 
 @media screen and (min-width: 900px) {
   .product-card {
     min-height: 533px;
   }
-
 }
 
 @media screen and (max-width: 767px) {
@@ -416,7 +419,6 @@ body {
   .banner-image img {
     object-position: 60% 50%;
   }
-
 }
 
 @media screen and (max-width: 479px) {
@@ -435,7 +437,6 @@ body {
   .sm-text-center {
     text-align: center;
   }
-
 }
 
 /* To remove arrows from input[number] */
@@ -445,13 +446,14 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-input[type=number] {
+input[type="number"] {
   appearance: textfield;
   -moz-appearance: textfield;
 }
 
 /* text selection styling */
-::-moz-selection { /* Code for Firefox */
+::-moz-selection {
+  /* Code for Firefox */
   color: var(--secondary-color);
   background: var(--primary-color);
 }
