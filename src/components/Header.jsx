@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState, useContext } from "react";
+import { useState, useContext } from "react";
 // import debounce from 'lodash/debounce';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { NavLink, Link, useNavigate } from "react-router-dom";
+import { SearchIcon } from "lucide-react";
 
 import BagContext from "../contexts/BagContext";
 import IsAuthenticatedContext from "../contexts/IsAuthenticatedContext";
@@ -64,13 +65,13 @@ const Header = () => {
                   onChange={(e) => SetSearchQuery(e.target.value)}
                   className="form-control me-2 w-100 bg-color border-0"
                   type="search"
-                  placeholder="&#xF002; Search"
+                  placeholder="Search"
                   aria-label="Search"
                 />
 
                 <button className="btn font-color visually-hidden" type="submit">
                   search
-                  <i className="fa fa-magnifying-glass"></i>
+                  <SearchIcon size={18} />
                 </button>
               </form>
             </ul>

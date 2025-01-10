@@ -1,8 +1,9 @@
 import axios from "axios";
 import { OrdersTable } from "../../components";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const { VITE_SERVER } = import.meta.env;
 
@@ -10,6 +11,8 @@ const CustomerDetails = () => {
   const navigate = useNavigate();
 
   const [customer, setCustomer] = useState();
+  const [loading, setLoading] = useState();
+  const [allCustomers, setAllCustomers] = useState();
   const [orders, setOrders] = useState([]);
 
   let { id } = useParams();
@@ -61,23 +64,36 @@ const CustomerDetails = () => {
   const deleteHandler = async (id) => {
     setLoading(true);
 
-    try {
-      const response = await axios.delete(`${VITE_SERVER}/api/admin/delete-customer/${id}`, {
-        withCredentials: true,
-      });
-      console.log("deleteHandler", response.data);
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: `Do you want to delete customer`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, approve it!",
+    });
 
-      response.data.success ? toast.success("Customer deleted successfully!", { className: "toastify" }) : null;
+    // If user confirmed, proceed with approval
+    if (result.isConfirmed) {
+      try {
+        const response = await axios.delete(`${VITE_SERVER}/api/admin/delete-customer/${id}`, {
+          withCredentials: true,
+        });
+        console.log("deleteHandler", response.data);
 
-      setLoading(false);
+        response.data.success ? toast.success("Customer deleted successfully!", { className: "toastify" }) : null;
 
-      // remove product from table
-      setAllCustomers.filter((item) => item._id != id);
-    } catch (error) {
-      console.error(error);
-      error.message ? toast.error(error.message, { className: "toastify" }) : null;
-    } finally {
-      setLoading(false);
+        setLoading(false);
+
+        // remove product from table
+        setAllCustomers.filter((item) => item._id != id);
+      } catch (error) {
+        console.error(error);
+        error.message ? toast.error(error.message, { className: "toastify" }) : null;
+      } finally {
+        setLoading(false);
+      }
     }
   };
 

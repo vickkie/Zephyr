@@ -1,14 +1,14 @@
-import axios from 'axios';
-import { useContext, useEffect, useState } from 'react';
-import { Footer, Header } from '../components'
-import { useNavigate, useParams } from 'react-router-dom';
-import BagContext from '../contexts/BagContext';
-import { toast } from 'react-toastify';
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import { Footer, Header } from "../components";
+import { useNavigate, useParams } from "react-router-dom";
+import BagContext from "../contexts/BagContext";
+import { toast } from "react-toastify";
+import { Minus, Plus, PlusCircle } from "lucide-react";
 
 const { VITE_SERVER } = import.meta.env;
 
 const SingleProduct = () => {
-
   const navigate = useNavigate();
   const { addToBag } = useContext(BagContext);
 
@@ -23,21 +23,19 @@ const SingleProduct = () => {
         withCredentials: true,
       });
       console.log("product", response);
-      response ?
-        setProduct({ ...response.data.product })
-        : navigate("/404")
+      response ? setProduct({ ...response.data.product }) : navigate("/404");
     } catch (error) {
       console.error(error);
-      error.message ? toast.error(error.message, {className: "toastify"}) : null;
-      if (error.response.status === 500) {navigate("/404")}
+      error.message ? toast.error(error.message, { className: "toastify" }) : null;
+      if (error.response.status === 500) {
+        navigate("/404");
+      }
     }
-  }
-
+  };
 
   useEffect(() => {
     fetchProduct();
-  }, [])
-  
+  }, []);
 
   const updateBag = (e) => {
     e.preventDefault();
@@ -46,14 +44,13 @@ const SingleProduct = () => {
       productName: product.productName,
       image: product.image,
       salePrice: product.salePrice,
-      quantity
-    }
+      quantity,
+    };
     addToBag(item);
-  }
+  };
   // useEffect(() => {
   //   console.log(quantity);
   // }, [quantity])
-
 
   return (
     <>
@@ -62,22 +59,22 @@ const SingleProduct = () => {
         <div className="row g-3 ">
           {/* Image section  */}
           <div className="col-lg-6">
-            {/* <div className="banner-image position-relative overflow-hidden h-100">
-              <div className="image-backdrop position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>
-              <img className="object-fit-cover w-100 h-100" src={product.img} alt="product image" />
-            </div> */}
             <div className="row">
               <div className="position-relative overflow-hidden h-100">
-                <div className="image-backdrop position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>
+                <div className="image-backdrop-m position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>
                 <img className="product-image object-fit-cover w-100 h-100" src={product.image} alt="product image" />
               </div>
             </div>
-            <div className="row mt-3">
+            {/* <div className="row mt-3">
               <div className="position-relative overflow-hidden h-100">
                 <div className="image-backdrop position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>
-                <img className="product-image object-fit-cover w-100 h-100" src="https://source.unsplash.com/random/600x600/?girl,fashion" alt="product image" />
+                <img
+                  className="product-image object-fit-cover w-100 h-100"
+                  src="https://source.unsplash.com/random/600x600/?girl,fashion"
+                  alt="product image"
+                />
               </div>
-            </div>
+            </div> */}
           </div>
           {/* Product details section  */}
           <div className="col-lg-6  ">
@@ -86,12 +83,10 @@ const SingleProduct = () => {
                 <div className="row">
                   <div className="col">
                     <p className="product-card-price text-uppercase font-color mb-0">
-                      <span className="product-card-price font-color me-2">$ {product.salePrice?.toFixed(2)} USD</span>
-                      <span className="product-card-price striked ms-2">$ {product.regularPrice?.toFixed(2)} USD</span>
+                      <span className="product-card-price font-color me-2">KES {product.salePrice?.toFixed(2)} </span>
+                      <span className="product-card-price striked ms-2">KES {product.regularPrice?.toFixed(2)} </span>
                     </p>
-                    <h1 className="title text-uppercase font-color my-2">
-                      {product.productName}
-                    </h1>
+                    <h1 className="title-prod text-uppercase font-color my-2">{product.productName}</h1>
 
                     <div className="mb-1">
                       <p className="banner-paragragh fs-6 fw-medium muted">
@@ -103,53 +98,51 @@ const SingleProduct = () => {
                     <form className="contact-form my-5">
                       <div className="d-flex align-items-center w-100 my-4">
                         <button
-                          type='button'
+                          type="button"
                           disabled={quantity === 1}
                           onClick={() => setQuantity(quantity - 1)}
-                          className="btn btn-sm bag text-decoration-none">
-                          <i className="ai ai-minus fs-4 px-1"></i>
+                          className="btn btn-sm bag text-decoration-none"
+                        >
+                          <Minus />
                         </button>
 
-                        <input className="login-input text-center font-color mx-3"
+                        <input
+                          className="login-input text-center font-color mx-3"
                           value={quantity}
                           onChange={(e) => setQuantity(Number(e.target.value))}
                           style={{
-                            minHeight: 2.9 + 'rem',
-                            padding: 0.5 + 'rem',
-                            maxWidth: 4 + 'rem'
+                            minHeight: 2.9 + "rem",
+                            padding: 0.5 + "rem",
+                            maxWidth: 4 + "rem",
                           }}
                           min={1}
                           type="number"
                           name="quantity"
-                          id="quantity" />
+                          id="quantity"
+                        />
 
                         <button
-                          type='button'
+                          type="button"
                           onClick={() => setQuantity(quantity + 1)}
-                          className="btn btn-sm bag text-decoration-none">
-                          <i className="ai ai-plus fs-4 px-1"></i>
+                          className="btn btn-sm bag text-decoration-none"
+                        >
+                          <Plus />
                         </button>
                       </div>
                       <button
                         type="submit"
                         onClick={updateBag}
                         className="btn text-uppercase d-block my-2 py-3 w-100 fw-bold"
-                        style={{ fontSize: 0.88 + 'rem' }}>
+                        style={{ fontSize: 0.88 + "rem" }}
+                      >
                         Add to bag
                       </button>
                     </form>
 
                     <div className="">
-                      <p className="banner-paragragh fs-6 fw-medium muted">
-                        {product.longDescription}
-                        {/* Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor, facere. Quos velit atque dolor. Mollitia nesciunt magnam, illum aspernatur quisquam quibusdam deserunt, ipsam earum eaque hic quis sint dolores porro! */}
-                      </p>
-                      <p className="banner-paragragh fs-6 fw-medium muted">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor, facere. Quos velit atque dolor. Mollitia nesciunt magnam, illum aspernatur quisquam quibusdam deserunt, ipsam earum eaque hic quis sint dolores porro!
-                      </p>
+                      <p className="banner-paragragh fs-6 fw-medium muted">{product.longDescription}</p>
+                      <p className="banner-paragragh fs-6 fw-medium muted"></p>
                     </div>
-
-
                   </div>
                 </div>
               </div>
@@ -159,7 +152,7 @@ const SingleProduct = () => {
       </main>
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default SingleProduct
+export default SingleProduct;

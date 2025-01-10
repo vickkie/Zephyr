@@ -1,22 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useImageUpload } from "../../hooks/useImageUpload";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const { VITE_SERVER } = import.meta.env;
 
 const AddNewProduct = () => {
   const [loading, setLoading] = useState();
-  const navigate = useNavigation();
+  const navigate = useNavigate();
 
   const [productName, setProductName] = useState("");
   const [shortDescription, setShortDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
 
   const [image, setImage] = useState(null);
-  // const [selectedImage, setSelectedImage] = useState("https://source.unsplash.com/random/500x500/?man,fashion,cloth,placeholder");
   const [selectedImage, setSelectedImage] = useState(
     "http://velocityacademy.org/wp-content/uploads/2016/03/placeholder.jpg"
   );
@@ -84,11 +83,13 @@ const AddNewProduct = () => {
       console.log(response);
       response.data.success
         ? () => {
+            console.log("called toast");
             toast.success(successMessage(response.data.product._id), { className: "toastify", autoClose: 15000 });
             navigate("/products");
           }
         : toast.error("Failed to add new sale!", { className: "toastify" });
     } catch (error) {
+      setLoading(false);
       console.error(error);
       toast.error("Failed to add new product!", { className: "toastify" });
       error.response.status === 403
@@ -440,7 +441,7 @@ const AddNewProduct = () => {
                     type="submit"
                     className="btn text-uppercase d-block my-2 py-3 w-100 fw-bold"
                     style={{ fontSize: 0.88 + "rem" }}
-                    disabled={loading}
+                    // disabled={loading}
                   >
                     {loading ? (
                       <>

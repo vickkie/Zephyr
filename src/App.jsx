@@ -1,5 +1,5 @@
-import { createContext, useContext, useLayoutEffect, useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { useContext, useLayoutEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 import { Cursor, Logout } from "./components";
 import { Home, Shop, Contact, Login, Bag, SingleProduct, Profile, Search, PageNotFound } from "./pages";

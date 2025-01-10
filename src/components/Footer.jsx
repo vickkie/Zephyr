@@ -13,7 +13,10 @@ const Footer = () => {
                     <Link to="/" className="navbar-brand font-color text-uppercase fs-3">
                       Zephyr
                     </Link>
-                    <p className="card-text mb-2">Keep your fashion, heels and stardards high.</p>
+                    <p className="card-text mb-2">
+                      Why fit in when you were born to stand out?. Elevate your wardrobe, and let each outfit reflect
+                      the incredible person you are.
+                    </p>
                   </div>
                   <div className="mt-2">
                     <Link to="#" className="footer-link text-uppercase text-decoration-none me-2">

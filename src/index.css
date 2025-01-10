@@ -34,17 +34,17 @@
 :root {
   /* light mode  */
   --primary-color: #cebd63;
-  /* --secondary-color: #f4f2ed;
+  --secondary-color: #f4f2ed;
   --font-color: #121212;
   --light-hover: rgb(50 44 44 / 20%);
-  --light: rgb(65 65 65 / 5%); */
+  --light: rgb(65 65 65 / 5%);
 
   /* dark mode  */
 
-  --secondary-color: #121212;
+  /* --secondary-color: #121212;
   --font-color: #f4f2ed;
   --light-hover: rgba(255, 255, 255, 0.1);
-  --light: rgba(255, 255, 255, 0.05);
+  --light: rgba(255, 255, 255, 0.05); */
 
   --heading-font: "Chillax", sans-serif;
   --paragraph-font: "Satoshi", sans-serif;
@@ -52,6 +52,15 @@
   --toastify-color-progress-success: var(--secondary-color);
   --toastify-icon-color-error: var(--secondary-color);
   --toastify-color-progress-error: var(--secondary-color);
+
+  --zy-sm: clamp(0.7rem, 0.35vi + 0.61rem, 0.89rem);
+  --zy-base: clamp(0.88rem, 0.57vi + 0.73rem, 1.19rem);
+  --zy-md: clamp(1.09rem, 0.89vi + 0.87rem, 1.58rem);
+  --zy-lg: clamp(1.37rem, 1.35vi + 1.03rem, 2.11rem);
+  --zy-xl: clamp(1.71rem, 2.01vi + 1.21rem, 2.81rem);
+  --zy-xxl: clamp(2.14rem, 2.93vi + 1.4rem, 3.75rem);
+  --zy-xxxl: clamp(2.67rem, 4.23vi + 1.61rem, 5rem);
+  --feature-height: 22.5em;
 }
 
 .font-color {
@@ -274,7 +283,12 @@ body {
 
 .title {
   font-family: var(--heading-font);
-  font-size: 5vw;
+  font-size: var(--zy-lg);
+}
+.title-prod {
+  font-family: var(--heading-font);
+
+  font-size: var(--zy-xl);
 }
 
 .product-link img {

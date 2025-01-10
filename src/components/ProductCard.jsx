@@ -1,9 +1,12 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import BagContext from "../contexts/BagContext";
+import Lazyload from "../utils/lazyload";
 
 const ProductCard = ({ id, productName, regularPrice, salePrice, image }) => {
   const { addToBag } = useContext(BagContext);
+
+  Lazyload();
 
   // this item will be saved to bag context
   const item = {
@@ -17,10 +20,10 @@ const ProductCard = ({ id, productName, regularPrice, salePrice, image }) => {
   return (
     <div className="card product-card position-relative p-3">
       <Link to={`/product/${id}`} className="product-link d-block position-relative overflow-hidden ">
-        <div className="image-backdrop position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>
+        <div className="image-backdrop-m position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>
         <img
-          className="object-fit-cover w-100 h-100"
-          src={
+          className="lozad object-fit-cover w-100 h-100"
+          data-src={
             image ||
             "https://cdn.prod.website-files.com/63cffb7c16ab33a28e9734f2/63d4f266958421bafe26c37c_product-05-thumb-p-500.webp"
           }

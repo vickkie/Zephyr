@@ -1,4 +1,4 @@
-import React from "react";
+/* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 
 const OrdersTable = ({ orders, action, deleteHandler }) => {

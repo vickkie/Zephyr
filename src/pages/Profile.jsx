@@ -1,6 +1,6 @@
 import axios from "axios";
-import { Footer, Header, OrdersTable, PageTitle } from '../components';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Footer, Header, OrdersTable, PageTitle } from "../components";
+import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import IsAuthenticatedContext from "../contexts/IsAuthenticatedContext";
 import { toast } from "react-toastify";
@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 const { VITE_SERVER } = import.meta.env;
 
 const Profile = () => {
-
   const navigate = useNavigate();
 
   const [customer, setCustomer] = useState({});
@@ -27,15 +26,15 @@ const Profile = () => {
         withCredentials: true,
       });
       console.log("customer", response);
-      response ?
-        setCustomer({ ...response.data.customer })
-        : navigate("/404")
+      response ? setCustomer({ ...response.data.customer }) : navigate("/404");
     } catch (error) {
       console.error(error);
       error.message ? toast.error(error.message, { className: "toastify" }) : null;
-      if (error.response.status === 500) { navigate("/404") }
+      if (error.response.status === 500) {
+        navigate("/404");
+      }
     }
-  }
+  };
 
   /**
    * The function fetches the orders for a specific user from a server and handles any errors that may
@@ -47,15 +46,15 @@ const Profile = () => {
         withCredentials: true,
       });
       console.log("myOders", response);
-      response ?
-        setMyOrders(response.data.orders)
-        : navigate("/404")
+      response ? setMyOrders(response.data.orders) : navigate("/404");
     } catch (error) {
       console.error(error);
       error.message ? toast.error(error.message, { className: "toastify" }) : null;
-      if (error.response.status === 500) { navigate("/404") }
+      if (error.response.status === 500) {
+        navigate("/404");
+      }
     }
-  }
+  };
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -63,19 +62,25 @@ const Profile = () => {
       fetchCustomer();
       fetchMyOrders();
     }
- }, [user, isAuthenticated, navigate]);
+  }, [user, isAuthenticated, navigate]);
 
   return (
     <>
       <Header />
-      <PageTitle title={'Profile'} />
-      <section className='container-fluid mt-3 p-0'>
+      <PageTitle title={"Profile"} />
+      <section className="container-fluid mt-3 p-0">
         <div className="row justify-content-end gap-3">
           <div className="col-2">
-            <button onClick={() => navigate('/logout')} className="d-none d-sm-block btn btn-sm filter-btn border bag w-100 py-2 overflow-hidden">
+            <button
+              onClick={() => navigate("/logout")}
+              className="d-none d-sm-block btn btn-sm filter-btn border bag w-100 py-2 overflow-hidden"
+            >
               Log Out
             </button>
-            <button onClick={() => navigate('/logout')} className="d-sm-none btn btn-sm filter-btn border bag w-100 overflow-hidden">
+            <button
+              onClick={() => navigate("/logout")}
+              className="d-sm-none btn btn-sm filter-btn border bag w-100 overflow-hidden"
+            >
               <i className="ai ai-sign-out-fill"></i>
             </button>
             {/* <button className="btn btn-sm d-flex justify-content-center text-wrap filter-btn border bag w-100 py-2 overflow-hidden">
@@ -92,11 +97,13 @@ const Profile = () => {
                   src="https://source.unsplash.com/random/500x500/?man,dp"
                   alt="Profile Picture" /> */}
                 <label htmlFor="dp">
-                  <img className='profile-picture rounded-circle object-fit-cover'
+                  <img
+                    className="profile-picture rounded-circle object-fit-cover"
                     src={customer?.profilePicture}
-                    alt="Profile Picture" />
+                    alt="Profile Picture"
+                  />
                 </label>
-                <input type="file" className='visually-hidden' name="dp" id="dp" />
+                <input type="file" className="visually-hidden" name="dp" id="dp" />
               </div>
             </div>
           </div>
@@ -105,12 +112,14 @@ const Profile = () => {
             <div className="p-5">
               <div className="mx-auto">
                 <h3 className="card-headin font-color fs-1">
-                  {/* Frederick C. Frazier */}{customer.fullName}
+                  {/* Frederick C. Frazier */}
+                  {customer.fullName}
                 </h3>
                 <p className="card-text bag fs-6">
                   <span className="bag">Email: </span> {customer.email} <br />
                   <span className="bag">Phone: </span> {customer.phone} <br />
-                  <span className="bag">Address: </span> {customer.address?.street} {customer.address?.city} {customer.address?.state} {customer.address?.pincode} {customer.address?.country}
+                  <span className="bag">Address: </span> {customer.address?.street} {customer.address?.city}{" "}
+                  {customer.address?.state} {customer.address?.pincode} {customer.address?.country}
                 </p>
               </div>
             </div>
@@ -149,12 +158,11 @@ const Profile = () => {
             <OrdersTable orders={myOrders} />
           </div>
         </div>
-
       </section>
 
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { PageTitle } from "../../components";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import Lazyload from "../../utils/lazyload";
 
 const { VITE_SERVER } = import.meta.env;
 
@@ -10,6 +11,8 @@ const Products = () => {
   const [loading, setLoading] = useState();
 
   const [allProducts, setAllProducts] = useState([]);
+
+  Lazyload();
 
   /**
    * The function `fetchAllProducts` fetches all products from a server using axios in a React
@@ -73,10 +76,7 @@ const Products = () => {
               <div className="card-body p-4">
                 <div className="row h-100 ">
                   <h3 className="card-heading font-color fs-4 text-uppercase">All Products</h3>
-                  <p className="card-text font-color fs-6">
-                    Find all your products and their details below. Lorem ipsum, dolor sit amet consectetur adipisicing
-                    elit.
-                  </p>
+                  <p className="card-text font-color fs-6">Find all your products and their details below.</p>
                   <div className="table-responsive">
                     <table className="order-table w-100">
                       <thead className="card-heading text-uppercase font-color fs-6 bag">
@@ -97,7 +97,11 @@ const Products = () => {
                               <tr className="border-bottom border-warning border-opacity-10" key={product._id}>
                                 <td className="p-2">{index + 1}</td>
                                 <td className="table-image">
-                                  <img className="object-fit-cover rounded-circle p-3" src={product.image} alt="" />
+                                  <img
+                                    className="lozad object-fit-cover rounded-circle p-3"
+                                    data-src={product.image}
+                                    alt=""
+                                  />
                                 </td>
                                 <td>{product.productName}</td>
                                 <td>${product.salePrice}.00</td>
@@ -115,7 +119,7 @@ const Products = () => {
                                     className="text-decoration-none"
                                   >
                                     {loading ? (
-                                      <span class="spinner-grow spinner-grow-sm bag me-2" aria-hidden="true"></span>
+                                      <span className="spinner-grow spinner-grow-sm bag me-2" aria-hidden="true"></span>
                                     ) : (
                                       <i className="ai ai-trash-fill action bag">del</i>
                                     )}
