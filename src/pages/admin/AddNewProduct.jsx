@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useImageUpload } from "../../hooks/useImageUpload";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { useNavigation } from "react-router-dom";
 
 const { VITE_SERVER } = import.meta.env;
 
 const AddNewProduct = () => {
   const [loading, setLoading] = useState();
+  const navigate = useNavigation();
 
   const [productName, setProductName] = useState("");
   const [shortDescription, setShortDescription] = useState("");
@@ -81,7 +83,10 @@ const AddNewProduct = () => {
 
       console.log(response);
       response.data.success
-        ? toast.success(successMessage(response.data.product._id), { className: "toastify", autoClose: 15000 })
+        ? () => {
+            toast.success(successMessage(response.data.product._id), { className: "toastify", autoClose: 15000 });
+            navigate("/products");
+          }
         : toast.error("Failed to add new sale!", { className: "toastify" });
     } catch (error) {
       console.error(error);
@@ -435,7 +440,7 @@ const AddNewProduct = () => {
                     type="submit"
                     className="btn text-uppercase d-block my-2 py-3 w-100 fw-bold"
                     style={{ fontSize: 0.88 + "rem" }}
-                    // disabled={loading}
+                    disabled={loading}
                   >
                     {loading ? (
                       <>
