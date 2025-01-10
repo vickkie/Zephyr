@@ -32,19 +32,21 @@
 }
 
 :root {
-  /* light mode  */
   --primary-color: #cebd63;
-  --secondary-color: #f4f2ed;
+
+  /* light mode  */
+
+  /* --secondary-color: #f4f2ed;
   --font-color: #121212;
   --light-hover: rgb(50 44 44 / 20%);
-  --light: rgb(65 65 65 / 5%);
+  --light: rgb(65 65 65 / 5%); */
 
   /* dark mode  */
 
-  /* --secondary-color: #121212;
+  --secondary-color: #121212;
   --font-color: #f4f2ed;
   --light-hover: rgba(255, 255, 255, 0.1);
-  --light: rgba(255, 255, 255, 0.05); */
+  --light: rgba(255, 255, 255, 0.05);
 
   --heading-font: "Chillax", sans-serif;
   --paragraph-font: "Satoshi", sans-serif;
@@ -422,6 +424,8 @@ body {
 @media screen and (min-width: 900px) {
   .product-card {
     min-height: 533px;
+    /* height: 100%;
+    justify-content: space-between; */
   }
 }
 

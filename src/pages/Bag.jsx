@@ -16,7 +16,7 @@ const BagItem = ({ id, image, productName, quantity, salePrice }) => {
     <div className="row mt-4 g-3">
       <div className="col-sm-2">
         <div className="bag-image position-relative overflow-hidden h-100">
-          <div className="image-backdrop position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>
+          <div className="image-backdrop position-absolute top-0 bottom-0 start-0 end-0 opacity-0"></div>
           <img className="object-fit-cover w-100 h-100" src={image} alt="bag item" />
           {/* "https://cdn.prod.website-files.com/63cffb7c16ab33a28e9734f2/63d4f225026df869f409bbcc_product-01-thumb-p-500.webp" */}
         </div>
@@ -24,7 +24,7 @@ const BagItem = ({ id, image, productName, quantity, salePrice }) => {
       <div className="col">
         <h5 className="item-name card-heading font-color fs-5 mb-0">{productName}</h5>
         <p className="product-card-price font-color mb-0">
-          $ {salePrice}.00 USD x {quantity}
+          KES {salePrice}.00 x {quantity}
         </p>
 
         <Link
@@ -33,7 +33,50 @@ const BagItem = ({ id, image, productName, quantity, salePrice }) => {
           }}
           className="bag text-decoration-none text-center"
         >
-          <i className="ai ai-trash-fill fs-5"></i>
+          <svg width="26px" height="26px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+            <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" />
+
+            <g id="SVGRepo_iconCarrier">
+              {" "}
+              <path
+                d="M10 12V17"
+                stroke="var(--font-color)"
+                stroke-width="1"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />{" "}
+              <path
+                d="M14 12V17"
+                stroke="var(--font-color)"
+                strokeWidth="1"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />{" "}
+              <path
+                d="M4 7H20"
+                stroke="var(--font-color)"
+                strokeWidth="1"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />{" "}
+              <path
+                d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10"
+                stroke="var(--font-color)"
+                strokeWidth="1"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />{" "}
+              <path
+                d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z"
+                stroke="var(--font-color)"
+                strokeWidth="1"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />{" "}
+            </g>
+          </svg>
         </Link>
       </div>
       <div className="col-sm-3 col-md-4 d-flex align-items-center">
@@ -44,7 +87,22 @@ const BagItem = ({ id, image, productName, quantity, salePrice }) => {
             }}
             className="bag text-decoration-none mx-2"
           >
-            <i className="ai ai-minus-fill fs-4"></i>
+            <svg width={26} height="26px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+              <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" />
+
+              <g id="SVGRepo_iconCarrier">
+                {" "}
+                <path d="M15 12H9" stroke="var(--font-color)" stroke-width="1.5" strokeLinecap="round" />{" "}
+                <path
+                  d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"
+                  stroke="var(--font-color)"
+                  stroke-width="1.5"
+                  strokeLinecap="round"
+                />{" "}
+              </g>
+            </svg>
           </Link>
           <input
             className="login-input w-50 text-center font-color "
@@ -62,7 +120,27 @@ const BagItem = ({ id, image, productName, quantity, salePrice }) => {
             }}
             className="bag text-decoration-none mx-2"
           >
-            <i className="ai ai-plus-fill fs-4"></i>
+            <svg width={26} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+              <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" />
+
+              <g id="SVGRepo_iconCarrier">
+                {" "}
+                <path
+                  d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15"
+                  stroke="var(--font-color)"
+                  stroke-width="1.5"
+                  strokeLinecap="round"
+                />{" "}
+                <path
+                  d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7"
+                  stroke="var(--font-color)"
+                  stroke-width="1.5"
+                  strokeLinecap="round"
+                />{" "}
+              </g>
+            </svg>
           </Link>
         </div>
       </div>
@@ -428,16 +506,16 @@ const Bag = () => {
                     <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Order Summary</h2>
                     <div className="d-flex justify-content-between">
                       <span className="product-card-price font-color mb-0">Subtotal:</span>
-                      <span className="product-card-price font-color mb-0">$ {subTotal}.00 USD</span>
+                      <span className="product-card-price font-color mb-0">KES {subTotal}.00 </span>
                     </div>
                     <div className="d-flex justify-content-between">
                       <span className="product-card-price font-color mb-0">Shipping fee:</span>
-                      <span className="product-card-price font-color mb-0">$ {shippingFees}.00 USD</span>
+                      <span className="product-card-price font-color mb-0">KES {shippingFees}.00 </span>
                     </div>
                     <hr className="font-color" />
                     <div className="d-flex justify-content-between">
                       <span className="product-card-price font-color mb-0">Total:</span>
-                      <span className="product-card-price font-color mb-0">$ {total}.00 USD</span>
+                      <span className="product-card-price font-color mb-0">KES {total}.00 </span>
                     </div>
                     <button
                       type="submit"

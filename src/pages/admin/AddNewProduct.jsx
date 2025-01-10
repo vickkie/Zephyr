@@ -1,24 +1,21 @@
 import { useEffect, useState } from "react";
-import { useImageUpload } from "../../hooks/useImageUpload";
+import { uploadImages } from "../../utils/uploadImages"; // Utility function for image upload
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const { VITE_SERVER } = import.meta.env;
 
 const AddNewProduct = () => {
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const [productName, setProductName] = useState("");
   const [shortDescription, setShortDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
 
-  const [image, setImage] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(
-    "http://velocityacademy.org/wp-content/uploads/2016/03/placeholder.jpg"
-  );
+  const [images, setImages] = useState([]); // Files for upload
+  const [selectedImage, setSelectedImage] = useState([]); // Preview URLs
 
   const [regularPrice, setRegularPrice] = useState("");
   const [salePrice, setSalePrice] = useState("");
@@ -31,7 +28,6 @@ const AddNewProduct = () => {
     productName,
     shortDescription,
     longDescription,
-    image,
     regularPrice,
     salePrice,
     selectedCategory,
@@ -42,63 +38,97 @@ const AddNewProduct = () => {
   const successMessage = (productId) => (
     <div>
       Product added successfully!
-      <Link to={`/product/` + productId} className="ms-2 text-dark">
+      <Link to={`/product/${productId}`} className="ms-2 text-dark">
         view
       </Link>
     </div>
   );
 
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    // console.log("Files selected:", files);
+    // Avoid adding duplicate files
+    const newFiles = files.filter((file) => !images.some((img) => img.name === file.name));
+
+    if (newFiles.length > 0) {
+      // Generate preview URLs for the new files
+      const previewUrls = newFiles.map((file) => URL.createObjectURL(file));
+
+      // Update both images and selectedImage state
+      setImages((prev) => [...prev, ...newFiles]);
+      setSelectedImage((prev) => [...prev, ...previewUrls]);
+    }
+  };
+
+  const removeImage = (index) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+    setSelectedImage((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const addProductHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    /*
-     *   checking if user has selected a image to upload. If it has, it calls the
-     *   `useImageUpload` (custom hook) to upload the image and assigns the result
-     *   to the `imageUrl` variable. If image is not selected, it assigns a placeholder
-     *   image URL from Unsplash to the `imageUrl` variable.
-     */
-
-    let imageUrl = productData.image
-      ? await useImageUpload(productData.image)
-      : "https://source.unsplash.com/random/500x500/?man,fashion,cloth,placeholder";
-
-    console.log({ ...productData, image: imageUrl });
+    let imageUrls = [];
+    try {
+      // Upload all selected images
+      imageUrls =
+        images.length > 0
+          ? await uploadImages(images) // Use the utility function
+          : ["https://source.unsplash.com/random/500x500/?man,fashion,cloth,placeholder"];
+    } catch (error) {
+      // console.error("Failed to upload images:", error);
+      toast.error("Image upload failed! Please try again.", { className: "toastify" });
+      setLoading(false);
+      return;
+    }
 
     try {
-      // send data to server to store in DB
+      // const allproducts = { ...productData, images: imageUrls.flat() };
+      // console.log(allproducts);
+
       const response = await axios.post(
         `${VITE_SERVER}/api/admin/add-product`,
         {
           ...productData,
-          image: imageUrl,
+          images: imageUrls.flat(), // Include all uploaded image URLs
         },
         {
           withCredentials: true,
         }
       );
 
+      // console.log(response);
+
       setLoading(false);
 
-      console.log(response);
-      response.data.success
-        ? () => {
-            console.log("called toast");
-            toast.success(successMessage(response.data.product._id), { className: "toastify", autoClose: 15000 });
-            navigate("/products");
-          }
-        : toast.error("Failed to add new sale!", { className: "toastify" });
+      if (response.data.success) {
+        toast.success(successMessage(response.data.product._id), {
+          className: "toastify",
+          autoClose: 15000,
+        });
+        navigate("/admin/products");
+      } else {
+        toast.error("Failed to add new product!", { className: "toastify" });
+      }
     } catch (error) {
       setLoading(false);
-      console.error(error);
+
+      // console.error(error);
       toast.error("Failed to add new product!", { className: "toastify" });
-      error.response.status === 403
-        ? toast.error("Session Expired, Login again!", { className: "toastify" }) && navigate("/Logout")
-        : null;
-    } finally {
-      setLoading(false);
+      if (error.response && error.response.status === 403) {
+        toast.error("Session Expired, Login again!", { className: "toastify" });
+        navigate("/Logout");
+      }
     }
   };
+
+  // Validate sale and regular price
+  useEffect(() => {
+    if (parseFloat(salePrice) > parseFloat(regularPrice)) {
+      toast.error("Sale price cannot be greater than regular price!", { className: "toastify" });
+    }
+  }, [salePrice, regularPrice]);
 
   return (
     <form className="container-fluid p-0" onSubmit={addProductHandler}>
@@ -137,6 +167,7 @@ const AddNewProduct = () => {
                     onChange={(e) => setShortDescription(e.target.value)}
                     placeholder=""
                     required
+                    autoComplete
                   ></textarea>
                 </div>
               </div>
@@ -166,32 +197,51 @@ const AddNewProduct = () => {
             <div className="card-body p-3">
               <div className="row">
                 <div className="col">
-                  <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Upload Picture *</h2>
+                  <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Upload Pictures *</h2>
 
                   <label className="d-block p-3 px-5" htmlFor="productImage">
                     <div className="d-flex justify-content-center align-items-center border border-dashed rounded bg-color p-5">
-                      <i className="ai ai-plus bag"></i>
+                      <i className="ai ai-plus bag me-2"></i>
                       <i className="ai ai-file-image-fill fs-1 bag"></i>
                     </div>
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={(e) => {
-                        setImage((prev) => e.target.files[0]);
-                        setSelectedImage(URL.createObjectURL(e.target.files[0]));
-                      }}
+                      onChange={handleFileChange}
+                      multiple
                       className="visually-hidden"
                       name="productImage"
                       id="productImage"
+                      aria-label="Upload product images"
                     />
                   </label>
 
-                  <div className="d-flex justify-content-center p-3">
-                    <div className="position-relative">
-                      <div className="image-backdrop position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>
-                      <img className="object-fit-cover rounded w-100 image" src={selectedImage} alt="" />
+                  {selectedImage.length > 0 && (
+                    <div className="d-flex justify-content-center p-3 flex-wrap gap-3">
+                      {selectedImage.map((image, index) => (
+                        <div
+                          key={index}
+                          className="position-relative border rounded overflow-hidden"
+                          style={{ width: "120px", height: "120px" }}
+                        >
+                          {/* Remove button */}
+                          <button
+                            type="button"
+                            className="btn-close position-absolute top-0 end-0 m-1"
+                            aria-label={`Remove image ${index + 1}`}
+                            onClick={() => removeImage(index)}
+                          ></button>
+
+                          {/* Image preview */}
+                          <img
+                            className="object-fit-cover rounded w-100 h-100"
+                            src={image}
+                            alt={`Uploaded preview ${index + 1}`}
+                          />
+                        </div>
+                      ))}
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </div>

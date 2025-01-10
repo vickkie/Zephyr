@@ -9,13 +9,13 @@ const {
 const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${Cloud_Name}/image/upload`;
 
 /**
- * The uploadImages function uploads multiple image files to either a local server or Cloudinary,
+ * The useImageUpload custom hook uploads multiple image files to either a local server or Cloudinary,
  * depending on the environment (local or production).
  * @param {File[]} files - The array of image files to upload.
  * @returns {Promise<string[]>} - An array of secure URLs of the uploaded images.
  * @throws Will throw an error if the upload fails.
  */
-const uploadImages = async (files) => {
+const useImageUpload = async (files) => {
   if (!files || files.length === 0) {
     throw new Error("No files provided for upload.");
   }
@@ -29,7 +29,7 @@ const uploadImages = async (files) => {
 
     for (const file of files) {
       const formData = new FormData();
-      formData.append("productImage", file);
+      formData.append("file", file);
 
       // Local upload
       if (import.meta.env.MODE !== "production") {
@@ -61,4 +61,4 @@ const uploadImages = async (files) => {
   }
 };
 
-export { uploadImages };
+export { useImageUpload };

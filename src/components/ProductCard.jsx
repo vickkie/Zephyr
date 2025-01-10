@@ -18,7 +18,7 @@ const ProductCard = ({ id, productName, regularPrice, salePrice, image }) => {
   };
 
   return (
-    <div className="card product-card position-relative p-3">
+    <div className="card product-card position-relative p-2">
       <Link to={`/product/${id}`} className="product-link d-block position-relative overflow-hidden ">
         <div className="image-backdrop-m position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>
         <img

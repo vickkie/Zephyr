@@ -1,14 +1,11 @@
-
-import axios from 'axios'
-import { Footer, Header, PageTitle, ProductGrid } from '../components'
-import { useEffect, useState } from 'react'
-import { toast } from 'react-toastify';
+import axios from "axios";
+import { Footer, Header, PageTitle, ProductGrid } from "../components";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const { VITE_SERVER } = import.meta.env;
 
 const Shop = ({ category, subCategory }) => {
-
-
   const [loading, setLoading] = useState();
   const [products, setProducts] = useState([]);
 
@@ -19,16 +16,15 @@ const Shop = ({ category, subCategory }) => {
         withCredentials: true,
       });
       console.log("all-products", response.data);
-      setProducts(response.data.allProducts);
+      setProducts(response.data.products);
       setLoading(false);
-
     } catch (error) {
       console.error(error);
-      error.message ? toast.error(error.message, { className: "toastify" }) : null
+      error.message ? toast.error(error.message, { className: "toastify" }) : null;
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   /**
    * The function `fetchProductsByCategory` asynchronously fetches products based on a specified
@@ -41,42 +37,35 @@ const Shop = ({ category, subCategory }) => {
         withCredentials: true,
       });
       console.log("products", response.data);
-      setProducts(response.data.products)
-
+      setProducts(response.data.products);
     } catch (error) {
       console.error(error);
-      error.message ? toast.error(error.message, { className: "toastify" }) : null
+      error.message ? toast.error(error.message, { className: "toastify" }) : null;
     }
-  }
+  };
 
   useEffect(() => {
-
-    if (category === 'all') {
-      fetchAllProducts()
+    if (category === "all") {
+      fetchAllProducts();
     } else {
-      fetchProductsByCategory(category, subCategory)
+      fetchProductsByCategory(category, subCategory);
     }
-  }, [category, subCategory])
+  }, [category, subCategory]);
 
   return (
     <>
       <Header />
-      <PageTitle
-        title={`Shop / ${category} - ${(subCategory ? subCategory : "")}`}
-      />
-      {
-        loading ?
-          (
-            <div className='d-flex justify-content-center align-items-center h-100 w-100'>
-              <span className="spinner-grow spinner-grow bag" aria-hidden="true"></span>
-            </div>
-          ) : (
-            <ProductGrid products={[...products]} />
-          )
-      }
+      <PageTitle title={`Shop / ${category} - ${subCategory ? subCategory : ""}`} />
+      {loading ? (
+        <div className="d-flex justify-content-center align-items-center h-100 w-100">
+          <span className="spinner-grow spinner-grow bag" aria-hidden="true"></span>
+        </div>
+      ) : (
+        <ProductGrid products={[...products]} />
+      )}
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default Shop
+export default Shop;

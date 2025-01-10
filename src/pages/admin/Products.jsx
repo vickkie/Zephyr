@@ -25,7 +25,7 @@ const Products = () => {
         withCredentials: true,
       });
       console.log("all-products", response.data);
-      setAllProducts(response.data.allProducts);
+      setAllProducts(response.data.products);
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -94,19 +94,19 @@ const Products = () => {
                         {!loading ? (
                           allProducts.length > 0 ? (
                             allProducts.map((product, index) => (
-                              <tr className="border-bottom border-warning border-opacity-10" key={product._id}>
+                              <tr className="border-bottom border-warning border-opacity-10" key={product?._id}>
                                 <td className="p-2">{index + 1}</td>
                                 <td className="table-image">
                                   <img
                                     className="lozad object-fit-cover rounded-circle p-3"
-                                    data-src={product.image}
+                                    data-src={product?.image}
                                     alt=""
                                   />
                                 </td>
-                                <td>{product.productName}</td>
-                                <td>${product.salePrice}.00</td>
-                                <td>{product.category}</td>
-                                <td>{product.subCategory}</td>
+                                <td>{product?.productName}</td>
+                                <td>${product?.salePrice}.00</td>
+                                <td>{product?.category}</td>
+                                <td>{product?.subCategory}</td>
                                 <td>
                                   <Link to={`/product/${product._id}`} className="text-decoration-none me-3">
                                     <i className="ai ai-eye-fill action bag">see</i>
