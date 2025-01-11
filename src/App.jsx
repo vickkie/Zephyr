@@ -12,6 +12,7 @@ import {
   Orders,
   CustomerDetails,
   OrderDetails,
+  UpdateProduct,
 } from "./pages/admin";
 import { ToastContainer } from "react-toastify";
 import BagContextProvider from "./contexts/BagContextProvider";
@@ -85,6 +86,7 @@ function App() {
                 <Route path="orders/:id" element={<OrderDetails />} />
                 <Route path="products" element={<Products />} />
                 <Route path="add-product" element={<AddNewProduct />} />
+                <Route path="editproduct/:id" element={<UpdateProduct />} />
                 <Route path="customers" element={<Customers />} />
                 <Route path="customers/:id" element={<CustomerDetails />} />
               </Route>

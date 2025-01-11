@@ -9,6 +9,4 @@ import Bag from "./Bag";
 import Search from "./Search";
 import PageNotFound from "./PageNotFound";
 
-export {
-    Home, Shop, Contact, Login, Profile, Register, SingleProduct, Bag, Search, PageNotFound
-}
+export { Home, Shop, Contact, Login, Profile, Register, SingleProduct, Bag, Search, PageNotFound };

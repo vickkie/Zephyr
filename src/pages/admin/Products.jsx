@@ -108,7 +108,7 @@ const Products = () => {
                                 <td>{product?.category}</td>
                                 <td>{product?.subCategory}</td>
                                 <td>
-                                  <Link to={`/product/${product._id}`} className="text-decoration-none me-3">
+                                  <Link to={`/admin/editproduct/${product._id}`} className="text-decoration-none me-3">
                                     <i className="ai ai-eye-fill action bag">see</i>
                                   </Link>
                                   <Link

@@ -1,7 +1,7 @@
 import ProductCard from "./ProductCard";
 
 const ProductGrid = (props) => {
-//   console.log(props.products);
+  // console.log(props.products);
 
   return (
     <section className="product-grid container-fluid p-0">
@@ -15,6 +15,7 @@ const ProductGrid = (props) => {
                 regularPrice={product?.regularPrice}
                 salePrice={product?.salePrice}
                 image={product?.image}
+                images={product?.images}
               />
             </div>
           ))
