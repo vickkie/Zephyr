@@ -15,6 +15,7 @@
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "dotenv": "^16.4.5",
+    "gsap": "^3.12.5",
     "lodash": "^4.17.21",
     "lozad": "^1.16.0",
     "lucide-react": "^0.469.0",
@@ -24,6 +25,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
     "react-toastify": "^10.0.5",
+    "sweetalert2": "^11.15.10",
     "swiper": "^11.0.7"
   },
   "devDependencies": {

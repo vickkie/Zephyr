@@ -108,6 +108,8 @@ import { Link } from "react-router-dom";
 import BagContext from "../contexts/BagContext";
 import Lazyload from "../utils/lazyload";
 
+const defaultImg = "https://source.unsplash.com/random/500x500/?man,fashion,cloth,placeholder";
+
 const ProductCard = ({ id, productName, regularPrice, salePrice, image, images = [] }) => {
   const { addToBag } = useContext(BagContext);
 
@@ -116,6 +118,25 @@ const ProductCard = ({ id, productName, regularPrice, salePrice, image, images =
 
   // Lazyload initialization
   Lazyload();
+
+  // function removedef(def) {
+  //   return def !== defaultImg;
+  // }
+
+  // const gottenFirst = [image];
+  // console.log("gottenFirst", gottenFirst);
+
+  // const allImgs = [gottenFirst.flat(), images.flat()].flat();
+
+  // console.log("allImgs", allImgs);
+
+  // const finalImgs = allImgs.filter(removedef);
+
+  // console.log("finalImgs", finalImgs);
+
+  // const finalMain = console.log(finalImgs[0]);
+
+  // console.log("finalMain", finalMain);
 
   const item = {
     id,

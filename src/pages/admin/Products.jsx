@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PageTitle } from "../../components";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -9,6 +9,7 @@ const { VITE_SERVER } = import.meta.env;
 
 const Products = () => {
   const [loading, setLoading] = useState();
+  const navigate = useNavigate();
 
   const [allProducts, setAllProducts] = useState([]);
 
@@ -108,9 +109,24 @@ const Products = () => {
                                 <td>{product?.category}</td>
                                 <td>{product?.subCategory}</td>
                                 <td>
-                                  <Link to={`/admin/editproduct/${product._id}`} className="text-decoration-none me-3">
-                                    <i className="ai ai-eye-fill action bag">see</i>
-                                  </Link>
+                                  {/* <Link to={`/admin/editproduct/${product._id}`}  */}
+
+                                  {/* className="text-decoration-none me-3">
+                                    <i className="ai ai-eye-fill action bag"> */}
+                                  <a
+                                    onClick={() => {
+                                      navigate(`/admin/editproduct/${product._id}`, {
+                                        state: {
+                                          existingProduct: product,
+                                        },
+                                      });
+                                    }}
+                                    className="text-decoration-none me-3"
+                                  >
+                                    see
+                                  </a>
+                                  {/* </i>
+                                  </Link> */}
                                   <Link
                                     onClick={() => {
                                       deleteHandler(product._id);

@@ -480,3 +480,18 @@ input[type="number"] {
   color: var(--secondary-color);
   background: var(--primary-color);
 }
+.swiper-button-next {
+  position: absolute;
+  top: 50%;
+  z-index: 20;
+  left: 20px;
+}
+.swiper-button-prev {
+  transform: rotate(180deg);
+  position: absolute;
+  top: 50%;
+  z-index: 200;
+  right: 20px;
+  height: 45px;
+  width: 45px;
+}
