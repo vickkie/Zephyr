@@ -565,10 +565,10 @@ const UpdateProduct = () => {
                       {loading ? (
                         <>
                           <span className="spinner-grow spinner-grow-sm text-dark me-2" aria-hidden="true"></span>
-                          <span role="status">Adding...</span>
+                          <span role="status">Updating...</span>
                         </>
                       ) : (
-                        "Add Product"
+                        "Update Product"
                       )}
                     </button>
                   </div>
