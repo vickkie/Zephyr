@@ -100,7 +100,7 @@ const Products = () => {
                                 <td className="table-image">
                                   <img
                                     className="lozad object-fit-cover rounded-circle p-3"
-                                    data-src={product?.image}
+                                    data-src={product?.images[0] || product?.image}
                                     alt=""
                                   />
                                 </td>

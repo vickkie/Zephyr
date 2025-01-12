@@ -6,7 +6,7 @@ const Lazyload = () => {
     const observer = lozad(".lozad", {
       rootMargin: "300px 0px",
       loaded: function (el) {
-        console.log("Element loaded:", el);
+        // console.log("Element loaded:", el);
       },
     });
     observer.observe();

@@ -23,7 +23,7 @@ const UpdateProduct = () => {
 
   const [images, setImages] = useState([]); // Files for upload
   const [selectedImage, setSelectedImage] = useState([]); // Preview URLs
-  const [allImages, setAllImages] = useState([existingProduct?.image, existingProduct?.images]); // Preview URLs
+  const [allImages, setAllImages] = useState([existingProduct?.image, existingProduct?.images].flat()); // Preview URLs
 
   const [regularPrice, setRegularPrice] = useState(existingProduct?.regularPrice);
   const [salePrice, setSalePrice] = useState(existingProduct?.salePrice);
@@ -116,7 +116,7 @@ const UpdateProduct = () => {
           `${VITE_SERVER}/api/admin/update-product`,
           {
             ...productData,
-            images: allUpdatedImgs,
+            images: finalImgs,
             id: id,
           },
           {
