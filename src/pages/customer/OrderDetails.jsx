@@ -22,7 +22,7 @@ const OrderDetails = () => {
   const fetchOrder = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${VITE_SERVER}/api/admin/order/${id}`, {
+      const response = await axios.get(`${VITE_SERVER}/api/order/${id}`, {
         withCredentials: true,
       });
       console.log(response.data);
@@ -41,69 +41,44 @@ const OrderDetails = () => {
   };
 
   /**
-   * The `deleteHandler` function sends a DELETE request to the server to delete an order, displaying
-   * success or error messages accordingly.
+   * The function `updateOrder` is an asynchronous function that sends a PATCH request to update the
+   * status of an order and handles the response accordingly.
    */
-  const deleteHandler = async (id) => {
+  const updateOrder = async () => {
+    let patch = {
+      status: "cancelled",
+    };
+
     const result = await Swal.fire({
       title: "Are you sure?",
-      text: `Do you want delete product ?`,
+      text: `Do you want cancel order ?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, approve it!",
+      confirmButtonText: "Yes, cancel it!",
     });
 
     if (result.isConfirmed) {
-      setLoading(true);
       try {
-        const response = await axios.delete(`${VITE_SERVER}/api/admin/order/${id}`, {
+        setLoading(true);
+        const response = await axios.patch(`${VITE_SERVER}/api/order/${id}`, patch, {
           withCredentials: true,
         });
-        console.log("deleteHandler", response.data);
 
-        response.data.success ? toast.success("Order has been deleted", { className: "toastify" }) : null;
+        console.log(response.data);
+        if (response.data.success) {
+          setSelectedStatus(response.data.updatedOrder.orderStatus);
+          toast.success("Order has been Cancelled", { className: "toastify" });
+        }
 
         setLoading(false);
-
-        // navigate back to order list
-        navigate("/admin/orders");
       } catch (error) {
         console.error(error);
         error.message ? toast.error(error.message, { className: "toastify" }) : null;
       } finally {
         setLoading(false);
       }
-    }
-  };
-
-  /**
-   * The function `updateOrder` is an asynchronous function that sends a PATCH request to update the
-   * status of an order and handles the response accordingly.
-   */
-  const updateOrder = async () => {
-    let patch = {
-      status: selectedStatus,
-    };
-    try {
-      setLoading(true);
-      const response = await axios.patch(`${VITE_SERVER}/api/admin/order/${id}`, patch, {
-        withCredentials: true,
-      });
-
-      console.log(response.data);
-      if (response.data.success) {
-        setSelectedStatus(response.data.updatedOrder.orderStatus);
-        toast.success("Order has been Updated", { className: "toastify" });
-      }
-
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-      error.message ? toast.error(error.message, { className: "toastify" }) : null;
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -308,6 +283,7 @@ const OrderDetails = () => {
                         checked={selectedStatus === "processing"}
                         onChange={(e) => setSelectedStatus(e.target.value)}
                         autoComplete="off"
+                        disabled
                       />
                       <label className="filter-btn btn btn-sm border bag mx-lg-4" htmlFor="processing">
                         Processing
@@ -322,6 +298,7 @@ const OrderDetails = () => {
                         checked={selectedStatus === "dispatched"}
                         onChange={(e) => setSelectedStatus(e.target.value)}
                         autoComplete="off"
+                        disabled
                       />
                       <label className="filter-btn btn btn-sm border bag mx-lg-4" htmlFor="dispatched">
                         Dispatched
@@ -336,6 +313,7 @@ const OrderDetails = () => {
                         checked={selectedStatus === "cancelled"}
                         onChange={(e) => setSelectedStatus(e.target.value)}
                         autoComplete="off"
+                        disabled
                       />
                       <label className="filter-btn btn btn-sm border bag mx-lg-4" htmlFor="cancelled">
                         Cancelled
@@ -351,6 +329,7 @@ const OrderDetails = () => {
                         checked={selectedStatus === "onTheWay"}
                         onChange={(e) => setSelectedStatus(e.target.value)}
                         autoComplete="off"
+                        disabled
                       />
                       <label className="filter-btn btn btn-sm border bag mx-lg-4" htmlFor="onTheWay">
                         Shipping
@@ -365,6 +344,7 @@ const OrderDetails = () => {
                         checked={selectedStatus === "delivered"}
                         onChange={(e) => setSelectedStatus(e.target.value)}
                         autoComplete="off"
+                        disabled
                       />
                       <label className="filter-btn btn btn-sm border bag mx-lg-4" htmlFor="delivered">
                         Delivered
@@ -379,6 +359,7 @@ const OrderDetails = () => {
                         checked={selectedStatus === "returned"}
                         onChange={(e) => setSelectedStatus(e.target.value)}
                         autoComplete="off"
+                        disabled
                       />
                       <label className="filter-btn btn btn-sm border bag mx-lg-4" htmlFor="returned">
                         Returned
@@ -386,36 +367,19 @@ const OrderDetails = () => {
                     </div>
                   </div>
 
-                  <div className="contact-form">
-                    <button
-                      className="btn text-uppercase d-block my-2 py-3 w-100 fw-bold"
-                      style={{ fontSize: 0.88 + "rem" }}
-                      onClick={() => updateOrder(id)}
-                      disabled={loading}
-                    >
-                      {loading ? (
-                        <>
-                          <span className="spinner-grow spinner-grow-sm text-dark me-2" aria-hidden="true"></span>
-                          <span role="status">Updating...</span>
-                        </>
-                      ) : (
-                        "Update Order"
-                      )}
-                    </button>
-                  </div>
                   <button
                     className="btn text-uppercase d-block my-2 py-3 w-100 fw-bold bg-color border bag hover-text-primary"
                     style={{ fontSize: 0.88 + "rem" }}
-                    onClick={() => deleteHandler(id)}
+                    onClick={() => updateOrder(id)}
                     disabled={loading}
                   >
                     {loading ? (
                       <>
                         <span className="spinner-grow spinner-grow-sm text-dark me-2" aria-hidden="true"></span>
-                        <span role="status">Deleting...</span>
+                        <span role="status">Can celling...</span>
                       </>
                     ) : (
-                      "Delete Order"
+                      "Cancel Order"
                     )}
                   </button>
                 </div>
@@ -447,29 +411,7 @@ const BagItem = ({ images, productCode, productName, quantity, salePrice }) => {
           $ {salePrice}.00 USD x {quantity}
         </p>
         <p className="product-card-price font-color mb-0">ID : {productCode}</p>
-
-        {/* <Link onClick={() => { removeFromBag(id) }} className="bag text-decoration-none text-center">
-                    <i className="ai ai-trash-fill fs-5"></i>
-                </Link> */}
       </div>
-      {/* <div className="col-sm-3 col-md-4 d-flex align-items-center">
-                <div className="d-flex align-items-center justify-content-center w-100">
-                    <Link onClick={() => { decreaseQuantity(id) }} className="bag text-decoration-none mx-2">
-                        <i className="ai ai-minus-fill fs-4"></i>
-                    </Link>
-                    <input className="login-input w-50 text-center font-color "
-                        style={{ minHeight: 2.2 + 'rem', padding: 0.3 + 'rem' }}
-                        type="number"
-                        name="quantity"
-                        id={useId()}
-                        value={quantity}
-                        min={1}
-                        readOnly />
-                    <Link onClick={() => { increaseQuantity(id) }} className="bag text-decoration-none mx-2">
-                        <i className="ai ai-plus-fill fs-4"></i>
-                    </Link>
-                </div>
-            </div> */}
     </div>
   );
 };

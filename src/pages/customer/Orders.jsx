@@ -1,7 +1,8 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { OrdersTable } from "../../components";
+import { useContext, useEffect, useState } from "react";
+import OrdersTable from "./OrderTable";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../contexts/AuthContext";
 import Swal from "sweetalert2";
 
 const { VITE_SERVER } = import.meta.env;
@@ -14,6 +15,9 @@ const Orders = () => {
 
   const [selectedStatus, setSelectedStatus] = useState();
 
+  const { authData } = useContext(AuthContext);
+
+  console.log(authData);
   /**
    * The function fetches all orders from the server and updates the state with the retrieved data
    * while handling loading states and error messages.
@@ -21,13 +25,14 @@ const Orders = () => {
   const fetchAllOrders = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${VITE_SERVER}/api/admin/all-orders`, {
+      console.log(`${VITE_SERVER}/api/orders/${authData?._id}`);
+      const response = await axios.get(`${VITE_SERVER}/api/orders/${authData?._id}`, {
         withCredentials: true,
       });
 
       if (response.data.success) {
-        setAllOrders(response.data.allOrders);
-        setFilteredOrders(response.data.allOrders);
+        setAllOrders(response.data.orders);
+        setFilteredOrders(response.data.orders);
       }
 
       setLoading(false);
@@ -52,7 +57,7 @@ const Orders = () => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, approve it!",
+      confirmButtonText: "Yes, delete it!",
     });
 
     if (result.isConfirmed) {

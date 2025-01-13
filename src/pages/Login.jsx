@@ -50,7 +50,9 @@ const Login = () => {
           console.log(response.data);
           setAuthData(response.data.customer);
           navigate("/admin");
-        } else {
+        } else if (response.data.customer.role === "customer") {
+          console.log(response.data);
+          setAuthData(response.data.customer);
           navigate("/profile");
         }
       }

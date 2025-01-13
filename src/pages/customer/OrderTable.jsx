@@ -34,14 +34,6 @@ const OrdersTable = ({ orders, action, deleteHandler }) => {
                             <Link to={`${order?._id}`} className="text-decoration-none me-3">
                               <i className="ai ai-eye-fill action bag">see</i>
                             </Link>
-                            <Link
-                              onClick={() => {
-                                deleteHandler(order._id);
-                              }}
-                              className="text-decoration-none"
-                            >
-                              <i className="ai ai-trash-fill action bag">del</i>
-                            </Link>
                           </td>
                         ) : null}
                       </tr>

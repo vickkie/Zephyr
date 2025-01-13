@@ -14,12 +14,16 @@ import {
   OrderDetails,
   UpdateProduct,
 } from "./pages/admin";
+
+import { Orders as CustomerOrders, OrderDetails as CustomerOrdersDetails } from "./pages/customer";
+
 import { ToastContainer } from "react-toastify";
 import BagContextProvider from "./contexts/BagContextProvider";
 
 import IsAuthenticatedContext from "./contexts/IsAuthenticatedContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoutes from "./contexts/ProtectedRoutes";
+import ProtectedCustomer from "./contexts/ProtectedCustomer";
 
 const { VITE_SERVER } = import.meta.env;
 
@@ -60,7 +64,7 @@ function App() {
             <Route path="/product/:id" element={<SingleProduct />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/profile" element={<Profile />} />
+
             <Route path="/bag" element={<Bag />} />
             <Route path="/logout" element={<Logout />} />
 
@@ -76,6 +80,12 @@ function App() {
               <Route path="hoodies" element={<Shop category={"men"} subCategory={"hoodies"} />} />
               <Route path="shirts" element={<Shop category={"men"} subCategory={"shirts"} />} />
               <Route path="pants" element={<Shop category={"men"} subCategory={"pants"} />} />
+            </Route>
+
+            <Route element={<ProtectedCustomer />}>
+              <Route path="/profile" element={<Profile />}></Route>
+              <Route path="orders/:id" element={<CustomerOrdersDetails />} />
+              <Route path="orders" element={<CustomerOrders />} />
             </Route>
 
             <Route element={<ProtectedRoutes />}>

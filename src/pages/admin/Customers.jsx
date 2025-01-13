@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { PageTitle } from "../../components";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const { VITE_SERVER } = import.meta.env;
 
@@ -37,25 +38,36 @@ const Customers = () => {
    * to delete a customer, handles the response, and updates the UI accordingly.
    */
   const deleteHandler = async (id) => {
-    setLoading(true);
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: `Do you want delete user ?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, approve it!",
+    });
 
-    try {
-      const response = await axios.delete(`${VITE_SERVER}/api/admin/delete-customer/${id}`, {
-        withCredentials: true,
-      });
-      console.log("deleteHandler", response.data);
+    if (result.isConfirmed) {
+      setLoading(true);
+      try {
+        const response = await axios.delete(`${VITE_SERVER}/api/admin/delete-customer/${id}`, {
+          withCredentials: true,
+        });
+        console.log("deleteHandler", response.data);
 
-      response.data.success ? toast.success("Customer deleted successfully!", { className: "toastify" }) : null;
+        response.data.success ? toast.success("Customer deleted successfully!", { className: "toastify" }) : null;
 
-      setLoading(false);
+        setLoading(false);
 
-      // remove product from table
-      setAllCustomers((prev) => prev.filter((item) => item._id != id));
-    } catch (error) {
-      console.error(error);
-      error.message ? toast.error(error.message, { className: "toastify" }) : null;
-    } finally {
-      setLoading(false);
+        // remove product from table
+        setAllCustomers((prev) => prev.filter((item) => item._id != id));
+      } catch (error) {
+        console.error(error);
+        error.message ? toast.error(error.message, { className: "toastify" }) : null;
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
