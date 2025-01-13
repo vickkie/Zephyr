@@ -7,9 +7,7 @@ const OrdersTable = ({ orders, action, deleteHandler }) => {
       <div className="card-body p-4">
         <div className="row h-100 ">
           <h3 className="card-heading font-color fs-4 text-uppercase">Orders</h3>
-          <p className="card-text font-color fs-6">
-            Find all your oders and their status below. Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-          </p>
+          <p className="card-text font-color fs-6">Find all your oders and their status below.</p>
           <div className="table-responsive">
             <table className="order-table w-100">
               <thead className="card-heading text-uppercase font-color fs-6 bag">

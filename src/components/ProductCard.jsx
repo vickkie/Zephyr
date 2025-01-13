@@ -186,15 +186,17 @@ const ProductCard = ({ id, productName, regularPrice, salePrice, image, images =
       </Link>
       <div className="container-fluid p-3 pb-0">
         <div className="row">
-          <div className="col-8">
+          <div className="col-12">
             <h2 className="card-heading font-color text-uppercase fs-4">{productName}</h2>
+          </div>
+          <div className=" row col-lg-12 col-md-12 col-sm-12 p-2 py-1">
+            <p className="product-card-price font-color m-0">KES {salePrice.toFixed(2)}</p>
+            {/* <p className="product-card-price striked m-0">KES {regularPrice.toFixed(2)}</p> */}
+          </div>
+          <div className="col-12">
             <Link onClick={() => addToBag(item)} className="btn add-cart-btn fw-medium p-1 px-3">
               <span className="fas mx-1 fs-5">&#xf290;</span> <span className="pe-2">Add to bag</span>
             </Link>
-          </div>
-          <div className="col-4">
-            <p className="product-card-price font-color m-0">KES {salePrice.toFixed(2)}</p>
-            <p className="product-card-price striked m-0">KES {regularPrice.toFixed(2)}</p>
           </div>
         </div>
       </div>

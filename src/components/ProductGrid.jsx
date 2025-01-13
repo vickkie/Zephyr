@@ -5,10 +5,10 @@ const ProductGrid = (props) => {
 
   return (
     <section className="product-grid container-fluid p-0">
-      <div className="row g-3">
+      <div className="row g-1">
         {props.products.length > 0 ? (
           props.products.map((product) => (
-            <div className="col-lg-4 col-md-6 col-sm-12" key={product._id}>
+            <div className="col-lg-3 col-md-4 col-sm-12" key={product._id}>
               <ProductCard
                 id={product._id}
                 productName={product?.productName}

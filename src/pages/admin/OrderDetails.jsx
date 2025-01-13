@@ -168,27 +168,6 @@ const OrderDetails = () => {
                       />
                     </div>
                   </div>
-
-                  {/* <div className="row gap-3 px-2">
-                                        <div className="col-md p-0">
-                                            <label htmlFor="password" className="font-color product-card-price mb-1">Password *</label>
-                                            <input type="password"
-                                                className="login-input font-color d-block w-100"
-                                                id="password"
-                                                name="password"
-                                                placeholder=""
-                                                required />
-                                        </div>
-                                        <div className="col-md p-0">
-                                            <label htmlFor="confirmPassword" className="font-color product-card-price mb-1">Confirm Password *</label>
-                                            <input type="password"
-                                                className="login-input font-color d-block w-100"
-                                                id="confirmPassword"
-                                                name="confirmPassword"
-                                                placeholder=""
-                                                required />
-                                        </div>
-                                    </div> */}
                 </div>
               </div>
             </div>
@@ -273,50 +252,6 @@ const OrderDetails = () => {
               </div>
             </div>
           </div>
-
-          {/* Payment */}
-          {/* <div className="card container-fluid p-3 mb-3">
-                        <div className="card-body p-3">
-                            <div className="row">
-                                <div className="col">
-                                    <h2 className="card-heading text-uppercase fs-4 font-color mb-4">
-                                        Payment Info
-                                    </h2>
-
-                                    <label htmlFor="cardNumber" className="font-color product-card-price mb-1">Card Number *</label>
-                                    <input type="number"
-                                        className="login-input font-color d-block w-100 mb-2"
-                                        id="cardNumber"
-                                        name="cardNumber"
-                                        placeholder=""
-                                        required />
-
-                                    <div className="row gap-3 px-2">
-                                        <div className="col-md p-0">
-                                            <label htmlFor="expiry" className="font-color product-card-price mb-1">Expiry Date *</label>
-                                            <input type="text"
-                                                className="login-input font-color d-block w-100"
-                                                id="expiry"
-                                                name="expiry"
-                                                placeholder=""
-                                                required />
-                                        </div>
-                                        <div className="col-md p-0">
-                                            <label htmlFor="security" className="font-color product-card-price mb-1">Security Code *</label>
-                                            <input type="password"
-                                                className="login-input font-color d-block w-100"
-                                                id="security"
-                                                name="security"
-                                                placeholder=""
-                                                required />
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
         </div>
 
         {/* <!-- Order Summery Section  --> */}
@@ -477,15 +412,16 @@ const OrderDetails = () => {
   );
 };
 
-const BagItem = ({ image, productName, quantity, salePrice }) => {
+const BagItem = ({ images, productCode, productName, quantity, salePrice }) => {
   // const { increaseQuantity, decreaseQuantity, removeFromBag } = useContext(BagContext);
+  console.log(images);
 
   return (
     <div className="row mt-4 g-3">
       <div className="col-sm-2">
         <div className="bag-image position-relative overflow-hidden h-100">
           <div className="image-backdrop position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>
-          <img className="object-fit-cover w-100 h-100" src={image} alt="bag item" />
+          <img className="object-fit-cover w-100 h-100" src={images[0]} alt="bag item" />
           {/* "https://cdn.prod.website-files.com/63cffb7c16ab33a28e9734f2/63d4f225026df869f409bbcc_product-01-thumb-p-500.webp" */}
         </div>
       </div>
@@ -494,6 +430,7 @@ const BagItem = ({ image, productName, quantity, salePrice }) => {
         <p className="product-card-price font-color mb-0">
           $ {salePrice}.00 USD x {quantity}
         </p>
+        <p className="product-card-price font-color mb-0">ID : {productCode}</p>
 
         {/* <Link onClick={() => { removeFromBag(id) }} className="bag text-decoration-none text-center">
                     <i className="ai ai-trash-fill fs-5"></i>

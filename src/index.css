@@ -91,7 +91,7 @@ body {
 /* Header styling  */
 .navbar-brand {
   font-family: var(--heading-font);
-  font-size: 2rem;
+  font-size: var(--zy-lg);
 }
 
 .navbar-brand:hover {
@@ -131,9 +131,9 @@ body {
 .nav-link {
   color: var(--font-color);
   padding: 0;
+  font-family: "Satoshi", monospace;
   font-size: 0.88rem;
-  font-family: "Roboto Mono", monospace;
-  border-radius: 5px;
+  border-radius: 25px;
 }
 
 .navbar-toggler:focus {
@@ -256,6 +256,7 @@ body {
 
 .card-heading {
   font-family: var(--heading-font);
+  font-size: var(--zy-sm) !important;
 }
 
 .card-text {
@@ -423,7 +424,7 @@ body {
 
 @media screen and (min-width: 900px) {
   .product-card {
-    min-height: 533px;
+    min-height: 433px;
     /* height: 100%;
     justify-content: space-between; */
   }
@@ -431,7 +432,7 @@ body {
 
 @media screen and (max-width: 767px) {
   .banner-image {
-    height: 100vw;
+    height: 40vw !important;
   }
 
   .banner-image img {
@@ -441,7 +442,7 @@ body {
 
 @media screen and (max-width: 479px) {
   .banner-image {
-    height: 120vw;
+    height: 40vw !important;
   }
 
   .banner-image img {
@@ -494,4 +495,47 @@ input[type="number"] {
   right: 20px;
   height: 45px;
   width: 45px;
+}
+.grid {
+  display: grid;
+}
+.grid-header {
+  display: grid;
+  grid-template-columns: 20% 50% 30%;
+  align-items: center;
+  justify-content: space-between;
+  grid-template-areas: "header menus accounts";
+}
+.header {
+  grid-area: header;
+}
+.menus {
+  grid-area: menus;
+}
+.accounts {
+  grid-area: accounts;
+  display: grid;
+  justify-content: end;
+}
+.accounts-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media screen and (max-width: 767px) {
+  .accounts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .grid-header {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: repeat(2, auto);
+    row-gap: 5px;
+    justify-content: space-between;
+    grid-template-areas: "header  accounts" "menus menus";
+  }
+  .searchToggle {
+    display: none;
+  }
 }
