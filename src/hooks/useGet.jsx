@@ -12,7 +12,7 @@ const useGet = (endpoint, requiresAuth = false, token = null) => {
 
   // Function to handle the API call
   const handleApiCall = useCallback(() => {
-    const url = isDevelopment ? `/api/${endpoint}` : `${backendUrl}/api/${endpoint}`;
+    const url = `${backendUrl}/api/${endpoint}`;
     // console.log("Fetching data from:", url);
 
     const headers = {};
@@ -25,6 +25,7 @@ const useGet = (endpoint, requiresAuth = false, token = null) => {
 
     return axios.get(url, {
       headers,
+      withCredentials: true,
       validateStatus: (status) => status >= 200 && status < 300,
     });
   }, [endpoint, backendUrl, isDevelopment, requiresAuth, token]);

@@ -9,28 +9,27 @@ const MyDetails = ({ user }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
 
-  const { postData, isLoading, errorMessage, updateStatus, responseData } = usePut("user/updateProfile");
+  const { postData, isLoading, errorMessage, updateStatus, responseData } = usePut("customer/update");
   const { setAuthData } = useContext(AuthContext);
 
   const validationSchema = Yup.object().shape({
-    username: Yup.string().required("Username is required"),
-    location: Yup.string().required("Location is required"),
-    firstname: Yup.string().required("First name is required"),
-    lastname: Yup.string().required("Last name is required"),
+    fullName: Yup.string().required("fullname is required"),
+    phone: Yup.string().required("Phone Number is required"),
   });
 
   useEffect(() => {
     if (errorMessage && updateStatus !== 200) {
-      toast.error(typeof errorMessage === "string" ? errorMessage : "An error occurred. Please try again.", {
-        duration: 6000,
-      });
+      toast.error(
+        typeof errorMessage === "string" ? errorMessage : "An error occurred. Please try again.",
+        {
+          duration: 6000,
+        },
+        { className: "toastify" }
+      );
     }
     if (updateStatus === 200 && formSubmitted) {
-      toast.success(responseData?.message || "Profile updated successfully!");
-      setAuthData((prevData) => ({
-        ...prevData,
-        ...responseData,
-      }));
+      toast.success(responseData?.message || "Profile updated successfully!", { className: "toastify" });
+      setAuthData(responseData.updatedCustomer);
       setIsEditing(false);
       setFormSubmitted(false);
     }
@@ -41,9 +40,10 @@ const MyDetails = ({ user }) => {
   const updateProfile = async (values) => {
     setFormSubmitted(true);
     try {
+      console.log(values);
       await postData(values);
     } catch (error) {
-      toast.error("Failed to update profile.");
+      toast.error("Failed to update profile."), { className: "toastify" };
     }
   };
 
@@ -52,12 +52,11 @@ const MyDetails = ({ user }) => {
       {isEditing ? (
         <Formik
           initialValues={{
-            username: user.username || "",
-            location: user.location || "",
             phone: user.phone || "",
             fullName: user.fullName || "",
             userId: user._id,
             token: user.token,
+            address: user.address || "",
           }}
           validationSchema={validationSchema}
           onSubmit={updateProfile}
@@ -85,7 +84,11 @@ const MyDetails = ({ user }) => {
                   </div>
                 </div>
                 <div className="form-actions">
-                  <button type="submit" disabled={isLoading}>
+                  <button
+                    className="btn text-uppercase bg-prm d-block my-2 py-3  white"
+                    type="submit"
+                    disabled={isLoading}
+                  >
                     {isLoading ? "Updating..." : "Update Profile"}
                   </button>
                   <button type="button" className="cancel-btn" onClick={() => setIsEditing(false)} disabled={isLoading}>
@@ -101,7 +104,12 @@ const MyDetails = ({ user }) => {
           <div className="plainHeader">
             <div className="plainHead">Profile settings</div>
             <div className="form-actions flex-center">
-              <button className="editButton" type="button" onClick={() => setIsEditing(true)} disabled={isLoading}>
+              <button
+                className="editButton clearbtn"
+                type="button"
+                onClick={() => setIsEditing(true)}
+                disabled={isLoading}
+              >
                 <svg viewBox="0 0 24 24" height="1rem" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     fillRule="evenodd"

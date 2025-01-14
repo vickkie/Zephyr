@@ -62,7 +62,7 @@
 .view-profile-btn {
   margin-left: auto;
   padding: 8px 16px;
-  background-color: #f0f0f0;
+  background-color: var(--primary-color);
   border: none;
   border-radius: 20px;
   cursor: pointer;
@@ -73,22 +73,23 @@
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 20px;
-  border-bottom: solid 0.0058vw #e9e9e9;
+  border-bottom: solid 0.0058vw var(--secondary-color);
   margin: 10px 0;
 }
 
 .settings-tabs div {
-  background-color: transparent;
+  background-color: var(--font-color);
   border: none;
   cursor: pointer;
   transition: background-color 0.3s;
   color: var(--secondary-color);
+  border-radius: 5px;
 }
 
 .settings-tabs div.active {
-  background-color: #f0f0f0;
+  background-color: var(--primary-color);
   font-weight: bold;
-  border-bottom: solid 1px black;
+  border-bottom: solid 1px var(--font-color);
 }
 
 .password-form h2 {
@@ -98,8 +99,8 @@
 .form-group label {
   display: block;
   margin-bottom: 5px;
-  font-size: var(--hc-sm);
-  font-family: var(--font-2);
+  font-size: var(--zy-sm);
+  font-family: var(--paragraph-font);
 }
 .my-details-form input {
   width: 100%;
@@ -111,8 +112,9 @@
   border: 1px solid #8d8c8947;
   border-radius: 0.9rem;
   background-color: var(--lightgray);
-  color: var(--secondary-color);
+  color: var(--font-color);
   font-size: 1rem;
+  font-family: var(--heading-font);
 }
 .form-group {
   margin: 0;
@@ -144,8 +146,8 @@
 }
 
 .update-btn {
-  background-color: #000;
-  color: #fff;
+  background-color: var(--primary-color);
+  color: var(--font-color);
 }
 .actionTab {
   padding: 2px 12px;
@@ -223,7 +225,7 @@
   color: var(--font-color);
 }
 .my-details-form input {
-  font-family: var(--font-1);
+  font-family: inherit;
 }
 .updateSubmit {
   background-color: var(--secondary-color);
@@ -298,15 +300,15 @@
   align-items: center;
 }
 .plainHead {
-  font-family: var(--font-3);
-  font-size: var(--hc-base);
+  font-family: var(--heading-font);
+  font-size: var(--zy-base);
+  font-weight: 700;
 }
 .plainDetails label {
-  font-family: var(--font-3);
-  font-size: var(--hc-sm);
+  font-size: var(--zy-base);
 }
 .plainDetails span {
-  font-family: var(--font-1);
+  font-family: inherit;
   font-size: var(--hc-sm);
 }
 .editButton {
@@ -320,34 +322,4 @@
   gap: 10px;
 }
 .flex-center {
-}
-.Gold,
-.Silver,
-.Platinum,
-.Bronze {
-  border-radius: 300px;
-  display: flex;
-  font-weight: 800;
-  justify-content: center;
-  padding: 2px 9px;
-  width: -moz-fit-content;
-  width: fit-content;
-  font-family: var(--font-1);
-}
-
-.Gold {
-  background-color: #f3d0ce;
-  color: #b75454;
-}
-.Platinum {
-  background-color: #cbfccd;
-  color: #26a532;
-}
-.Silver {
-  background: #c0daff !important;
-  color: #317ce7 !important;
-}
-.Bronze {
-  background-color: #ffd8c4;
-  color: #ee6d19;
 }

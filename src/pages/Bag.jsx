@@ -11,14 +11,18 @@ const { VITE_SERVER } = import.meta.env;
 // eslint-disable-next-line react/prop-types
 const BagItem = ({ id, image, productName, quantity, salePrice }) => {
   const { increaseQuantity, decreaseQuantity, removeFromBag } = useContext(BagContext);
-
+  const navigate = useNavigate();
   return (
     <div className="row mt-4 g-3">
       <div className="col-sm-2">
-        <div className="bag-image position-relative overflow-hidden h-100">
+        <div
+          className="bag-image position-relative overflow-hidden h-100"
+          onClick={() => {
+            navigate(`/product/${id}`);
+          }}
+        >
           <div className="image-backdrop position-absolute top-0 bottom-0 start-0 end-0 opacity-0"></div>
           <img className="object-fit-cover w-100 h-100" src={image} alt="bag item" />
-          {/* "https://cdn.prod.website-files.com/63cffb7c16ab33a28e9734f2/63d4f225026df869f409bbcc_product-01-thumb-p-500.webp" */}
         </div>
       </div>
       <div className="col">

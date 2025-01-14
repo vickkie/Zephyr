@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const usePut = (endpoint, requiresAuth = false, token = null) => {
-  const backendUrl = import.meta.env.VITE_BACKEND_PORT;
+  const backendUrl = import.meta.env.VITE_SERVER;
   const [updateStatus, setUpdateStatus] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -13,7 +13,7 @@ const usePut = (endpoint, requiresAuth = false, token = null) => {
 
   const handleApiCall = () => {
     //* this commented section is  for testin this using proxy- dont remove
-    const url = isDevelopment ? `/api/${endpoint}` : `${backendUrl}/api/${endpoint}`;
+    const url = `${backendUrl}/api/${endpoint}`;
     // const url = `${backendUrl}/api/${endpoint}`;
 
     // Create a headers object
@@ -29,6 +29,7 @@ const usePut = (endpoint, requiresAuth = false, token = null) => {
     // console.log(url);
     return axios.put(url, data, {
       headers,
+      withCredentials: true,
       validateStatus: (status) => status >= 200 && status < 300,
     });
   };
