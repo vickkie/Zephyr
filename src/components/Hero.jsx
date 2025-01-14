@@ -10,7 +10,7 @@ const Hero = () => {
               Fashion <br /> & Freedom
             </h1>
             <p className="banner-paragragh fs-5 fw-medium">
-              Bringing Your Fashion Brand's Unique Identity to Life Through <br /> Amazing Styles and Products.
+              Bringing Your Fashion Brand&rsquo;s Unique Identity to Life Through <br /> Amazing Styles and Products.
             </p>
           </div>
         </div>
