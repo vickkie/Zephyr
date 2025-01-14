@@ -1,8 +1,10 @@
 import axios from "axios";
-import { Footer, Header, OrdersTable, PageTitle } from "../components";
+import { Footer, Header, PageTitle } from "../components";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import IsAuthenticatedContext from "../contexts/IsAuthenticatedContext";
+
+import { AuthContext } from "../contexts/AuthContext";
 import { toast } from "react-toastify";
 
 const { VITE_SERVER } = import.meta.env;
@@ -14,7 +16,9 @@ const Profile = () => {
   const [myOrders, setMyOrders] = useState([]);
 
   const { user, isAuthenticated } = useContext(IsAuthenticatedContext);
-  // console.log(user._id);
+
+  const { authData } = useContext(AuthContext);
+  console.log(authData);
 
   /**
    * The function `fetchCustomer` asynchronously fetches customer data from a server using axios,
@@ -119,16 +123,35 @@ const Profile = () => {
           </div>
         </div>
         <div className="row g-3">
-          <div className="col-sm-12">
-            <OrdersTable orders={myOrders} action={true} />
+          <div className="col-sm-12 col-md-6 ">
+            <div className="card p-4">
+              <div>
+                <button onClick={() => navigate("/orders")}>View all orders</button>
+              </div>
+            </div>
+          </div>
+          <div className="col-sm-12 col-md-6 ">
+            <div className="card p-4">
+              <div>
+                <button
+                  onClick={() => {
+                    console.log(customer),
+                      navigate(`/profile/settings`, {
+                        state: {
+                          user: authData,
+                          id: user?._id,
+                        },
+                      });
+                  }}
+                >
+                  Profile settings
+                </button>
+              </div>
+            </div>
           </div>
         </div>
         <div className="row g-3">
-          <div className="col-sm-12">
-            <div>
-              <button onClick={() => navigate("/orders")}>View all orders</button>
-            </div>
-          </div>
+          <div className="col-sm-12"></div>
         </div>
       </section>
 

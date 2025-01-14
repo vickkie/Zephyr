@@ -24,6 +24,7 @@ import IsAuthenticatedContext from "./contexts/IsAuthenticatedContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoutes from "./contexts/ProtectedRoutes";
 import ProtectedCustomer from "./contexts/ProtectedCustomer";
+import ProfileSettings from "./pages/customer/ProfileSettings";
 
 const { VITE_SERVER } = import.meta.env;
 
@@ -86,6 +87,7 @@ function App() {
               <Route path="/profile" element={<Profile />}></Route>
               <Route path="orders/:id" element={<CustomerOrdersDetails />} />
               <Route path="orders" element={<CustomerOrders />} />
+              <Route path="profile/settings" element={<ProfileSettings />} />
             </Route>
 
             <Route element={<ProtectedRoutes />}>
