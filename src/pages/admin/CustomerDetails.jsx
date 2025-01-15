@@ -123,14 +123,18 @@ const CustomerDetails = () => {
         <div className="card">
           <div className="card-body p-4">
             <div className="row h-100 overflow-hidden">
-              {/* <div className="image-backdrop position-absolute top-0 bottom-0 start-0 end-0 opacity-50 rounded-circle"></div> */}
-              {/* <img className='profile-picture rounded-circle object-fit-cover'
-                  src="https://source.unsplash.com/random/500x500/?man,dp"
-                  alt="Profile Picture" /> */}
               <label htmlFor="dp">
-                <img
+                <div
+                  style={{
+                    backgroundImage: `url(${
+                      customer?.profilePicture ? customer?.profilePicture : "/images/userDefault.png"
+                    }
+                      )`,
+                    backgroundSize: "cover",
+                    height: "calc(var(--zy-xxxl)* 3)",
+                    width: "calc(var(--zy-xxxl)* 3)",
+                  }}
                   className="profile-picture rounded-circle object-fit-cover"
-                  src={customer?.profilePicture}
                   alt="Profile Picture"
                 />
               </label>

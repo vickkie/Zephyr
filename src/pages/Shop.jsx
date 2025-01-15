@@ -15,7 +15,7 @@ const Shop = ({ category, subCategory }) => {
       const response = await axios.get(`${VITE_SERVER}/api/all-products`, {
         withCredentials: true,
       });
-      console.log("all-products", response.data);
+
       setProducts(response.data.products);
       setLoading(false);
     } catch (error) {
@@ -36,7 +36,7 @@ const Shop = ({ category, subCategory }) => {
       const response = await axios.get(`${VITE_SERVER}/api/category/${category}/${subCategory}`, {
         withCredentials: true,
       });
-      console.log("products", response.data);
+
       setProducts(response.data.products);
     } catch (error) {
       console.error(error);

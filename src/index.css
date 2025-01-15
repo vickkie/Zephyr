@@ -36,10 +36,10 @@
 
   /* light mode  */
 
-  --secondary-color: #f4f2ed;
+  /* --secondary-color: #f4f2ed;
   --font-color: #121212;
   --light-hover: rgb(50 44 44 / 20%);
-  --light: rgb(65 65 65 / 5%);
+  --light: rgb(65 65 65 / 5%); */
 
   /* dark mode  */
 
@@ -76,6 +76,18 @@
 .bg-color:hover {
   background-color: var(--light-hover);
   transition: 400ms;
+}
+.lightmode {
+  --secondary-color: #f4f2ed;
+  --font-color: #121212;
+  --light-hover: rgb(50 44 44 / 20%);
+  --light: rgb(65 65 65 / 5%);
+}
+.darkmode {
+  --secondary-color: #121212;
+  --font-color: #f4f2ed;
+  --light-hover: rgba(255, 255, 255, 0.1);
+  --light: rgba(255, 255, 255, 0.05);
 }
 
 body {
@@ -537,6 +549,9 @@ input[type="number"] {
   }
   .searchToggle {
     display: none;
+  }
+  .edit-delete {
+    display: flex;
   }
 }
 .bg-prm {

@@ -85,6 +85,7 @@ const Login = () => {
               placeholder="Enter your email"
               onChange={(e) => onChangeHandler(e)}
               required
+              autoComplete="current-password webauthn"
             />
 
             <input
