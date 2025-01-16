@@ -576,3 +576,14 @@ textarea {
   padding: 3px 12px;
   color: var(--secondary-color);
 }
+.swiper-notifier {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 20px;
+  mix-blend-mode: difference;
+}

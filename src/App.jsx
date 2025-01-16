@@ -25,6 +25,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoutes from "./contexts/ProtectedRoutes";
 import ProtectedCustomer from "./contexts/ProtectedCustomer";
 import ProfileSettings from "./pages/customer/ProfileSettings";
+import FloatingThemeToggler from "./components/Theme";
 
 const { VITE_SERVER } = import.meta.env;
 
@@ -43,9 +44,11 @@ function App() {
       if (response.data.success) {
         // console.log('isloggedin', response.data.user);
         login(response.data.user);
+      } else {
+        console.error(response.data.message);
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -58,6 +61,7 @@ function App() {
       {/* <appContext.Provider value={{search, SetSearch}} > */}
       <AuthProvider>
         <BagContextProvider>
+          <FloatingThemeToggler />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop category={"all"} />} />

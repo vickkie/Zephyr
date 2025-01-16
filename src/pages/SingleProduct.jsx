@@ -6,6 +6,7 @@ import BagContext from "../contexts/BagContext";
 import { toast } from "react-toastify";
 import { Minus, Plus } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
+// import "swiper/css/navigation";
 // import "swiper/swiper-bundle.css";
 
 import "swiper/css";
@@ -145,6 +146,10 @@ const SingleProduct = () => {
                       </div>
                     </SwiperSlide>
                   ))}
+                {/* Notifier */}
+                <div className="swiper-notifier">
+                  <span>Swipe to view more →</span>
+                </div>
               </Swiper>
             )}
           </div>

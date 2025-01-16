@@ -37,6 +37,7 @@ const Login = () => {
     try {
       const response = await axios.post(VITE_SERVER + "/auth/login", formData, {
         withCredentials: true,
+        headers: {},
       });
       console.log(response.data);
       if (response.data.customer) {
