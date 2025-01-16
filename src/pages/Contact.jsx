@@ -35,14 +35,14 @@ const Contact = () => {
           {/* Image section  */}
           <div className="col-lg-6">
             <div className="banner-image position-relative overflow-hidden h-100">
-              <div className="image-backdrop position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>
+              <div className="image-backdropx position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>
               <img className="object-fit-cover w-100 h-100" src="/images/09-5_1440x@2qx.webp" alt="contact banner" />
             </div>
           </div>
           {/* Contact form section  */}
           <div className="col-lg-6">
             <div className="card container-fluid h-100 p-4">
-              <div className="card-body p-4">
+              <div className="card-body ">
                 <div className="row">
                   <div className="col">
                     <p className="product-card-price text-uppercase font-color mb-0">contact</p>

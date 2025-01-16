@@ -566,9 +566,10 @@ input[type="number"] {
   font-size: var(--zy-xl) !important;
 }
 .lightmode input,
-textarea {
+.lightmode textarea {
   border: solid 1px var(--primary-color);
 }
+
 .myButton {
   border: solid 1px var(--secondary-color);
   border-radius: 25px;
@@ -586,4 +587,7 @@ textarea {
   top: 0;
   left: 20px;
   mix-blend-mode: difference;
+}
+.banner-paragragh {
+  font-size: var(--zy-base) !important;
 }

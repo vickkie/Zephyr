@@ -38,7 +38,7 @@ const FloatingThemeToggler = () => {
       onClick={toggleTheme}
       style={{
         position: "fixed",
-        bottom: "20px",
+        bottom: "70px",
         right: "20px",
         background: storedValue === darkmode ? "#fff" : "#333",
         color: storedValue === darkmode ? "#000" : "#fff",

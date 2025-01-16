@@ -41,52 +41,6 @@ const Header = () => {
     navigate(`/search/${searchQuery}`);
   };
 
-  const [storedValue, setStoredValue] = useLocalStorage("themeMode", []);
-
-  useEffect(() => {
-    const storedThemeMode = localStorage.getItem("themeMode");
-
-    console.log(storedThemeMode);
-    if (storedThemeMode) {
-      setStoredValue(JSON.parse(storedThemeMode));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (storedValue) {
-      localStorage.setItem("themeMode", JSON.stringify(storedValue));
-    } else {
-      setStoredValue("darkMode");
-    }
-    console.log(storedValue);
-  }, [storedValue, setStoredValue]);
-
-  const lightmode = "lightmode";
-  const darkmode = "darkmode";
-
-  const toggleTheme = () => {
-    setStoredValue(storedValue === "darkmode" ? "lightmode" : "darkmode");
-
-    const element = document.querySelector(".body");
-    if (storedValue === darkmode) {
-      element.classList.add(lightmode);
-      element.classList.remove(darkmode);
-    } else if (storedValue === lightmode) {
-      element.classList.remove(lightmode);
-      element.classList.add(darkmode);
-    }
-  };
-  useEffect(() => {
-    const element = document.querySelector(".body");
-    if (storedValue === lightmode) {
-      element.classList.add(lightmode);
-      element.classList.remove(darkmode);
-    } else if (storedValue === darkmode) {
-      element.classList.remove(lightmode);
-      element.classList.add(darkmode);
-    }
-  }, []);
-
   return (
     <>
       <nav className="navbars navbar-expand-md">
@@ -194,7 +148,7 @@ const Header = () => {
               <div
                 className="btn nav-link font-color  px-0 py-2 mx-2 text-uppercase searchToggle"
                 // onClick={toggleSearch}
-                onClick={toggleTheme}
+                onClick={toggleSearch}
               >
                 <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g id="SVGRepo_bgCarrier" strokeWidth="0" />
