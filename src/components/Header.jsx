@@ -68,10 +68,10 @@ const Header = () => {
     setStoredValue(storedValue === "darkmode" ? "lightmode" : "darkmode");
 
     const element = document.querySelector(".body");
-    if (storedValue === lightmode) {
+    if (storedValue === darkmode) {
       element.classList.add(lightmode);
       element.classList.remove(darkmode);
-    } else if (storedValue === darkmode) {
+    } else if (storedValue === lightmode) {
       element.classList.remove(lightmode);
       element.classList.add(darkmode);
     }

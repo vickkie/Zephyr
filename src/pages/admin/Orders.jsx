@@ -52,7 +52,7 @@ const Orders = () => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, approve it!",
+      confirmButtonText: "Yes, delete it!",
     });
 
     if (result.isConfirmed) {

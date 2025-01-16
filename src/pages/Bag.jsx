@@ -5,7 +5,7 @@ import BagContext from "../contexts/BagContext";
 import IsAuthenticatedContext from "../contexts/IsAuthenticatedContext";
 import { toast } from "react-toastify";
 import { Header } from "../components";
-
+import { AuthContext } from "../contexts/AuthContext";
 const { VITE_SERVER } = import.meta.env;
 
 // eslint-disable-next-line react/prop-types
@@ -155,6 +155,7 @@ const BagItem = ({ id, image, productName, quantity, salePrice }) => {
 const Bag = () => {
   const [loading, setLoading] = useState();
   const navigate = useNavigate();
+  const { authData, setAuthData } = useContext(AuthContext);
 
   // check if customer is logged in
   const { isAuthenticated, user, login } = useContext(IsAuthenticatedContext);
@@ -166,9 +167,17 @@ const Bag = () => {
   // creating states for order summery
   const [subTotal, setSubTotal] = useState(0);
   const [total, setTotal] = useState(0);
+  const [autofill, setAutofill] = useState(false);
+
   const shippingFees = 6;
 
   const [formData, setFormData] = useState({});
+
+  const [street, setStreet] = useState(authData?.address.street);
+  const [country, setCountry] = useState(authData?.address.country);
+  const [pincode, setPincode] = useState(authData?.address.pincode);
+  const [city, setCity] = useState(authData?.address.city);
+  const [state, setState] = useState(authData?.address.state);
 
   /**
    * The onChangeHandler function updates the formData state with the new value based on the input
@@ -193,9 +202,19 @@ const Bag = () => {
         quantity: item.quantity,
       };
     });
+
+    const addresses = {
+      state: state,
+      street: street,
+      country: country,
+      pincode: pincode,
+      city: city,
+    };
+
     const payload = {
       products,
       ...formData,
+      ...addresses,
       shippingFees,
       subTotal,
       total,
@@ -205,6 +224,7 @@ const Bag = () => {
     try {
       const response = await axios.post(VITE_SERVER + "/api/place-order", payload, {
         withCredentials: true,
+        headers: {},
       });
 
       if (response.data.createdOrder) {
@@ -221,6 +241,10 @@ const Bag = () => {
             role: response.data.createdCustomer.role,
           });
           toast.success("logged in successfully!", { className: "toastify" });
+        }
+        if (response.data.updatedCustomer) {
+          console.log(response.data.updatedCustomer);
+          setAuthData(response.data.updatedCustomer);
         }
 
         // navigate('/profile');
@@ -250,6 +274,10 @@ const Bag = () => {
     setTotal(subTotal + shippingFees);
   }, [subTotal]);
 
+  useEffect(() => {
+    authData?.address ? setAutofill(true) : null;
+  }, [authData]);
+
   return (
     <>
       <Header />
@@ -277,7 +305,7 @@ const Bag = () => {
             </div>
 
             {/* Customer Info for sign up */}
-            <div className={`card container-fluid p-3 mb-3 ${isAuthenticated ? "d-none" : ""}`}>
+            <div className={`card container-fluid p-3 mb-1 ${isAuthenticated ? "d-none" : ""}`}>
               <div className="card-body p-3">
                 <div className="row">
                   <div className="col">
@@ -377,7 +405,8 @@ const Bag = () => {
                       className="login-input font-color d-block w-100 mb-2"
                       id="street"
                       name="street"
-                      onChange={(e) => onChangeHandler(e)}
+                      value={street}
+                      onChange={(e) => setStreet(e.target.value)}
                       placeholder=""
                       required
                     />
@@ -392,9 +421,10 @@ const Bag = () => {
                           className="login-input font-color d-block w-100"
                           id="city"
                           name="city"
-                          onChange={(e) => onChangeHandler(e)}
+                          onChange={(e) => setCity(e.target.value)}
                           placeholder=""
                           required
+                          value={city}
                         />
                       </div>
                       <div className="col-md p-0">
@@ -406,9 +436,10 @@ const Bag = () => {
                           className="login-input font-color d-block w-100"
                           id="state"
                           name="state"
-                          onChange={(e) => onChangeHandler(e)}
+                          onChange={(e) => setState(e.target.value)}
                           placeholder=""
                           required
+                          value={state}
                         />
                       </div>
                     </div>
@@ -422,9 +453,10 @@ const Bag = () => {
                           className="login-input font-color d-block w-100"
                           id="pincode"
                           name="pincode"
-                          onChange={(e) => onChangeHandler(e)}
+                          onChange={(e) => setPincode(e.target.value)}
                           placeholder=""
                           required
+                          value={pincode}
                         />
                       </div>
                       <div className="col-md p-0">
@@ -436,9 +468,10 @@ const Bag = () => {
                           className="login-input font-color d-block w-100"
                           id="country"
                           name="country"
-                          onChange={(e) => onChangeHandler(e)}
+                          onChange={(e) => setCountry(e.target.value)}
                           placeholder=""
                           required
+                          value={country}
                         />
                       </div>
                     </div>

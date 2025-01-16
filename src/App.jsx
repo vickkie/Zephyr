@@ -1,4 +1,4 @@
-import { useContext, useEffect, useLayoutEffect } from "react";
+import { useContext, useLayoutEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 import { Cursor, Logout } from "./components";
@@ -38,6 +38,7 @@ function App() {
     try {
       const response = await axios.get(`${VITE_SERVER}/auth/is-logged-in`, {
         withCredentials: true,
+        headers: {},
       });
       if (response.data.success) {
         // console.log('isloggedin', response.data.user);

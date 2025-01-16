@@ -1,6 +1,6 @@
 const PageTitle = ({ title }) => {
   return (
-    <section className="page-title py-5">
+    <section className="page-title py-5 py-1">
       <div className="container">
         <div className="row">
           <div className="col">

@@ -565,3 +565,14 @@ input[type="number"] {
 .lg-font {
   font-size: var(--zy-xl) !important;
 }
+.lightmode input,
+textarea {
+  border: solid 1px var(--primary-color);
+}
+.myButton {
+  border: solid 1px var(--secondary-color);
+  border-radius: 25px;
+  background-color: var(--primary-color);
+  padding: 3px 12px;
+  color: var(--secondary-color);
+}

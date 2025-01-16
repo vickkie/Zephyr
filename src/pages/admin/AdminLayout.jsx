@@ -1,9 +1,43 @@
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useEffect, useContext } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 const AdminHeader = () => {
+  const [storedValue, setStoredValue] = useLocalStorage("themeMode", []);
+
+  useEffect(() => {
+    const storedThemeMode = localStorage.getItem("themeMode");
+
+    console.log(storedThemeMode);
+    if (storedThemeMode) {
+      setStoredValue(JSON.parse(storedThemeMode));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (storedValue) {
+      localStorage.setItem("themeMode", JSON.stringify(storedValue));
+    } else {
+      setStoredValue("darkMode");
+    }
+    console.log(storedValue);
+  }, [storedValue, setStoredValue]);
+
+  const lightmode = "lightmode";
+  const darkmode = "darkmode";
+
+  useEffect(() => {
+    const element = document.querySelector(".body");
+    if (storedValue === lightmode) {
+      element.classList.add(lightmode);
+      element.classList.remove(darkmode);
+    } else if (storedValue === darkmode) {
+      element.classList.remove(lightmode);
+      element.classList.add(darkmode);
+    }
+  }, []);
   return (
     <nav className="navbar navbar-expand-lg">
       <div className="container-fluid px-4 py-2">
