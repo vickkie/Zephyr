@@ -42,13 +42,12 @@ function App() {
         headers: {},
       });
       if (response.data.success) {
-        // console.log('isloggedin', response.data.user);
         login(response.data.user);
       } else {
-        console.error(response.data.message);
+        console.error("Login check failed:", response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error checking login:", error.response?.data || error.message);
     }
   };
 
