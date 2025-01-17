@@ -6,6 +6,7 @@ import "swiper/css";
 import ProductCard from "./ProductCard";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const { VITE_SERVER } = import.meta.env;
 

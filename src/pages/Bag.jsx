@@ -173,11 +173,11 @@ const Bag = () => {
 
   const [formData, setFormData] = useState({});
 
-  const [street, setStreet] = useState(authData?.address.street);
-  const [country, setCountry] = useState(authData?.address.country);
-  const [pincode, setPincode] = useState(authData?.address.pincode);
-  const [city, setCity] = useState(authData?.address.city);
-  const [state, setState] = useState(authData?.address.state);
+  const [street, setStreet] = useState(authData?.address?.street);
+  const [country, setCountry] = useState(authData?.address?.country);
+  const [pincode, setPincode] = useState(authData?.address?.pincode);
+  const [city, setCity] = useState(authData?.address?.city);
+  const [state, setState] = useState(authData?.address?.state);
 
   /**
    * The onChangeHandler function updates the formData state with the new value based on the input

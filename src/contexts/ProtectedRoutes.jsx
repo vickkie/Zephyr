@@ -7,7 +7,7 @@ const ProtectedRoutes = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!authData || !authData.authData || authData.authData.role !== "admin" || !authData.authData.token) {
+    if (!authData || !authData.authData || authData.authData.role !== "admin") {
       console.log("Unauthorized or inactive user");
 
       navigate("/logout");

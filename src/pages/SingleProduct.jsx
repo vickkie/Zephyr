@@ -116,7 +116,7 @@ const SingleProduct = () => {
         <div className="row g-3 ">
           {/* Image Slider Section */}
           <div className="col-lg-6">
-            {allImages.length > 1 && (
+            {allImages.length >= 1 && (
               <Swiper
                 spaceBetween={10}
                 slidesPerView={1}
