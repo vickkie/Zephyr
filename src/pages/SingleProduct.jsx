@@ -135,7 +135,7 @@ const SingleProduct = () => {
                       <div className="position-relative overflow-hidden h-100">
                         <div className="image-backdrop-m position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>
                         <div className=" position-absolute top-0 bottom-0 start-0 end-0 opacity-50">
-                          <Navigation />
+                          {/* <Navigation /> */}
                         </div>
 
                         <img
