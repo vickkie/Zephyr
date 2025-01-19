@@ -663,7 +663,7 @@ const Bag = () => {
                       type="submit"
                       className="btn text-uppercase d-block my-2 py-3 w-100 fw-bold"
                       style={{ fontSize: 0.88 + "rem" }}
-                      disabled={bagItems.length == 0}
+                      disabled={loading || bagItems.length == 0}
                     >
                       {loading ? (
                         <>

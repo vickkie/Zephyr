@@ -29,7 +29,7 @@ const uploadImages = async (files) => {
 
     for (const file of files) {
       const formData = new FormData();
-      formData.append("productImage", file);
+      formData.append("file", file);
 
       // Local upload
       if (import.meta.env.MODE !== "production") {
@@ -39,7 +39,9 @@ const uploadImages = async (files) => {
             "Content-Type": "multipart/form-data",
           },
         });
+
         uploadedUrls.push(localResponse.data.secure_url);
+        console.log(uploadedUrls.flat());
       } else {
         // Cloudinary upload
         console.log("Uploading to Cloudinary:", cloudinaryUrl);

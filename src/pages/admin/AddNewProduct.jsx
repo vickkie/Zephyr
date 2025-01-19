@@ -88,6 +88,7 @@ const AddNewProduct = () => {
     }
 
     try {
+      setLoading(true);
       // const allproducts = { ...productData, images: imageUrls.flat() };
       // console.log(allproducts);
 
@@ -409,7 +410,7 @@ const AddNewProduct = () => {
                     type="submit"
                     className="btn text-uppercase d-block my-2 py-3 w-100 fw-bold"
                     style={{ fontSize: 0.88 + "rem" }}
-                    // disabled={loading}
+                    disabled={loading}
                   >
                     {loading ? (
                       <>

@@ -113,6 +113,7 @@ const UpdateProduct = () => {
         toast.error("You must have atleast 1 image!", { className: "toastify" });
         console.log("CANNOT CONTINUE");
       } else {
+        setLoading(true);
         const response = await axios.patch(
           `${VITE_SERVER}/api/admin/update-product`,
           {

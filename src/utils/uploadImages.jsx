@@ -29,7 +29,7 @@ const uploadImages = async (files) => {
 
     for (const file of files) {
       const formData = new FormData();
-      formData.append("productImage", file);
+      formData.append("file", file);
 
       // Local upload
       if (import.meta.env.MODE !== "production") {

@@ -6,7 +6,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import usePut from "../../hooks/usePut";
 import { toast } from "react-toastify";
 
-import { uploadImages } from "../../hooks/useImageUpload";
+import { uploadImages } from "../../utils/uploadImages";
 import { useLocation } from "react-router-dom";
 import { Header, Footer, PageTitle } from "../../components";
 
