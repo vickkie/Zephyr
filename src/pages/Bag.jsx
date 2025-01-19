@@ -169,7 +169,7 @@ const Bag = () => {
   const [total, setTotal] = useState(0);
   const [autofill, setAutofill] = useState(false);
 
-  const shippingFees = 6;
+  const shippingFees = 0;
 
   const [formData, setFormData] = useState({});
 
@@ -178,6 +178,44 @@ const Bag = () => {
   const [pincode, setPincode] = useState(authData?.address?.pincode);
   const [city, setCity] = useState(authData?.address?.city);
   const [state, setState] = useState(authData?.address?.state);
+
+  //payment details
+
+  const [paymentMethod, setPaymentMethod] = useState("Card");
+  const [cardDetails, setCardDetails] = useState({
+    cardNumber: "",
+    cardHolderName: "",
+    expiryDate: "",
+    securityCode: "",
+  });
+  const [mpesaPhoneNumber, setMpesaPhoneNumber] = useState("");
+
+  const paymentData = {
+    paymentMethod,
+    amount: total,
+  };
+
+  if (paymentMethod === "Card") {
+    paymentData.cardDetails = cardDetails;
+  } else if (paymentMethod === "Mpesa") {
+    paymentData.mpesaPhoneNumber = mpesaPhoneNumber;
+  }
+
+  const handlePaymentMethodChange = (e) => {
+    setPaymentMethod(e.target.value);
+  };
+
+  const handleCardDetailChange = (e) => {
+    const { name, value } = e.target;
+    setCardDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: value,
+    }));
+  };
+
+  const handleMpesaPhoneNumberChange = (e) => {
+    setMpesaPhoneNumber(e.target.value);
+  };
 
   /**
    * The onChangeHandler function updates the formData state with the new value based on the input
@@ -215,11 +253,15 @@ const Bag = () => {
       products,
       ...formData,
       ...addresses,
+      paymentData,
       shippingFees,
       subTotal,
       total,
       orderBy: user?._id,
     };
+
+    console.log(payload);
+    // return;
 
     try {
       const response = await axios.post(VITE_SERVER + "/api/place-order", payload, {
@@ -247,7 +289,7 @@ const Bag = () => {
           setAuthData(response.data.updatedCustomer);
         }
 
-        // navigate('/profile');
+        navigate("/profile");
       }
 
       setLoading(false);
@@ -258,7 +300,7 @@ const Bag = () => {
         : toast.error("Couldn't place order due to an Error", { className: "toastify" });
     } finally {
       setLoading(false);
-      navigate("/profile");
+      // navigate("/profile");
     }
   };
 
@@ -277,6 +319,11 @@ const Bag = () => {
   useEffect(() => {
     authData?.address ? setAutofill(true) : null;
   }, [authData]);
+
+  const formatCardNumber = (value) => {
+    const digits = value.replace(/\D/g, "").slice(0, 16); // Limit to 16 digits
+    return digits.replace(/(\d{4})(?=\d)/g, "$1 ");
+  };
 
   return (
     <>
@@ -487,46 +534,104 @@ const Bag = () => {
                   <div className="col">
                     <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Payment Info</h2>
 
-                    <label htmlFor="cardNumber" className="font-color product-card-price mb-1">
-                      Card Number *
-                    </label>
-                    <input
-                      type="number"
-                      className="login-input font-color d-block w-100 mb-2"
-                      id="cardNumber"
-                      name="cardNumber"
-                      placeholder=""
-                      required
-                    />
-
-                    <div className="row gap-3 px-2">
-                      <div className="col-md p-0">
-                        <label htmlFor="expiry" className="font-color product-card-price mb-1">
-                          Expiry Date *
-                        </label>
-                        <input
-                          type="date"
-                          className="login-input font-color d-block w-100"
-                          id="expiry"
-                          name="expiry"
-                          placeholder=""
-                          required
-                        />
-                      </div>
-                      <div className="col-md p-0">
-                        <label htmlFor="security" className="font-color product-card-price mb-1">
-                          Security Code *
-                        </label>
-                        <input
-                          type="password"
-                          className="login-input font-color d-block w-100"
-                          id="security"
-                          name="security"
-                          placeholder=""
-                          required
-                        />
-                      </div>
+                    {/* Payment Method Selection */}
+                    <div className="mb-3">
+                      <label className="font-color product-card-price mb-1">Payment Method *</label>
+                      <select
+                        name="paymentMethod"
+                        value={paymentMethod}
+                        onChange={handlePaymentMethodChange}
+                        className="login-input font-color d-block w-100 mb-2"
+                      >
+                        <option value="Card">Card</option>
+                        <option value="Mpesa">Mpesa</option>
+                      </select>
                     </div>
+
+                    {/* Conditional Input Fields for Card */}
+                    {paymentMethod === "Card" && (
+                      <div>
+                        <label htmlFor="cardNumber" className="font-color product-card-price mb-1">
+                          Card Number *
+                        </label>
+                        <input
+                          type="text"
+                          className="login-input font-color d-block w-100 mb-2"
+                          id="cardNumber"
+                          name="cardNumber"
+                          placeholder="Enter card number"
+                          value={formatCardNumber(cardDetails.cardNumber)}
+                          onChange={handleCardDetailChange}
+                          required
+                        />
+
+                        <label htmlFor="cardHolderName" className="font-color product-card-price mb-1">
+                          Card Holder Name *
+                        </label>
+                        <input
+                          type="text"
+                          className="login-input font-color d-block w-100 mb-2"
+                          id="cardHolderName"
+                          name="cardHolderName"
+                          placeholder="Enter card holder name"
+                          value={cardDetails.cardHolderName}
+                          onChange={handleCardDetailChange}
+                          required
+                        />
+
+                        <div className="row gap-3 px-2">
+                          <div className="col-md p-0">
+                            <label htmlFor="expiryDate" className="font-color product-card-price mb-1">
+                              Expiry Date *
+                            </label>
+                            <input
+                              type="date"
+                              className="login-input font-color d-block w-100"
+                              id="expiryDate"
+                              name="expiryDate"
+                              value={cardDetails.expiryDate}
+                              onChange={handleCardDetailChange}
+                              required
+                            />
+                          </div>
+                          <div className="col-md p-0">
+                            <label htmlFor="securityCode" className="font-color product-card-price mb-1">
+                              Security Code *
+                            </label>
+                            <input
+                              type="number"
+                              className="login-input font-color d-block w-100"
+                              id="securityCode"
+                              name="securityCode"
+                              placeholder="Enter security code"
+                              value={cardDetails.securityCode}
+                              onChange={handleCardDetailChange}
+                              required
+                              maxLength={4}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Conditional Input Fields for Mpesa */}
+                    {paymentMethod === "Mpesa" && (
+                      <div>
+                        <label htmlFor="mpesaPhoneNumber" className="font-color product-card-price mb-1">
+                          Mpesa Phone Number *
+                        </label>
+                        <input
+                          type="text"
+                          className="login-input font-color d-block w-100 mb-2"
+                          id="mpesaPhoneNumber"
+                          name="mpesaPhoneNumber"
+                          placeholder="Enter Mpesa phone number"
+                          value={mpesaPhoneNumber}
+                          onChange={handleMpesaPhoneNumberChange}
+                          required
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -558,7 +663,7 @@ const Bag = () => {
                       type="submit"
                       className="btn text-uppercase d-block my-2 py-3 w-100 fw-bold"
                       style={{ fontSize: 0.88 + "rem" }}
-                      disabled={loading || bagItems.length == 0}
+                      disabled={bagItems.length == 0}
                     >
                       {loading ? (
                         <>

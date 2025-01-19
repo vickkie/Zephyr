@@ -29,30 +29,30 @@ const SingleProduct = () => {
       const response = await axios.get(`${VITE_SERVER}/api/product/${id}`, {
         withCredentials: true,
       });
-      console.log("product", response);
+      // console.log("product", response);
       // setAllImages(response.data.product.image, response.data.product.image);
       response ? setProduct({ ...response.data.product }) : navigate("/404");
 
       let gottenFirst = [];
 
       gottenFirst = [response.data.product?.image];
-      console.log("gottenFirst", gottenFirst);
+      // console.log("gottenFirst", gottenFirst);
 
       const allImgs = [gottenFirst.flat(), response.data.product?.images.flat()].flat();
 
-      console.log("allImgs", allImgs);
+      // console.log("allImgs", allImgs);
 
       const finalImgs = allImgs.filter(removedef);
 
-      console.log("finalImgs", finalImgs);
+      // console.log("finalImgs", finalImgs);
 
-      const finalMain = console.log(finalImgs[0]);
+      // const finalMain = console.log(finalImgs[0]);
 
-      console.log("finalMain", finalMain);
+      // console.log("finalMain", finalMain);
 
       if (gottenFirst.includes(defaultImg, 0) && allImgs.length <= 1) {
         toast.error("You must have atleast 1 image!", { className: "toastify" });
-        console.log("CANNOT CONTINUE");
+        // console.log("CANNOT CONTINUE");
         setAllImages([gottenFirst]);
       } else {
         setAllImages(finalImgs);
@@ -127,7 +127,7 @@ const SingleProduct = () => {
                 className="product-images-slider"
               >
                 {/* Assuming product.images is an array of image URLs */}
-                {console.log("allImages", allImages)}
+                {/* {console.log("allImages", allImages)} */}
 
                 {allImages !== null &&
                   allImages?.map((imagex, index) => (

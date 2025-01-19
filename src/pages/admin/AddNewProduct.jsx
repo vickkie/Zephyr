@@ -3,6 +3,7 @@ import { uploadImages } from "../../utils/uploadImages"; // Utility function for
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
+import useGet from "../../hooks/useGet";
 
 const { VITE_SERVER } = import.meta.env;
 
@@ -10,9 +11,12 @@ const AddNewProduct = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const { data: allCategories, isLoading, error, errorMessage, statusCode, refetch } = useGet("admin/all-categories");
+
   const [productName, setProductName] = useState("");
   const [shortDescription, setShortDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
+  const [categories, setCategories] = useState("");
 
   const [images, setImages] = useState([]); // Files for upload
   const [selectedImage, setSelectedImage] = useState([]); // Preview URLs
@@ -129,6 +133,12 @@ const AddNewProduct = () => {
       toast.error("Sale price cannot be greater than regular price!", { className: "toastify" });
     }
   }, [salePrice, regularPrice]);
+
+  useEffect(() => {
+    if (allCategories !== null) {
+      setCategories(allCategories.categories);
+    }
+  }, [allCategories, isLoading]);
 
   return (
     <form className="container-fluid p-0" onSubmit={addProductHandler}>
@@ -298,55 +308,32 @@ const AddNewProduct = () => {
                 <div className="col">
                   <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Category</h2>
                   <div className="d-flex flex-column gap-3 my-5">
-                    <input
-                      type="radio"
-                      className="btn-check"
-                      name="category"
-                      value="men"
-                      id="men"
-                      checked={selectedCategory === "men"}
-                      onChange={(e) => setSelectedCategory(e.target.value)}
-                      autoComplete="off"
-                      required
-                    />
-                    <label className="filter-btn btn btn-sm border bag mx-lg-4" htmlFor="men">
-                      Men
-                    </label>
-
-                    <input
-                      type="radio"
-                      className="btn-check"
-                      name="category"
-                      value="women"
-                      id="women"
-                      checked={selectedCategory === "women"}
-                      onChange={(e) => setSelectedCategory(e.target.value)}
-                      autoComplete="off"
-                      required
-                    />
-                    <label className="filter-btn btn btn-sm border bag mx-lg-4" htmlFor="women">
-                      Women
-                    </label>
-
-                    <input
-                      type="radio"
-                      className="btn-check"
-                      name="category"
-                      value="kids"
-                      id="kids"
-                      checked={selectedCategory === "kids"}
-                      onChange={(e) => setSelectedCategory(e.target.value)}
-                      autoComplete="off"
-                      required
-                    />
-                    <label className="filter-btn btn btn-sm border bag mx-lg-4" htmlFor="kids">
-                      Kids
-                    </label>
+                    {categories &&
+                      Array.isArray(categories) &&
+                      categories.map((category) => (
+                        <div key={category._id}>
+                          <input
+                            type="radio"
+                            className="btn-check"
+                            name="category"
+                            value={category.category}
+                            id={category.category}
+                            checked={selectedCategory === category.category}
+                            onChange={(e) => setSelectedCategory(e.target.value)}
+                            autoComplete="off"
+                            required
+                          />
+                          <label className="filter-btn btn btn-sm border bag mx-lg-4 w-100" htmlFor={category.category}>
+                            {category.category}
+                          </label>
+                        </div>
+                      ))}
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
           {/* Sub-Category */}
           <div className="card container-fluid p-3 mb-3">
             <div className="card-body p-3">
@@ -355,96 +342,27 @@ const AddNewProduct = () => {
                   <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Sub-Category</h2>
                   <div className="d-flex justify-content-center gap-3">
                     <div className="d-flex flex-column gap-3 my-5 w-100">
-                      <input
-                        type="radio"
-                        className="btn-check"
-                        name="sub-category"
-                        value="dresses"
-                        id="dresses"
-                        checked={selectedSubCategory === "dresses"}
-                        onChange={(e) => setSelectedSubCategory(e.target.value)}
-                        autoComplete="off"
-                        required
-                      />
-                      <label className="filter-btn btn btn-sm border bag w-100" htmlFor="dresses">
-                        Dresses
-                      </label>
-
-                      <input
-                        type="radio"
-                        className="btn-check"
-                        name="sub-category"
-                        value="skirts"
-                        id="skirts"
-                        checked={selectedSubCategory === "skirts"}
-                        onChange={(e) => setSelectedSubCategory(e.target.value)}
-                        autoComplete="off"
-                        required
-                      />
-                      <label className="filter-btn btn btn-sm border bag w-100" htmlFor="skirts">
-                        Skirts
-                      </label>
-
-                      <input
-                        type="radio"
-                        className="btn-check"
-                        name="sub-category"
-                        value="pants"
-                        id="pants"
-                        checked={selectedSubCategory === "pants"}
-                        onChange={(e) => setSelectedSubCategory(e.target.value)}
-                        autoComplete="off"
-                        required
-                      />
-                      <label className="filter-btn btn btn-sm border bag w-100" htmlFor="pants">
-                        Pants
-                      </label>
-                    </div>
-                    <div className="d-flex flex-column gap-3 my-5 w-100">
-                      <input
-                        type="radio"
-                        className="btn-check"
-                        name="sub-category"
-                        value="shirts"
-                        id="shirts"
-                        checked={selectedSubCategory === "shirts"}
-                        onChange={(e) => setSelectedSubCategory(e.target.value)}
-                        autoComplete="off"
-                        required
-                      />
-                      <label className="filter-btn btn btn-sm border bag w-100" htmlFor="shirts">
-                        Shirts
-                      </label>
-
-                      <input
-                        type="radio"
-                        className="btn-check"
-                        name="sub-category"
-                        value="t-shirts"
-                        id="t-shirts"
-                        checked={selectedSubCategory === "t-shirts"}
-                        onChange={(e) => setSelectedSubCategory(e.target.value)}
-                        autoComplete="off"
-                        required
-                      />
-                      <label className="filter-btn btn btn-sm border bag w-100" htmlFor="t-shirts">
-                        T-shirts
-                      </label>
-
-                      <input
-                        type="radio"
-                        className="btn-check"
-                        name="sub-category"
-                        value="hoodies"
-                        id="hoodies"
-                        checked={selectedSubCategory === "hoodies"}
-                        onChange={(e) => setSelectedSubCategory(e.target.value)}
-                        autoComplete="off"
-                        required
-                      />
-                      <label className="filter-btn btn btn-sm border bag w-100" htmlFor="hoodies">
-                        Hoodies
-                      </label>
+                      {selectedCategory &&
+                        categories
+                          .find((cat) => cat.category === selectedCategory)
+                          ?.subCategories.map((subCategory, index) => (
+                            <div key={index}>
+                              <input
+                                type="radio"
+                                className="btn-check"
+                                name="sub-category"
+                                value={subCategory}
+                                id={subCategory}
+                                checked={selectedSubCategory === subCategory}
+                                onChange={(e) => setSelectedSubCategory(e.target.value)}
+                                autoComplete="off"
+                                required
+                              />
+                              <label className="filter-btn btn btn-sm border bag w-100" htmlFor={subCategory}>
+                                {subCategory}
+                              </label>
+                            </div>
+                          ))}
                     </div>
                   </div>
                 </div>

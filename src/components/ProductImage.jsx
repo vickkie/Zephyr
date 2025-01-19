@@ -1,6 +1,5 @@
 // ProductImage.js
-import React, { useState, useRef } from "react";
-import { gsap } from "gsap";
+import { useState, useRef } from "react";
 
 const ProductImage = ({ images, initialImage }) => {
   const [currentImage, setCurrentImage] = useState(initialImage);
@@ -24,15 +23,16 @@ const ProductImage = ({ images, initialImage }) => {
         />
       </div>
       <div className="additional-images">
-        {images.map((img) => (
-          <img
-            key={img}
-            src={img}
-            alt={`Additional Image ${img}`}
-            onClick={changeImage}
-            style={{ width: "40px", height: "40px", margin: "10px", cursor: "pointer" }}
-          />
-        ))}
+        {Array.isArray(images) &&
+          images.map((img) => (
+            <img
+              key={img}
+              src={img}
+              alt={`Additional Image ${img}`}
+              onClick={changeImage}
+              style={{ width: "40px", height: "40px", margin: "10px", cursor: "pointer" }}
+            />
+          ))}
       </div>
     </>
   );

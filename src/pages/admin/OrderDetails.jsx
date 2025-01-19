@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import usePatch from "../../hooks/usePatch";
 
 const { VITE_SERVER } = import.meta.env;
 
@@ -15,19 +16,54 @@ const OrderDetails = () => {
   const [selectedStatus, setSelectedStatus] = useState();
 
   let { id } = useParams();
-  /**
-   * The fetchOrder function is an asynchronous function that fetches order data from a server using
-   * axios, updates state based on the response, and handles loading and error states.
-   */
+
+  const { responseData, isLoading, errorMessage, patchData } = usePatch(`admin/order/${order.orderId}`);
+
+  const [isEditMode, setIsEditMode] = useState(false); // State to control edit mode
+  const [formData, setFormData] = useState({
+    subTotal: order?.subTotal || 0,
+    shippingFees: order?.shippingFees || 0,
+    additionalFees: order?.additionalFees || 0,
+    paymentStatus: order?.paymentStatus || "Unpaid",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSave = () => {
+    patchData(formData);
+    setIsEditMode(false); // Switch back to view mode after saving
+    // console.log("Updated Order:", formData);
+  };
+
+  const handleCancel = () => {
+    // Reset to original order values if cancelled
+    setFormData({
+      subTotal: order?.subTotal || 0,
+      shippingFees: order?.shippingFees || 0,
+      additionalFees: order?.additionalFees || 0,
+      paymentStatus: order?.paymentStatus || "Unpaid",
+    });
+    setIsEditMode(false);
+  };
+
   const fetchOrder = async () => {
     try {
       setLoading(true);
       const response = await axios.get(`${VITE_SERVER}/api/admin/order/${id}`, {
         withCredentials: true,
       });
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data.success) {
         setOrder(response.data.order);
+        setFormData({
+          subTotal: response.data.order?.subTotal || 0,
+          shippingFees: response.data.order?.shippingFees || 0,
+          additionalFees: response.data.order?.additionalFees || 0,
+          paymentStatus: response.data.order?.paymentStatus || "Unpaid",
+        });
         setSelectedStatus(response.data.order.orderStatus);
       }
 
@@ -40,10 +76,6 @@ const OrderDetails = () => {
     }
   };
 
-  /**
-   * The `deleteHandler` function sends a DELETE request to the server to delete an order, displaying
-   * success or error messages accordingly.
-   */
   const deleteHandler = async (id) => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -61,7 +93,7 @@ const OrderDetails = () => {
         const response = await axios.delete(`${VITE_SERVER}/api/admin/order/${id}`, {
           withCredentials: true,
         });
-        console.log("deleteHandler", response.data);
+        // console.log("deleteHandler", response.data);
 
         response.data.success ? toast.success("Order has been deleted", { className: "toastify" }) : null;
 
@@ -78,21 +110,19 @@ const OrderDetails = () => {
     }
   };
 
-  /**
-   * The function `updateOrder` is an asynchronous function that sends a PATCH request to update the
-   * status of an order and handles the response accordingly.
-   */
   const updateOrder = async () => {
+    // console.log(order.orderId);
     let patch = {
       status: selectedStatus,
+      orderId: order.orderId,
     };
     try {
       setLoading(true);
-      const response = await axios.patch(`${VITE_SERVER}/api/admin/order/${id}`, patch, {
+      const response = await axios.patch(`${VITE_SERVER}/api/admin/order/${order.orderId}`, patch, {
         withCredentials: true,
       });
 
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data.success) {
         setSelectedStatus(response.data.updatedOrder.orderStatus);
         toast.success("Order has been Updated", { className: "toastify" });
@@ -110,6 +140,17 @@ const OrderDetails = () => {
   useEffect(() => {
     fetchOrder();
   }, []);
+
+  useEffect(() => {
+    if (responseData && responseData.updatedOrder && !isLoading) {
+      // console.log(responseData);
+      setOrder(responseData.updatedOrder);
+      toast.dismiss();
+      toast.success("Order has been Updated", { className: "toastify" });
+    } else if (errorMessage) {
+      toast.error(errorMessage, { className: "toastify" });
+    }
+  }, [responseData, isLoading, errorMessage]);
 
   return (
     <main className="container py-3">
@@ -264,6 +305,104 @@ const OrderDetails = () => {
               </div>
             </div>
           </div>
+          {/* Payment */}
+          {order.paymentInfo && (
+            <div className="card container-fluid p-3 mb-3">
+              <div className="card-body p-3">
+                <div className="row">
+                  <div className="col">
+                    <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Payment Info</h2>
+
+                    {/* Payment Method Selection */}
+                    <div className="mb-3">
+                      <label className="font-color product-card-price mb-1">Payment Method *</label>
+                      <span>
+                        <span className="product-card-price font-color mb-0"> {order.paymentInfo?.paymentMethod}</span>
+                      </span>
+                    </div>
+
+                    {/* Conditional Input Fields for Card */}
+                    {order.paymentInfo.paymentMethod === "Card" && (
+                      <div>
+                        <label htmlFor="cardNumber" className="font-color product-card-price mb-1">
+                          Card Number *
+                        </label>
+                        <input
+                          type="text"
+                          className="login-input font-color d-block w-100 mb-2"
+                          id="cardNumber"
+                          name="cardNumber"
+                          placeholder="Enter card number"
+                          value={order.paymentInfo.cardDetails?.cardNumber}
+                          readOnly
+                        />
+
+                        <label htmlFor="cardHolderName" className="font-color product-card-price mb-1">
+                          Card Holder Name *
+                        </label>
+                        <input
+                          type="text"
+                          className="login-input font-color d-block w-100 mb-2"
+                          id="cardHolderName"
+                          name="cardHolderName"
+                          placeholder="Enter card holder name"
+                          value={order.paymentInfo.cardDetails?.cardHolderName}
+                          readOnly
+                        />
+
+                        <div className="row gap-3 px-2">
+                          <div className="col-md p-0">
+                            <label htmlFor="expiryDate" className="font-color product-card-price mb-1">
+                              Expiry Date *
+                            </label>
+                            <input
+                              type="date"
+                              className="login-input font-color d-block w-100"
+                              id="expiryDate"
+                              name="expiryDate"
+                              value={order.paymentInfo.cardDetails?.expiryDate}
+                              readOnly
+                            />
+                          </div>
+                          {/* <div className="col-md p-0">
+                          <label htmlFor="securityCode" className="font-color product-card-price mb-1">
+                            Security Code *
+                          </label>
+                          <input
+                            type="number"
+                            className="login-input font-color d-block w-100"
+                            id="securityCode"
+                            name="securityCode"
+                            placeholder="Enter security code"
+                            value={order.paymentInfo.cardDetails.securityCode}
+                          />
+                        </div> */}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Conditional Input Fields for Mpesa */}
+                    {order.paymentInfo.paymentMethod === "Mpesa" && (
+                      <div>
+                        <label htmlFor="mpesaPhoneNumber" className="font-color product-card-price mb-1">
+                          Mpesa Phone Number *
+                        </label>
+                        <input
+                          type="text"
+                          className="login-input font-color d-block w-100 mb-2"
+                          id="mpesaPhoneNumber"
+                          name="mpesaPhoneNumber"
+                          placeholder="Enter Mpesa phone number"
+                          value={order.paymentInfo?.mpesaPhoneNumber}
+                          readOnly
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* <!-- Order Summery Section  --> */}
@@ -276,25 +415,95 @@ const OrderDetails = () => {
                   <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Order Summary</h2>
                   <div className="d-flex justify-content-between">
                     <span className="product-card-price font-color mb-0">Subtotal:</span>
-                    <span className="product-card-price font-color mb-0">$ {order?.subTotal}.00 USD</span>
+                    {isEditMode ? (
+                      <input
+                        type="number"
+                        name="subTotal"
+                        disabled
+                        value={formData.subTotal}
+                        onChange={handleChange}
+                        className="product-card-price login-input font-color d-block w-70 mb-2"
+                      />
+                    ) : (
+                      <span className="product-card-price font-color mb-0">$ {formData.subTotal}.00 USD</span>
+                    )}
                   </div>
+
                   <div className="d-flex justify-content-between">
                     <span className="product-card-price font-color mb-0">Shipping fee:</span>
-                    <span className="product-card-price font-color mb-0">$ {order?.shippingFees}.00 USD</span>
+                    {isEditMode ? (
+                      <input
+                        type="number"
+                        name="shippingFees"
+                        value={formData.shippingFees}
+                        onChange={handleChange}
+                        className="login-input font-color d-block w-70 mb-2"
+                      />
+                    ) : (
+                      <span className="product-card-price font-color mb-0">$ {formData.shippingFees}.00 USD</span>
+                    )}
                   </div>
+
                   <div className="d-flex justify-content-between">
                     <span className="product-card-price font-color mb-0">Additional fee:</span>
-                    <span className="product-card-price font-color mb-0">$ {order?.additionalFees}.00 USD</span>
+                    {isEditMode ? (
+                      <input
+                        type="number"
+                        name="additionalFees"
+                        value={formData.additionalFees}
+                        onChange={handleChange}
+                        className="login-input font-color d-block w-70 mb-2"
+                      />
+                    ) : (
+                      <span className="product-card-price font-color mb-0">$ {formData.additionalFees}.00 USD</span>
+                    )}
                   </div>
+
                   <hr className="font-color" />
+
                   <div className="d-flex justify-content-between">
                     <span className="product-card-price font-color mb-0">Total:</span>
-                    <span className="product-card-price font-color mb-0">$ {order?.total}.00 USD</span>
+                    <span className="product-card-price font-color mb-0">
+                      $ {Number(formData.subTotal) + Number(formData.shippingFees) + Number(formData.additionalFees)}.00
+                      USD
+                    </span>
                   </div>
+
                   <hr className="font-color" />
+
                   <div className="d-flex justify-content-between">
                     <span className="product-card-price font-color mb-0">Payment Status:</span>
-                    <span className="product-card-price font-color mb-0">{order?.paymentStatus}</span>
+
+                    {isEditMode ? (
+                      <select
+                        name="paymentStatus"
+                        value={formData.paymentStatus}
+                        onChange={handleChange}
+                        className="login-input font-color d-block w-70 mb-2"
+                      >
+                        <option value="Unpaid">Unpaid</option>
+                        <option value="Paid">Paid</option>
+                      </select>
+                    ) : (
+                      <span className="product-card-price font-color mb-0">{order?.paymentStatus}</span>
+                    )}
+                  </div>
+
+                  <div className="d-flex justify-content-between mt-3">
+                    {isEditMode ? (
+                      <>
+                        <button onClick={handleSave} className="btn btn-success">
+                          Save
+                        </button>
+                        <button onClick={handleCancel} className="btn btn-secondary">
+                          Cancel
+                        </button>
+                      </>
+                    ) : (
+                      <button onClick={() => setIsEditMode(true)} className="btn btn-primary">
+                        Edit
+                      </button>
+                    )}
                   </div>
 
                   <div className="d-flex justify-content-center w-100 gap-3">
@@ -428,9 +637,10 @@ const OrderDetails = () => {
   );
 };
 
+// eslint-disable-next-line react/prop-types
 const BagItem = ({ images, productCode, productName, quantity, salePrice }) => {
   // const { increaseQuantity, decreaseQuantity, removeFromBag } = useContext(BagContext);
-  console.log(images);
+  // console.log(images);
 
   return (
     <div className="row mt-4 g-3">
@@ -438,7 +648,6 @@ const BagItem = ({ images, productCode, productName, quantity, salePrice }) => {
         <div className="bag-image position-relative overflow-hidden h-100">
           <div className="image-backdrop position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>
           <img className="object-fit-cover w-100 h-100" src={images[0]} alt="bag item" />
-          {/* "https://cdn.prod.website-files.com/63cffb7c16ab33a28e9734f2/63d4f225026df869f409bbcc_product-01-thumb-p-500.webp" */}
         </div>
       </div>
       <div className="col">

@@ -1,5 +1,5 @@
 import { useContext, useLayoutEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import axios from "axios";
 import { Cursor, Logout } from "./components";
 import { Home, Shop, Contact, Login, Bag, SingleProduct, Profile, Search, PageNotFound } from "./pages";
@@ -26,6 +26,7 @@ import ProtectedRoutes from "./contexts/ProtectedRoutes";
 import ProtectedCustomer from "./contexts/ProtectedCustomer";
 import ProfileSettings from "./pages/customer/ProfileSettings";
 import FloatingThemeToggler from "./components/Theme";
+import ScrollTop from "./utils/ScrollTop";
 
 const { VITE_SERVER } = import.meta.env;
 
@@ -58,9 +59,11 @@ function App() {
   return (
     <>
       {/* <appContext.Provider value={{search, SetSearch}} > */}
+      <ScrollTop />
       <AuthProvider>
         <BagContextProvider>
           <FloatingThemeToggler />
+
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop category={"all"} />} />

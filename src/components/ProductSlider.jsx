@@ -18,7 +18,7 @@ const ProductSlider = () => {
       const response = await axios.get(`${VITE_SERVER}/api/featured-products`, {
         withCredentials: true,
       });
-      console.log("featured-products", response.data);
+      // console.log("featured-products", response.data);
       setProducts(response.data.products);
     } catch (error) {
       console.error(error);

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
 const useGet = (endpoint, requiresAuth = false, token = null) => {
-  const backendUrl = import.meta.env.VITE_BACKEND_PORT;
+  const backendUrl = import.meta.env.VITE_SERVER;
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -31,6 +31,7 @@ const useGet = (endpoint, requiresAuth = false, token = null) => {
   }, [endpoint, backendUrl, isDevelopment, requiresAuth, token]);
 
   const handleSuccess = (response) => {
+    // console.log(response);
     setData(response.data); // Save the fetched data
     setErrorMessage(null);
     setStatusCode(response?.status);
