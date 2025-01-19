@@ -116,7 +116,7 @@ function App() {
         </BagContextProvider>
         {/* </appContext.Provider> */}
 
-        <ToastContainer />
+        <ToastContainer position="top-left" />
         <Cursor />
       </AuthProvider>
     </>

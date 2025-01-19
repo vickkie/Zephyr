@@ -23,11 +23,11 @@ const Dashboard = () => {
       const response = await axios.get(`${VITE_SERVER}/api/admin/new-customers`, {
         withCredentials: true,
       });
-      if (response.data.success) setNewCustomersCount(response.data.newCustomersCount)
+      if (response.data.success) setNewCustomersCount(response.data.newCustomersCount);
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   /**
    * The function `fetchTodaysOrderCount` asynchronously fetches today's order count from a server API
@@ -38,11 +38,11 @@ const Dashboard = () => {
       const response = await axios.get(`${VITE_SERVER}/api/admin/todays-orders`, {
         withCredentials: true,
       });
-      if (response.data.success) setTodaysOrderCount(response.data.todaysOrders)
+      if (response.data.success) setTodaysOrderCount(response.data.todaysOrders);
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   /**
    * This function fetches the count of processing orders from a server using axios in a React
@@ -53,11 +53,11 @@ const Dashboard = () => {
       const response = await axios.get(`${VITE_SERVER}/api/admin/orders/processing`, {
         withCredentials: true,
       });
-      if (response.data.success) setProcessingOrdersCount(response.data.orders)
+      if (response.data.success) setProcessingOrdersCount(response.data.orders);
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   /**
    * The function `fetchTodaysRevenue` asynchronously fetches today's revenue data from a server API
@@ -69,11 +69,11 @@ const Dashboard = () => {
         withCredentials: true,
       });
       // console.log(response.data);
-      if (response.data.success) setTodaysRevenue(response.data.revenue)
+      if (response.data.success) setTodaysRevenue(response.data.revenue);
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   /**
    * The function `fetchTotalCustomerCount` asynchronously fetches the total customer count from a
@@ -85,11 +85,11 @@ const Dashboard = () => {
       const response = await axios.get(`${VITE_SERVER}/api/admin/total-customers`, {
         withCredentials: true,
       });
-      if (response.data.success) setTotalCustomerCount(response.data.totalCustomers)
+      if (response.data.success) setTotalCustomerCount(response.data.totalCustomers);
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   /**
    * The function `fetchTotalOrderCount` asynchronously fetches the total order count from a server API
@@ -100,11 +100,11 @@ const Dashboard = () => {
       const response = await axios.get(`${VITE_SERVER}/api/admin/total-orders`, {
         withCredentials: true,
       });
-      if (response.data.success) setTotalOrderCount(response.data.totalOrders)
+      if (response.data.success) setTotalOrderCount(response.data.totalOrders);
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   /**
    * The function fetches the count of cancelled orders from a server API endpoint using axios in a
@@ -115,11 +115,11 @@ const Dashboard = () => {
       const response = await axios.get(`${VITE_SERVER}/api/admin/orders/cancelled`, {
         withCredentials: true,
       });
-      if (response.data.success) setCancelledOrdersCount(response.data.orders)
+      if (response.data.success) setCancelledOrdersCount(response.data.orders);
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   /**
    * The function fetches today's revenue data from the server and sets the total revenue if the
@@ -131,11 +131,11 @@ const Dashboard = () => {
         withCredentials: true,
       });
       // console.log(response.data);
-      if (response.data.success) setTotalRevenue(response.data.revenue)
+      if (response.data.success) setTotalRevenue(response.data.revenue);
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchNewCustomerCount();
@@ -146,8 +146,7 @@ const Dashboard = () => {
     fetchTotalOrderCount();
     fetchCancelledOrdersCount();
     fetchTotalRevenue();
-
-  }, [])
+  }, []);
 
   return (
     <main>
@@ -159,13 +158,8 @@ const Dashboard = () => {
                 <div className="card container-fluid bg-color h-100">
                   <div className="card-body p-4">
                     <div className="row h-100 ">
-
-                      <h3 className="card-heading font-color fs-6 text-uppercase">
-                        New Customers
-                      </h3>
-                      <p className="text-center display-1 bag">
-                        {newCustomersCount}
-                      </p>
+                      <h3 className="card-heading font-color fs-6 text-uppercase">New Customers</h3>
+                      <p className="text-center display-1 bag">{newCustomersCount}</p>
                     </div>
                   </div>
                 </div>
@@ -177,12 +171,8 @@ const Dashboard = () => {
                 <div className="card container-fluid bg-color h-100">
                   <div className="card-body p-4">
                     <div className="row h-100 ">
-                      <h3 className="card-heading font-color fs-6 text-uppercase">
-                        Today's Orders
-                      </h3>
-                      <p className="text-center display-1 bag">
-                        {todaysOrderCount}
-                      </p>
+                      <h3 className="card-heading font-color fs-6 text-uppercase">Today&rsquo;s Orders</h3>
+                      <p className="text-center display-1 bag">{todaysOrderCount}</p>
                     </div>
                   </div>
                 </div>
@@ -194,12 +184,8 @@ const Dashboard = () => {
                 <div className="card container-fluid bg-color h-100">
                   <div className="card-body p-4">
                     <div className="row h-100 ">
-                      <h3 className="card-heading font-color fs-6 text-uppercase">
-                        Orders Processing
-                      </h3>
-                      <p className="text-center display-1 bag">
-                        {processingOrdersCount}
-                      </p>
+                      <h3 className="card-heading font-color fs-6 text-uppercase">Orders Processing</h3>
+                      <p className="text-center display-1 bag">{processingOrdersCount}</p>
                     </div>
                   </div>
                 </div>
@@ -211,12 +197,8 @@ const Dashboard = () => {
                 <div className="card container-fluid bg-color h-100">
                   <div className="card-body p-4">
                     <div className="row h-100 ">
-                      <h3 className="card-heading font-color fs-6 text-uppercase">
-                        {'Today\'s Revenue ($)'}
-                      </h3>
-                      <p className="text-center display-3 bag">
-                        {todaysRevenue}
-                      </p>
+                      <h3 className="card-heading font-color fs-6 text-uppercase">{"Today's Revenue ($)"}</h3>
+                      <p className="text-center display-3 bag">{todaysRevenue}</p>
                     </div>
                   </div>
                 </div>
@@ -233,31 +215,21 @@ const Dashboard = () => {
                 <div className="card container-fluid bg-color h-100">
                   <div className="card-body p-4">
                     <div className="row h-100 ">
-
-                      <h3 className="card-heading font-color fs-6 text-uppercase">
-                        Total Customers
-                      </h3>
-                      <p className="text-center display-1 bag">
-                        {totalCustomerCount}
-                      </p>
+                      <h3 className="card-heading font-color fs-6 text-uppercase">Total Customers</h3>
+                      <p className="text-center display-1 bag">{totalCustomerCount}</p>
                     </div>
                   </div>
                 </div>
               </Slide>
             </div>
 
-
             <div className="col-sm-12 col-md-6 col-lg-3">
               <Slide delay={50} className="h-100">
                 <div className="card container-fluid bg-color h-100">
                   <div className="card-body p-4">
                     <div className="row h-100 ">
-                      <h3 className="card-heading font-color fs-6 text-uppercase">
-                        Total Orders
-                      </h3>
-                      <p className="text-center display-1 bag">
-                        {totalOrderCount}
-                      </p>
+                      <h3 className="card-heading font-color fs-6 text-uppercase">Total Orders</h3>
+                      <p className="text-center display-1 bag">{totalOrderCount}</p>
                     </div>
                   </div>
                 </div>
@@ -269,12 +241,8 @@ const Dashboard = () => {
                 <div className="card container-fluid bg-color h-100">
                   <div className="card-body p-4">
                     <div className="row h-100 ">
-                      <h3 className="card-heading font-color fs-6 text-uppercase">
-                        Cancelled Orders
-                      </h3>
-                      <p className="text-center display-1 bag">
-                        {cancelledOrdersCount}
-                      </p>
+                      <h3 className="card-heading font-color fs-6 text-uppercase">Cancelled Orders</h3>
+                      <p className="text-center display-1 bag">{cancelledOrdersCount}</p>
                     </div>
                   </div>
                 </div>
@@ -286,12 +254,8 @@ const Dashboard = () => {
                 <div className="card container-fluid bg-color h-100">
                   <div className="card-body p-4">
                     <div className="row h-100 ">
-                      <h3 className="card-heading font-color fs-6 text-uppercase">
-                        {'Total Revenue ($)'}
-                      </h3>
-                      <p className="text-center display-3 bag">
-                        {totalRevenue}
-                      </p>
+                      <h3 className="card-heading font-color fs-6 text-uppercase">{"Total Revenue ($)"}</h3>
+                      <p className="text-center display-3 bag">{totalRevenue}</p>
                     </div>
                   </div>
                 </div>
@@ -301,7 +265,7 @@ const Dashboard = () => {
         </Fade>
       </section>
     </main>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

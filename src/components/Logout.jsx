@@ -21,7 +21,7 @@ const Logout = () => {
     const response = await axios.get(`${VITE_SERVER}/auth/logout`, {
       withCredentials: true,
     });
-    console.log(response.data);
+    // console.log(response.data);
 
     // Clear session storage
     sessionStorage.clear();
@@ -33,7 +33,7 @@ const Logout = () => {
     logOut();
   });
 
-  return <div>Something went wrong! please go back and try again.</div>;
+  // return <div>Something went wrong! please go back and try again.</div>;
 };
 
 export default Logout;
