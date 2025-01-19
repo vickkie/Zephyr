@@ -25,12 +25,12 @@ const OrdersTable = ({ orders, action, deleteHandler }) => {
                   orders?.length > 0 ? (
                     orders.map((order) => (
                       <tr key={order?.orderId} className="border-bottom border-warning border-opacity-10">
-                        <td className="p-2">{order?.orderId}</td>
-                        <td>{order?.orderStatus}</td>
-                        <td>{order?.paymentStatus}</td>
-                        <td>${order?.total}.00</td>
+                        <td className="p-4">{order?.orderId}</td>
+                        <td className="p-4">{order?.orderStatus}</td>
+                        <td className="p-4">{order?.paymentStatus}</td>
+                        <td className="p-4">${order?.total}.00</td>
                         {action ? (
-                          <td>
+                          <td className="p-4">
                             <Link to={`${order?._id}`} className="text-decoration-none me-3">
                               <svg
                                 width="30px"
