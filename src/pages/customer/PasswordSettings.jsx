@@ -1,13 +1,15 @@
 import React, { useEffect, useContext } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import usePut from "../../hooks/usePut";
+
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import usePatch from "../../hooks/usePatch";
+usePatch;
 
 const PasswordSettings = () => {
-  const { postData, isLoading, error, errorMessage, updateStatus } = usePut("user/updateCred");
+  const { patchData, isLoading, error, errorMessage, updateStatus } = usePatch("user/updateCred");
   const { authData } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -45,7 +47,7 @@ const PasswordSettings = () => {
         .required("Confirm password is required"),
     }),
     onSubmit: (values) => {
-      postData({
+      patchData({
         currentPassword: values.currentPassword,
         newPassword: values.newPassword,
         userId: authData?._id,
