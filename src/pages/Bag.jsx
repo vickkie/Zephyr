@@ -543,8 +543,16 @@ const Bag = () => {
                         onChange={handlePaymentMethodChange}
                         className="login-input font-color d-block w-100 mb-2"
                       >
-                        <option value="Card">Card</option>
-                        <option value="Mpesa">Mpesa</option>
+                        <option
+                          style={{ backgroundColor: "var(--primary-color)", color: "white" }}
+                          className=""
+                          value="Card"
+                        >
+                          Card
+                        </option>
+                        <option style={{ backgroundColor: "var(--primary-color)", color: "white" }} value="Mpesa">
+                          Mpesa
+                        </option>
                       </select>
                     </div>
 
