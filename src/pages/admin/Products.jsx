@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Lazyload from "../../utils/lazyload";
 import Swal from "sweetalert2";
+import useGet from "../../hooks/useGet";
 
 const { VITE_SERVER } = import.meta.env;
 
@@ -16,26 +17,117 @@ const Products = () => {
 
   Lazyload();
 
-  /**
-   * The function `fetchAllProducts` fetches all products from a server using axios in a React
-   * application, updating state and handling loading and error states.
-   */
-  const fetchAllProducts = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(`${VITE_SERVER}/api/all-products`, {
-        withCredentials: true,
-      });
-      // console.log("all-products", response.data);
-      setAllProducts(response.data.products);
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-      error.message ? toast.error(error.message, { className: "toastify" }) : null;
-    } finally {
-      setLoading(false);
+  const [search, setSearch] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
+  const [filterCategory, setFilterCategory] = useState("");
+  const [sortField, setSortField] = useState("createdAt");
+  const [sortOrder, setSortOrder] = useState("desc");
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 10;
+  const [searchVisible, setSearchVisible] = useState(false);
+  const [calendarVisible, setCalendarVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState("");
+
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
+  const {
+    data: responseData,
+    isLoading,
+    error,
+    errorMessage,
+  } = useGet(
+    `products/hqall?page=${currentPage}&limit=${productsPerPage}&search=${search}&filterStatus=${filterStatus}&sortField=${sortField}&sortOrder=${sortOrder}`
+  );
+
+  const handleSort = (field) => {
+    setSortField(field);
+    setSortOrder(sortOrder === "desc" ? "asc" : "desc");
+  };
+
+  // Accessing the products from the response
+
+  const products = Array.isArray(responseData?.products) ? responseData.products : [];
+
+  // Filter, search, and sort products
+  const filteredProducts = Array.isArray(products)
+    ? products
+        .filter((product) =>
+          [product.status, product.category].some((field) => field.toLowerCase().includes(search.toLowerCase()))
+        )
+        .filter(
+          (product) =>
+            (!filterCategory || product.category === filterCategory) &&
+            (!filterStatus || product.status === filterStatus) &&
+            (!startDate || new Date(product.createdAt) >= startDate) &&
+            (!endDate || new Date(product.createdAt) <= endDate)
+        )
+    : [];
+
+  const sortedProducts = filteredProducts.sort((a, b) => {
+    const getValue = (item) => {
+      const value = item[sortField];
+      if (sortField === "amount") {
+        // Ensuring the amount is a valid string or number
+        const amountStr = value != null ? String(value) : "0"; // Convert to string
+        return parseFloat(amountStr.replace(/[^0-9.-]+/g, ""));
+      }
+      return value;
+    };
+
+    const aValue = getValue(a);
+    const bValue = getValue(b);
+
+    return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
+  });
+
+  const indexOfLastTransaction = currentPage * productsPerPage;
+  const currentProducts = sortedProducts.slice(indexOfLastTransaction - productsPerPage, indexOfLastTransaction);
+
+  const pendingProductsCount = responseData?.pendingTotal;
+
+  useEffect(() => {
+    // This will refetch the data when currentPage or other dependencies change
+
+    // console.log(products);
+    setAllProducts(products);
+    setLoading(false);
+  }, [currentPage, productsPerPage, search, filterStatus, sortField, sortOrder, products]);
+
+  // Handle page changes
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= responseData?.totalPages) {
+      setCurrentPage(newPage);
     }
   };
+
+  const toggleSearch = () => {
+    setSearchVisible((prev) => !prev);
+    setIsMobile((prev) => !prev);
+  };
+  const toggleCalendar = () => {
+    setCalendarVisible((prev) => !prev);
+    setIsMobile((prev) => !prev);
+  };
+
+  // const fetchAllProducts = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const response = await axios.get(`${VITE_SERVER}/api/all-products`, {
+  //       withCredentials: true,
+  //     });
+  //     // console.log("all-products", response.data);
+  //     setAllProducts(response.data.products);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error(error);
+  //     error.message ? toast.error(error.message, { className: "toastify" }) : null;
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   /**
    * The `deleteHandler` function is an asynchronous function that sends a delete request to a server
@@ -76,7 +168,7 @@ const Products = () => {
   };
 
   useEffect(() => {
-    fetchAllProducts();
+    // fetchAllProducts();
   }, []);
 
   return (
@@ -108,7 +200,10 @@ const Products = () => {
                           allProducts.length > 0 ? (
                             allProducts.map((product, index) => (
                               <tr className="border-bottom border-warning border-opacity-10" key={product?._id}>
-                                <td className="p-2">{index + 1}</td>
+                                {
+                                  //i did math?
+                                }
+                                <td className="p-2">{currentPage * productsPerPage - productsPerPage + index + 1}</td>
                                 <td className="table-image">
                                   <img
                                     className="lozad object-fit-cover rounded-circle p-3"
@@ -208,6 +303,27 @@ const Products = () => {
               </div>
             </div>
           </div>
+          {responseData?.totalPages > 1 && (
+            <div className="pagination ">
+              <button
+                className="btn font-color bg-color"
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                « Previous
+              </button>
+              <span>
+                Page {currentPage} of {responseData.totalPages}
+              </span>
+              <button
+                className="btn font-color bg-color"
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === responseData.totalPages}
+              >
+                Next »
+              </button>
+            </div>
+          )}
         </div>
       </section>
     </>

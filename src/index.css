@@ -591,3 +591,10 @@ input[type="number"] {
 .banner-paragragh {
   font-size: var(--zy-base) !important;
 }
+.pagination {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  /* margin: 20px; */
+}
