@@ -26,8 +26,10 @@ const Hero = () => {
           loop
           autoPlay
           muted
+          preload="metadata"
         >
           <source data-src="/videos/av25_banner_10s_desktop.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
         </video>
 
         <img className="object-fit-cover w-100 h-100 lozad" data-src="/images/22.webp" alt="home banner" />

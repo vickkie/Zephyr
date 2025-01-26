@@ -2,20 +2,30 @@ import { useContext, useLayoutEffect } from "react";
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import axios from "axios";
 import { Cursor, Logout } from "./components";
-import { Home, Shop, Contact, Login, Bag, SingleProduct, Profile, Search, PageNotFound } from "./pages";
-import {
-  AdminLayout,
-  Products,
-  AddNewProduct,
-  Customers,
-  Dashboard,
-  Orders,
-  CustomerDetails,
-  OrderDetails,
-  UpdateProduct,
-} from "./pages/admin";
+import { Home, Login, Search, PageNotFound } from "./pages";
 
-import { Orders as CustomerOrders, OrderDetails as CustomerOrdersDetails } from "./pages/customer";
+import { lazy, Suspense } from "react";
+
+const Shop = lazy(() => import("./pages/Shop"));
+const Contact = lazy(() => import("./pages/Contact"));
+
+const Bag = lazy(() => import("./pages/Bag"));
+const SingleProduct = lazy(() => import("./pages/SingleProduct"));
+const Profile = lazy(() => import("./pages/Profile"));
+
+const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
+const Products = lazy(() => import("./pages/admin/Products"));
+const AddNewProduct = lazy(() => import("./pages/admin/AddNewProduct"));
+const Customers = lazy(() => import("./pages/admin/Customers"));
+const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
+const Orders = lazy(() => import("./pages/admin/Orders"));
+const CustomerDetails = lazy(() => import("./pages/admin/CustomerDetails"));
+const OrderDetails = lazy(() => import("./pages/admin/OrderDetails"));
+const UpdateProduct = lazy(() => import("./pages/admin/UpdateProduct"));
+
+const CustomerOrders = lazy(() => import("./pages/customer/Orders"));
+const CustomerOrdersDetails = lazy(() => import("./pages/customer/OrderDetails"));
+const ProfileSettings = lazy(() => import("./pages/customer/ProfileSettings"));
 
 import { ToastContainer } from "react-toastify";
 import BagContextProvider from "./contexts/BagContextProvider";
@@ -24,9 +34,10 @@ import IsAuthenticatedContext from "./contexts/IsAuthenticatedContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoutes from "./contexts/ProtectedRoutes";
 import ProtectedCustomer from "./contexts/ProtectedCustomer";
-import ProfileSettings from "./pages/customer/ProfileSettings";
+
 import FloatingThemeToggler from "./components/Theme";
 import ScrollTop from "./utils/ScrollTop";
+import Loading from "./utils/Loading/Loading";
 
 const { VITE_SERVER } = import.meta.env;
 
@@ -63,56 +74,57 @@ function App() {
       <AuthProvider>
         <BagContextProvider>
           <FloatingThemeToggler />
+          <Suspense fallback={<Loading />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/shop" element={<Shop category={"all"} />} />
+              <Route path="/kids" element={<Shop category={"kids"} subCategory={""} />} />
+              <Route path="/search/:query" element={<Search />} />
+              <Route path="/product/:id" element={<SingleProduct />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/login" element={<Login />} />
 
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/shop" element={<Shop category={"all"} />} />
-            <Route path="/kids" element={<Shop category={"kids"} subCategory={""} />} />
-            <Route path="/search/:query" element={<Search />} />
-            <Route path="/product/:id" element={<SingleProduct />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/login" element={<Login />} />
+              <Route path="/bag" element={<Bag />} />
+              <Route path="/logout" element={<Logout />} />
 
-            <Route path="/bag" element={<Bag />} />
-            <Route path="/logout" element={<Logout />} />
-
-            <Route path="/women">
-              <Route path="all" element={<Shop category={"women"} subCategory={""} />} />
-              <Route path="dresses" element={<Shop category={"women"} subCategory={"dresses"} />} />
-              <Route path="skirts" element={<Shop category={"women"} subCategory={"skirts"} />} />
-              <Route path="pants" element={<Shop category={"women"} subCategory={"pants"} />} />
-            </Route>
-
-            <Route path="/men">
-              <Route path="all" element={<Shop category={"men"} subCategory={""} />} />
-              <Route path="hoodies" element={<Shop category={"men"} subCategory={"hoodies"} />} />
-              <Route path="shirts" element={<Shop category={"men"} subCategory={"shirts"} />} />
-              <Route path="pants" element={<Shop category={"men"} subCategory={"pants"} />} />
-            </Route>
-
-            <Route element={<ProtectedCustomer />}>
-              <Route path="/profile" element={<Profile />}></Route>
-              <Route path="orders/:id" element={<CustomerOrdersDetails />} />
-              <Route path="orders" element={<CustomerOrders />} />
-              <Route path="profile/settings" element={<ProfileSettings />} />
-            </Route>
-
-            <Route element={<ProtectedRoutes />}>
-              <Route path="/admin" element={<AdminLayout />}>
-                <Route path="" element={<Dashboard />} />
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="orders" element={<Orders />} />
-                <Route path="orders/:id" element={<OrderDetails />} />
-                <Route path="products" element={<Products />} />
-                <Route path="add-product" element={<AddNewProduct />} />
-                <Route path="editproduct/:id" element={<UpdateProduct />} />
-                <Route path="customers" element={<Customers />} />
-                <Route path="customers/:id" element={<CustomerDetails />} />
+              <Route path="/women">
+                <Route path="all" element={<Shop category={"women"} subCategory={""} />} />
+                <Route path="dresses" element={<Shop category={"women"} subCategory={"dresses"} />} />
+                <Route path="skirts" element={<Shop category={"women"} subCategory={"skirts"} />} />
+                <Route path="pants" element={<Shop category={"women"} subCategory={"pants"} />} />
               </Route>
-            </Route>
 
-            <Route path="*" element={<PageNotFound />} />
-          </Routes>
+              <Route path="/men">
+                <Route path="all" element={<Shop category={"men"} subCategory={""} />} />
+                <Route path="hoodies" element={<Shop category={"men"} subCategory={"hoodies"} />} />
+                <Route path="shirts" element={<Shop category={"men"} subCategory={"shirts"} />} />
+                <Route path="pants" element={<Shop category={"men"} subCategory={"pants"} />} />
+              </Route>
+
+              <Route element={<ProtectedCustomer />}>
+                <Route path="/profile" element={<Profile />}></Route>
+                <Route path="orders/:id" element={<CustomerOrdersDetails />} />
+                <Route path="orders" element={<CustomerOrders />} />
+                <Route path="profile/settings" element={<ProfileSettings />} />
+              </Route>
+
+              <Route element={<ProtectedRoutes />}>
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route path="" element={<Dashboard />} />
+                  <Route path="dashboard" element={<Dashboard />} />
+                  <Route path="orders" element={<Orders />} />
+                  <Route path="orders/:id" element={<OrderDetails />} />
+                  <Route path="products" element={<Products />} />
+                  <Route path="add-product" element={<AddNewProduct />} />
+                  <Route path="editproduct/:id" element={<UpdateProduct />} />
+                  <Route path="customers" element={<Customers />} />
+                  <Route path="customers/:id" element={<CustomerDetails />} />
+                </Route>
+              </Route>
+
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </Suspense>
         </BagContextProvider>
         {/* </appContext.Provider> */}
 

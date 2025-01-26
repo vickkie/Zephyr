@@ -598,3 +598,6 @@ input[type="number"] {
   align-items: center;
   /* margin: 20px; */
 }
+.font-primary {
+  font-family: inherit !important;
+}

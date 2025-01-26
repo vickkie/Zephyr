@@ -307,7 +307,7 @@ const Products = () => {
           {responseData?.totalPages > 1 && (
             <div className="pagination ">
               <button
-                className="btn font-color bg-color"
+                className="btn px-2 py-1 font-primary font-color bg-color"
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
               >
