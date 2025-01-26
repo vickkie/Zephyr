@@ -4,7 +4,7 @@ import { Footer, Header } from "../components";
 import { useNavigate, useParams } from "react-router-dom";
 import BagContext from "../contexts/BagContext";
 import { toast } from "react-toastify";
-import { Minus, Plus } from "lucide-react";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 // import "swiper/css/navigation";
 // import "swiper/swiper-bundle.css";
@@ -178,7 +178,20 @@ const SingleProduct = () => {
                           onClick={() => setQuantity(quantity - 1)}
                           className="btn btn-sm bag text-decoration-none"
                         >
-                          <Minus />
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="lucide lucide-minus"
+                          >
+                            <path d="M5 12h14"></path>
+                          </svg>
                         </button>
 
                         <input
@@ -201,7 +214,21 @@ const SingleProduct = () => {
                           onClick={() => setQuantity(quantity + 1)}
                           className="btn btn-sm bag text-decoration-none"
                         >
-                          <Plus />
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="lucide lucide-plus"
+                          >
+                            <path d="M5 12h14"></path>
+                            <path d="M12 5v14"></path>
+                          </svg>
                         </button>
                       </div>
                       <button

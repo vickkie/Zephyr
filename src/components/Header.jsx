@@ -1,10 +1,7 @@
 import { useState, useContext, useEffect } from "react";
-// import debounce from 'lodash/debounce';
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { SearchIcon, UserCircleIcon, UserRoundCog } from "lucide-react";
-import { useLocalStorage } from "../hooks/useLocalStorage";
-import useGet from "../hooks/useGet";
 
 import BagContext from "../contexts/BagContext";
 import IsAuthenticatedContext from "../contexts/IsAuthenticatedContext";
@@ -15,10 +12,8 @@ const Header = () => {
 
   const { bagItems } = useContext(BagContext);
   const { isAuthenticated, user } = useContext(IsAuthenticatedContext);
-  const { data: allCategories, isLoading, error, errorMessage, statusCode, refetch } = useGet("admin/all-categories");
 
   const [searchQuery, SetSearchQuery] = useState();
-  const [categories, setCategories] = useState("");
 
   const [searchVisible, setSearchVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -44,11 +39,6 @@ const Header = () => {
     navigate(`/search/${searchQuery}`);
   };
 
-  useEffect(() => {
-    // console.log(allCategories?.categories);
-    setCategories(allCategories?.categories);
-  }, [allCategories]);
-
   return (
     <>
       <nav className="navbars navbar-expand-md">
@@ -73,42 +63,82 @@ const Header = () => {
                 </NavLink>
               </li>
 
-              {Array.isArray(categories) &&
-                categories &&
-                categories.map((category) => (
-                  <li key={category._id} className="nav-item dropdown dropdown-hover">
-                    <NavLink
-                      className="nav-link dropdown-toggle font-color bg-color px-2 py-0 mx-1  text-center"
-                      to="/women"
-                      role="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      {category.category}
+              <li className="nav-item dropdown dropdown-hover">
+                <NavLink
+                  className="nav-link dropdown-toggle font-color bg-color px-2 py-0 mx-1  text-center"
+                  to="/women"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Women
+                </NavLink>
+                <ul className="dropdown-menu">
+                  <li>
+                    <NavLink className="dropdown-item" id="women" to="/women/all">
+                      All Products
                     </NavLink>
-                    <ul className="dropdown-menu">
-                      <li>
-                        <NavLink className="dropdown-item" id="women" to={`/${category.category}/all`}>
-                          All Products
-                        </NavLink>
-                      </li>
-
-                      {Array.isArray(category.subCategories) &&
-                        category.subCategories &&
-                        category.subCategories.map((subCategory, index) => (
-                          <li key={index}>
-                            <NavLink
-                              className="dropdown-item"
-                              id={category.category}
-                              to={`/${category.category}/${subCategory}`}
-                            >
-                              {subCategory}
-                            </NavLink>
-                          </li>
-                        ))}
-                    </ul>
                   </li>
-                ))}
+                  <li>
+                    <NavLink className="dropdown-item" id="dresses" to="/women/dresses">
+                      Dresses
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="dropdown-item" id="wpants" to="/women/pants">
+                      Pants
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="dropdown-item" id="skirts" to="/women/skirts">
+                      Skirts
+                    </NavLink>
+                  </li>
+                </ul>
+              </li>
+              <li className="nav-item dropdown">
+                <NavLink
+                  className="nav-link dropdown-toggle font-color bg-color px-2 py-0 mx-1  text-center"
+                  to="/men"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Men
+                </NavLink>
+                <ul className="dropdown-menu">
+                  <li>
+                    <NavLink className="dropdown-item" id="men" to="/men/all">
+                      All Products
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="dropdown-item" id="shirts" to="/men/shirts">
+                      Shirts
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="dropdown-item" id="pants" to="/men/pants">
+                      Pants
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink className="dropdown-item" id="hoodies" to="/men/hoodies">
+                      Hoodies
+                    </NavLink>
+                  </li>
+                </ul>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link font-color bg-color px-2 py-0 mx-1  text-center" id="kids" to="/kids">
+                  Kids
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link font-color bg-color px-2 py-0 mx-1 text-center" id="contact" to="/contact">
+                  Contact
+                </NavLink>
+              </li>
             </ul>
           </div>
           <div className="accounts">
@@ -278,8 +308,6 @@ const Header = () => {
                 aria-expanded="false"
                 aria-label="Toggle navigation"
               >
-                {/* <span className="navbar-toggler-icon "></span> */}
-
                 <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M3 7H21" stroke="var(--font-color)" strokeWidth="1.5" strokeLinecap="round" />
                   {/* <path
@@ -315,7 +343,32 @@ const Header = () => {
 
                 <button className="btn font-color visually-hidden" type="submit">
                   search
-                  <SearchIcon size={18} />
+                  <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" strokeWidth="0" />
+
+                    <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" />
+
+                    <g id="SVGRepo_iconCarrier">
+                      {" "}
+                      <path
+                        d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+                        stroke="var(--font-color)"
+                        strokeWidth="2"
+                      />{" "}
+                      <path
+                        d="M14 14L16 16"
+                        stroke="var(--font-color)"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />{" "}
+                      <path
+                        d="M15 11.5C15 13.433 13.433 15 11.5 15C9.567 15 8 13.433 8 11.5C8 9.567 9.567 8 11.5 8C13.433 8 15 9.567 15 11.5Z"
+                        stroke="var(--font-color)"
+                        strokeWidth="2"
+                      />{" "}
+                    </g>
+                  </svg>
                 </button>
               </form>
             </ul>
