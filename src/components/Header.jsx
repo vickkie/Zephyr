@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { SearchIcon, UserCircleIcon, UserRoundCog } from "lucide-react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import useGet from "../hooks/useGet";
 
 import BagContext from "../contexts/BagContext";
 import IsAuthenticatedContext from "../contexts/IsAuthenticatedContext";
@@ -14,8 +15,10 @@ const Header = () => {
 
   const { bagItems } = useContext(BagContext);
   const { isAuthenticated, user } = useContext(IsAuthenticatedContext);
+  const { data: allCategories, isLoading, error, errorMessage, statusCode, refetch } = useGet("admin/all-categories");
 
   const [searchQuery, SetSearchQuery] = useState();
+  const [categories, setCategories] = useState("");
 
   const [searchVisible, setSearchVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -41,6 +44,11 @@ const Header = () => {
     navigate(`/search/${searchQuery}`);
   };
 
+  useEffect(() => {
+    // console.log(allCategories?.categories);
+    setCategories(allCategories?.categories);
+  }, [allCategories]);
+
   return (
     <>
       <nav className="navbars navbar-expand-md">
@@ -65,82 +73,42 @@ const Header = () => {
                 </NavLink>
               </li>
 
-              <li className="nav-item dropdown dropdown-hover">
-                <NavLink
-                  className="nav-link dropdown-toggle font-color bg-color px-2 py-0 mx-1  text-center"
-                  to="/women"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Women
-                </NavLink>
-                <ul className="dropdown-menu">
-                  <li>
-                    <NavLink className="dropdown-item" id="women" to="/women/all">
-                      All Products
+              {Array.isArray(categories) &&
+                categories &&
+                categories.map((category) => (
+                  <li key={category._id} className="nav-item dropdown dropdown-hover">
+                    <NavLink
+                      className="nav-link dropdown-toggle font-color bg-color px-2 py-0 mx-1  text-center"
+                      to="/women"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      {category.category}
                     </NavLink>
+                    <ul className="dropdown-menu">
+                      <li>
+                        <NavLink className="dropdown-item" id="women" to={`/${category.category}/all`}>
+                          All Products
+                        </NavLink>
+                      </li>
+
+                      {Array.isArray(category.subCategories) &&
+                        category.subCategories &&
+                        category.subCategories.map((subCategory, index) => (
+                          <li key={index}>
+                            <NavLink
+                              className="dropdown-item"
+                              id={category.category}
+                              to={`/${category.category}/${subCategory}`}
+                            >
+                              {subCategory}
+                            </NavLink>
+                          </li>
+                        ))}
+                    </ul>
                   </li>
-                  <li>
-                    <NavLink className="dropdown-item" id="dresses" to="/women/dresses">
-                      Dresses
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink className="dropdown-item" id="wpants" to="/women/pants">
-                      Pants
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink className="dropdown-item" id="skirts" to="/women/skirts">
-                      Skirts
-                    </NavLink>
-                  </li>
-                </ul>
-              </li>
-              <li className="nav-item dropdown">
-                <NavLink
-                  className="nav-link dropdown-toggle font-color bg-color px-2 py-0 mx-1  text-center"
-                  to="/men"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Men
-                </NavLink>
-                <ul className="dropdown-menu">
-                  <li>
-                    <NavLink className="dropdown-item" id="men" to="/men/all">
-                      All Products
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink className="dropdown-item" id="shirts" to="/men/shirts">
-                      Shirts
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink className="dropdown-item" id="pants" to="/men/pants">
-                      Pants
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink className="dropdown-item" id="hoodies" to="/men/hoodies">
-                      Hoodies
-                    </NavLink>
-                  </li>
-                </ul>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link font-color bg-color px-2 py-0 mx-1  text-center" id="kids" to="/kids">
-                  Kids
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link font-color bg-color px-2 py-0 mx-1 text-center" id="contact" to="/contact">
-                  Contact
-                </NavLink>
-              </li>
+                ))}
             </ul>
           </div>
           <div className="accounts">

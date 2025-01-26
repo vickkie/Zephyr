@@ -107,6 +107,7 @@ const Products = () => {
     setSearchVisible((prev) => !prev);
     setIsMobile((prev) => !prev);
   };
+
   const toggleCalendar = () => {
     setCalendarVisible((prev) => !prev);
     setIsMobile((prev) => !prev);
