@@ -154,6 +154,62 @@ body {
   background-color: var(--primary-color);
   font-weight: bold;
 }
+.back-primary {
+  .floating-button-container {
+    position: fixed;
+    bottom: 20px; /* Adjust to place it vertically */
+    right: 20px; /* Adjust to place it horizontally */
+    z-index: 1000; /* Ensures it's above other elements */
+  }
+
+  .floating-button {
+    background-color: #007bff; /* Button background color */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+  }
+
+  .floating-button:hover {
+    background-color: #0056b3; /* Darker color on hover */
+  }
+
+  .menu {
+    position: absolute;
+    top: 40px; /* Distance between button and menu */
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .menu ul {
+    list-style-type: none;
+    padding: 10px;
+    margin: 0;
+  }
+
+  .menu ul li {
+    padding: 10px;
+  }
+
+  .menu ul li a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 16px;
+  }
+
+  .menu ul li a:hover {
+    color: #0056b3; /* Hover effect for links */
+  }
+
+  background-color: var(--primary-color);
+}
 
 .nav-item .active,
 .nav-link:focus,
@@ -597,4 +653,35 @@ input[type="number"] {
 }
 .font-primary {
   font-family: inherit !important;
+}
+
+.floating-button-container {
+  position: fixed;
+  top: 50%; /* Adjust to place it vertically */
+  right: 20px; /* Adjust to place it horizontally */
+  z-index: 1000; /* Ensures it's above other elements */
+}
+
+.floating-button {
+  background-color: var(--primary-color);
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  padding: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s;
+}
+
+.floating-button:hover {
+  color: var(--secondary-color);
+  background-color: var(--font-color);
+}
+
+.text-primary2 {
+  color: var(--primary-color);
 }

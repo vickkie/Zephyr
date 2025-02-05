@@ -8,8 +8,11 @@ import Orders from "./Orders";
 import OrderDetails from "./OrderDetails";
 import UpdateProduct from "./UpdateProduct";
 UpdateProduct;
-
+import AddNewCategory from "./AddNewCategory";
+import Categories from "./Categories";
 export {
+  Categories,
+  AddNewCategory,
   AddNewProduct,
   AdminLayout,
   Products,

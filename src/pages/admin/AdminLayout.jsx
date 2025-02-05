@@ -3,6 +3,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
+import FloatingButton from "../../components/FloatingButton";
 
 const AdminHeader = () => {
   const [storedValue, setStoredValue] = useLocalStorage("themeMode", []);
@@ -94,12 +95,12 @@ const AdminHeader = () => {
             </li>
             <li className="nav-link">
               <NavLink
-                to="add-product"
+                to="categories"
                 id="login"
                 className="btn d-flex align-items-center nav-link font-color bg-color px-4 py-2 mx-2 text-uppercase"
                 style={{ fontSize: 0.88 + "rem" }}
               >
-                Add Product
+                Categories
               </NavLink>
             </li>
             <li className="nav-link">
@@ -161,6 +162,7 @@ const AdminLayout = () => {
   return (
     <>
       <AdminHeader />
+      {/* <FloatingButton /> */}
       <Outlet />
     </>
   );

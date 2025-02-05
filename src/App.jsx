@@ -30,9 +30,12 @@ const AddNewProduct = lazy(() => import("./pages/admin/AddNewProduct"));
 const Customers = lazy(() => import("./pages/admin/Customers"));
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const Orders = lazy(() => import("./pages/admin/Orders"));
+const Categories = lazy(() => import("./pages/admin/Categories"));
 const CustomerDetails = lazy(() => import("./pages/admin/CustomerDetails"));
 const OrderDetails = lazy(() => import("./pages/admin/OrderDetails"));
 const UpdateProduct = lazy(() => import("./pages/admin/UpdateProduct"));
+const AddNewCategory = lazy(() => import("./pages/admin/AddNewCategory"));
+const UpdateCategory = lazy(() => import("./pages/admin/UpdateCategory"));
 
 const CustomerOrders = lazy(() => import("./pages/customer/Orders"));
 const CustomerOrdersDetails = lazy(() => import("./pages/customer/OrderDetails"));
@@ -73,6 +76,7 @@ function App() {
       <AuthProvider>
         <BagContextProvider>
           <FloatingThemeToggler />
+
           <Suspense fallback={<Loading />}>
             <Routes>
               <Route path="/" element={<Home />} />
@@ -110,10 +114,15 @@ function App() {
               <Route element={<ProtectedRoutes />}>
                 <Route path="/admin" element={<AdminLayout />}>
                   <Route path="" element={<Dashboard />} />
+
                   <Route path="dashboard" element={<Dashboard />} />
                   <Route path="orders" element={<Orders />} />
                   <Route path="orders/:id" element={<OrderDetails />} />
+                  <Route path="category/:id" element={<UpdateCategory />} />
+                  <Route path="add-category" element={<AddNewCategory />} />
+
                   <Route path="products" element={<Products />} />
+                  <Route path="categories" element={<Categories />} />
                   <Route path="add-product" element={<AddNewProduct />} />
                   <Route path="editproduct/:id" element={<UpdateProduct />} />
                   <Route path="customers" element={<Customers />} />
