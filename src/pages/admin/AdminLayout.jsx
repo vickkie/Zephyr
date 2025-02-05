@@ -77,8 +77,7 @@ const AdminHeader = () => {
               <NavLink
                 to="dashboard"
                 id="login"
-                className="btn d-flex align-items-center nav-link font-color bg-color px-4 py-2 mx-2 text-uppercase"
-                style={{ fontSize: 0.88 + "rem" }}
+                className="btn d-flex align-items-center nav-link font-color bg-color px-2 py-2 mx-2 text-uppercase"
               >
                 Dashboard
               </NavLink>
@@ -87,8 +86,7 @@ const AdminHeader = () => {
               <NavLink
                 to="orders"
                 id="login"
-                className="btn d-flex align-items-center nav-link font-color bg-color px-4 py-2 mx-2 text-uppercase"
-                style={{ fontSize: 0.88 + "rem" }}
+                className="btn d-flex align-items-center nav-link font-color bg-color px-2 py-2 mx-2 text-uppercase"
               >
                 Orders
               </NavLink>
@@ -97,8 +95,7 @@ const AdminHeader = () => {
               <NavLink
                 to="categories"
                 id="login"
-                className="btn d-flex align-items-center nav-link font-color bg-color px-4 py-2 mx-2 text-uppercase"
-                style={{ fontSize: 0.88 + "rem" }}
+                className="btn d-flex align-items-center nav-link font-color bg-color px-2  py-2 mx-2 text-uppercase"
               >
                 Categories
               </NavLink>
@@ -107,8 +104,7 @@ const AdminHeader = () => {
               <NavLink
                 to="products"
                 id="products"
-                className="btn d-flex align-items-center nav-link font-color bg-color px-4 py-2 mx-2 text-uppercase"
-                style={{ fontSize: 0.88 + "rem" }}
+                className="btn d-flex align-items-center nav-link font-color bg-color px-2 py-2 mx-2 text-uppercase"
               >
                 Products
               </NavLink>
@@ -117,8 +113,7 @@ const AdminHeader = () => {
               <NavLink
                 to="customers"
                 id="customers"
-                className="btn d-flex align-items-center nav-link font-color bg-color px-4 py-2 mx-2 text-uppercase"
-                style={{ fontSize: 0.88 + "rem" }}
+                className="btn d-flex align-items-center nav-link font-color bg-color  py-2 mx-2 text-uppercase"
               >
                 Customers
               </NavLink>
@@ -127,7 +122,7 @@ const AdminHeader = () => {
               <NavLink
                 to="announcements"
                 id="announcements"
-                className="btn d-flex align-items-center nav-link font-color bg-color px-4 py-2 mx-2 text-uppercase"
+                className="btn d-flex align-items-center nav-link font-color bg-color px-2 py-2 mx-2 text-uppercase"
                 style={{ fontSize: 0.88 + "rem" }}
               >
                 Settings
@@ -137,8 +132,7 @@ const AdminHeader = () => {
               <NavLink
                 to="/logout"
                 id="login"
-                className="btn d-flex align-items-center nav-link font-color bg-color px-4 py-2 mx-2 text-uppercase"
-                style={{ fontSize: 0.88 + "rem" }}
+                className="btn d-flex align-items-center nav-link font-color bg-color px-2 py-2 mx-2 text-uppercase"
               >
                 Logout
                 {/* <i className="ai ai-sign-out-fill ms-2"></i> */}
