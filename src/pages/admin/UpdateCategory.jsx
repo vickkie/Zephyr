@@ -14,8 +14,9 @@ const EditCategory = () => {
   const [category, setCategory] = useState("");
   const [subCategories, setSubCategories] = useState([""]);
   const [categoryPic, setCategoryPic] = useState([]);
-  const [selectedImage, setSelectedImage] = useState([]);
 
+  const [selectedImage, setSelectedImage] = useState([]);
+  const [newSelected, setnewSelected] = useState(false);
   const { data: categoryData, refetch } = useGet(`admin/category/${id}`);
 
   useEffect(() => {
@@ -27,6 +28,7 @@ const EditCategory = () => {
   }, [categoryData]);
 
   const handleFileChange = (e) => {
+    setnewSelected(true);
     const files = Array.from(e.target.files);
     const newFiles = files.filter((file) => !categoryPic.some((img) => img.name === file.name));
     if (newFiles.length > 0) {
@@ -60,7 +62,7 @@ const EditCategory = () => {
     setLoading(true);
 
     let categoryPicUrl = categoryData.category.categoryPic;
-    if (selectedImage !== null) {
+    if (newSelected) {
       try {
         categoryPicUrl = await uploadImages(categoryPic);
       } catch (error) {
@@ -89,6 +91,7 @@ const EditCategory = () => {
       );
 
       setLoading(false);
+      setnewSelected(false);
 
       //   console.log(response);
       if (response.data.success) {
