@@ -716,3 +716,6 @@ input[type="number"] {
 .mint-3 {
   margin-top: -16px;
 }
+.admin-navbar .nav-link {
+  font-size: var(--zy-sm) !important;
+}

@@ -71,8 +71,8 @@ const AdminHeader = () => {
             <path d="M3 17H21" stroke="var(--font-color)" strokeWidth="1.5" strokeLinecap="round" />
           </svg>
         </button>
-        <div className="collapse navbar-collapse row navbarNav" id="navbarNav">
-          <ul className="navbar-nav col font-color justify-content-end gap-">
+        <div className="admin-navbar collapse navbar-collapse row navbarNav" id="navbarNav">
+          <ul className="navbar-nav  col font-color justify-content-end gap-">
             <li className="nav-link">
               <NavLink
                 to="dashboard"
@@ -106,7 +106,7 @@ const AdminHeader = () => {
             <li className="nav-link">
               <NavLink
                 to="products"
-                id="login"
+                id="products"
                 className="btn d-flex align-items-center nav-link font-color bg-color px-4 py-2 mx-2 text-uppercase"
                 style={{ fontSize: 0.88 + "rem" }}
               >
@@ -116,11 +116,21 @@ const AdminHeader = () => {
             <li className="nav-link">
               <NavLink
                 to="customers"
-                id="login"
+                id="customers"
                 className="btn d-flex align-items-center nav-link font-color bg-color px-4 py-2 mx-2 text-uppercase"
                 style={{ fontSize: 0.88 + "rem" }}
               >
                 Customers
+              </NavLink>
+            </li>
+            <li className="nav-link">
+              <NavLink
+                to="announcements"
+                id="announcements"
+                className="btn d-flex align-items-center nav-link font-color bg-color px-4 py-2 mx-2 text-uppercase"
+                style={{ fontSize: 0.88 + "rem" }}
+              >
+                Settings
               </NavLink>
             </li>
             <li className="nav-link">

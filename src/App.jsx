@@ -36,6 +36,9 @@ const OrderDetails = lazy(() => import("./pages/admin/OrderDetails"));
 const UpdateProduct = lazy(() => import("./pages/admin/UpdateProduct"));
 const AddNewCategory = lazy(() => import("./pages/admin/AddNewCategory"));
 const UpdateCategory = lazy(() => import("./pages/admin/UpdateCategory"));
+const CreateAnnouncement = lazy(() => import("./pages/admin/CreateAnnouncement"));
+const Announcements = lazy(() => import("./pages/admin/Announcements"));
+const UpdateAnnouncement = lazy(() => import("./pages/admin/UpdateAnnouncement"));
 
 const CustomerOrders = lazy(() => import("./pages/customer/Orders"));
 const CustomerOrdersDetails = lazy(() => import("./pages/customer/OrderDetails"));
@@ -116,6 +119,9 @@ function App() {
                   <Route path="" element={<Dashboard />} />
 
                   <Route path="dashboard" element={<Dashboard />} />
+                  <Route path="announcements" element={<Announcements />} />
+                  <Route path="add-announcement" element={<CreateAnnouncement />} />
+                  <Route path="edit-announcement/:id" element={<UpdateAnnouncement />} />
                   <Route path="orders" element={<Orders />} />
                   <Route path="orders/:id" element={<OrderDetails />} />
                   <Route path="category/:id" element={<UpdateCategory />} />
