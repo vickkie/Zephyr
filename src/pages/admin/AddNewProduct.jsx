@@ -81,8 +81,8 @@ const AddNewProduct = () => {
           ? await uploadImages(images) // Use the utility function
           : ["https://source.unsplash.com/random/500x500/?man,fashion,cloth,placeholder"];
     } catch (error) {
-      console.error("Failed to upload images:", error);
       toast.error("Image upload failed! Please try again.", { className: "toastify" });
+      console.error("Failed to upload images:", error);
       setLoading(false);
       return;
     }

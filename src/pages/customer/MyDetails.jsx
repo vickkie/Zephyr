@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+/* eslint-disable react/prop-types */
+import { useState, useEffect, useContext } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import usePut from "../../hooks/usePut";

@@ -58,7 +58,7 @@ const uploadImages = async (files) => {
 
     return uploadedUrls;
   } catch (error) {
-    console.error("Image upload failed:", error.message || error);
+    console.error("Image upload failed:", error);
     throw new Error("Failed to upload images. Please try again.");
   }
 };

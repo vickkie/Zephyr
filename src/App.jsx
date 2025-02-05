@@ -5,6 +5,17 @@ import { Cursor, Logout } from "./components";
 import { Home, Login, Search, PageNotFound } from "./pages";
 
 import { lazy, Suspense } from "react";
+import { ToastContainer } from "react-toastify";
+import BagContextProvider from "./contexts/BagContextProvider";
+
+import IsAuthenticatedContext from "./contexts/IsAuthenticatedContext";
+import { AuthProvider } from "./contexts/AuthContext";
+import ProtectedRoutes from "./contexts/ProtectedRoutes";
+import ProtectedCustomer from "./contexts/ProtectedCustomer";
+
+import FloatingThemeToggler from "./components/Theme";
+import ScrollTop from "./utils/ScrollTop";
+import Loading from "./utils/Loading/Loading";
 
 const Shop = lazy(() => import("./pages/Shop"));
 const Contact = lazy(() => import("./pages/Contact"));
@@ -26,18 +37,6 @@ const UpdateProduct = lazy(() => import("./pages/admin/UpdateProduct"));
 const CustomerOrders = lazy(() => import("./pages/customer/Orders"));
 const CustomerOrdersDetails = lazy(() => import("./pages/customer/OrderDetails"));
 const ProfileSettings = lazy(() => import("./pages/customer/ProfileSettings"));
-
-import { ToastContainer } from "react-toastify";
-import BagContextProvider from "./contexts/BagContextProvider";
-
-import IsAuthenticatedContext from "./contexts/IsAuthenticatedContext";
-import { AuthProvider } from "./contexts/AuthContext";
-import ProtectedRoutes from "./contexts/ProtectedRoutes";
-import ProtectedCustomer from "./contexts/ProtectedCustomer";
-
-import FloatingThemeToggler from "./components/Theme";
-import ScrollTop from "./utils/ScrollTop";
-import Loading from "./utils/Loading/Loading";
 
 const { VITE_SERVER } = import.meta.env;
 

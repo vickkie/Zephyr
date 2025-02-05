@@ -111,9 +111,6 @@ body {
 }
 
 .search input::placeholder {
-  color: rgba(113, 113, 113, 0.874);
-  font-family: "Roboto Mono", monospace;
-  font-family: monospace, "Font Awesome 5 Free";
   font-weight: lighter;
   text-align: center;
 }

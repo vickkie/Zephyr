@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { PageTitle } from "../../components";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import Lazyload from "../../utils/lazyload";
 import Swal from "sweetalert2";
@@ -49,7 +49,10 @@ const Products = () => {
 
   // Accessing the products from the response
 
-  const products = Array.isArray(responseData?.products) ? responseData.products : [];
+  // const products = Array.isArray(responseData?.products) ? responseData.products : [];
+  const products = useMemo(() => {
+    return Array.isArray(responseData?.products) ? responseData.products : [];
+  }, [responseData?.products]);
 
   // Filter, search, and sort products
   const filteredProducts = Array.isArray(products)
@@ -90,9 +93,10 @@ const Products = () => {
 
   useEffect(() => {
     // This will refetch the data when currentPage or other dependencies change
-
     // console.log(products);
-    setAllProducts(products);
+    if (products.length > 0) {
+      setAllProducts(products);
+    }
     setLoading(false);
   }, [currentPage, productsPerPage, search, filterStatus, sortField, sortOrder, products]);
 
@@ -168,9 +172,9 @@ const Products = () => {
     }
   };
 
-  useEffect(() => {
-    // fetchAllProducts();
-  }, []);
+  // useEffect(() => {
+  //   // fetchAllProducts();
+  // }, []);
 
   return (
     <>

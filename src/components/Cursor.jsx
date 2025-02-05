@@ -35,7 +35,7 @@ const Cursor = () => {
             color: "#000",
             outerAlpha: 0.3,
             innerScale: 0.7,
-            outerScale: 6,
+            outerScale: 4,
           },
         },
       ]}
