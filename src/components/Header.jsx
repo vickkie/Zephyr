@@ -5,6 +5,7 @@ import { NavLink, Link, useNavigate } from "react-router-dom";
 
 import BagContext from "../contexts/BagContext";
 import IsAuthenticatedContext from "../contexts/IsAuthenticatedContext";
+import AnnouncementBanner from "../utils/AnnouncementBanner";
 // import { appContext } from '../App';
 
 const Header = () => {
@@ -41,6 +42,7 @@ const Header = () => {
 
   return (
     <>
+      <AnnouncementBanner />
       <nav className="navbars navbar-expand-md">
         <div className="container-fluidZ grid-header px-0 py-2">
           {/* <Link className="navbar-brand font-color" to="/">ÜXORA</Link> */}

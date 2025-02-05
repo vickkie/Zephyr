@@ -685,3 +685,34 @@ input[type="number"] {
 .text-primary2 {
   color: var(--primary-color);
 }
+.marquee {
+  margin: 0;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100%; /* Ensures it doesn't overflow beyond the container */
+}
+
+.marquee::before {
+  content: attr(data-text);
+  display: inline-block;
+  animation: marquee 10s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.minw-2 {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  margin-left: -8px;
+  margin-right: -8px;
+}
+.mint-3 {
+  margin-top: -16px;
+}
