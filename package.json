@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "npx vite --host 192.168.100.221 --port 3000",
+    "dev": "npx vite --host 192.168.100.61 --port 3000",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-     "clean:vite": "rm -rf node_modules/.vite"
+    "clean:vite": "rm -rf node_modules/.vite"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -25,6 +25,7 @@
     "react-animated-cursor": "^2.11.2",
     "react-awesome-reveal": "^4.2.8",
     "react-dom": "^18.2.0",
+    "react-fast-marquee": "^1.6.5",
     "react-router-dom": "^6.22.3",
     "react-toastify": "^10.0.5",
     "sweetalert2": "^11.15.10",

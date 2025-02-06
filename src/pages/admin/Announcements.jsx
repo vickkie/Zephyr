@@ -111,7 +111,7 @@ const Announcements = () => {
                       <span className="spinner-grow spinner-grow bag" aria-hidden="true"></span>
                     </div>
                   )}
-                  {console.log(announcements)}
+
                   {announcements.length > 0 ? (
                     <table className="order-table w-100">
                       <thead className="card-heading text-uppercase font-color fs-6 bag">

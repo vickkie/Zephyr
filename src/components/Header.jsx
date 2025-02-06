@@ -47,7 +47,7 @@ const Header = () => {
         <div className="container-fluidZ grid-header px-0 py-2">
           {/* <Link className="navbar-brand font-color" to="/">ÜXORA</Link> */}
           <NavLink className="navbar-brand font-color position-relative header justify-content-start" to="/">
-            ZEPHYR
+            ZEPHIR
             <span className="position-absolute top-0 start-50 translate-middle fs-6">
               <i className="ai ai-crown-fill bag"></i>
             </span>

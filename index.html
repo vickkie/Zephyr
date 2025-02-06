@@ -2,22 +2,37 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ZEPHYR - Home</title>
+    <title>ZEPHIR - Home</title>
     <!-- Fonts  -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- 
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet" /> -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        function updateFavicon() {
+          const darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          let favicon = document.querySelector("link[rel='icon']");
 
-    <!-- <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/solid.min.css"
-      integrity="sha512-q31I2VNnkq2PPXEAZy9HXTl2yREt4dpick5JZmUe/sXxaC2Q6sX12rUYHpAXG613HTNOHAQdGKNcrwDLw8H7TQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    /> -->
+          if (!favicon) {
+            // If no favicon exists, create one
+            favicon = document.createElement("link");
+            favicon.rel = "icon";
+            favicon.type = "image/svg+xml";
+            document.head.appendChild(favicon);
+          }
+
+          // Set the correct favicon based on theme
+          favicon.href = darkMode ? "/svg/zephir-white.svg" : "/svg/zephir-black.svg";
+        }
+
+        updateFavicon(); // Run on page load
+
+        // Listen for theme changes
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", updateFavicon);
+      });
+    </script>
+
     <link rel="stylesheet" href="/fonts/fonts2/fontawesome-all.css" />
 
     <link fetchpriority="high" rel="preload" href="/images/22.webp" as="image" />

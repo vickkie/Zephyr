@@ -156,8 +156,8 @@ const SingleProduct = () => {
 
           {/* Product Details Section */}
           <div className="col-lg-6">
-            <div className="card container-fluid h-auto p-4 position-sticky top-0">
-              <div className="card-body p-4">
+            <div className="card container-fluid h-auto p-lg-4 position-sticky top-0">
+              <div className="card-body p-lg-4">
                 <div className="row">
                   <div className="col">
                     <p className="product-card-price text-uppercase font-color mb-0">

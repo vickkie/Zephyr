@@ -685,12 +685,30 @@ input[type="number"] {
 .text-primary2 {
   color: var(--primary-color);
 }
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  position: relative;
+}
+
 .marquee {
-  margin: 0;
   display: inline-block;
   white-space: nowrap;
-  overflow: hidden;
-  max-width: 100%; /* Ensures it doesn't overflow beyond the container */
+  animation: marquee-scroll 10s linear infinite;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.marq {
+  font-size: var(--zy-sm);
 }
 
 .marquee::before {
@@ -718,4 +736,7 @@ input[type="number"] {
 }
 .admin-navbar .nav-link {
   font-size: var(--zy-sm) !important;
+}
+.color-black {
+  color: black;
 }

@@ -11,7 +11,7 @@ const Footer = () => {
                 <div className="col d-flex flex-column justify-content-between">
                   <div>
                     <Link to="/" className="navbar-brand font-color text-uppercase fs-3">
-                      Zephyr
+                      ZEPHIR
                     </Link>
                     <p className="card-text mb-2">
                       Why fit in when you were born to stand out?. Elevate your wardrobe, and let each outfit reflect
