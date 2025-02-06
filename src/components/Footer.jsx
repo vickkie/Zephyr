@@ -37,126 +37,113 @@ const Footer = () => {
 
         {/* Section with all the links for other webpages */}
         <div className="col-lg-9">
-          <div className="card container-fluid">
-            <div className="card-body p-4 sm-text-center">
+          <div className="card h-100 container-fluid">
+            <div className="card-body  p-4 sm-text-center">
               <div className="row">
-                <div className="col-lg-6">
-                  <div className="row">
-                    <div className="col-sm-6 mt-2">
-                      <h2 className="card-heading font-color text-uppercase fs-4">woman</h2>
-                      <ul className="footer-menu p-1">
-                        <li>
-                          <Link
-                            className="footer-link font-color text-decoration-none text-uppercase"
-                            to="/women/dresses"
-                          >
-                            Dresses
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            className="footer-link font-color text-decoration-none text-uppercase"
-                            to="/women/pants"
-                          >
-                            pants
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            className="footer-link font-color text-decoration-none text-uppercase"
-                            to="/women/skirts"
-                          >
-                            skirts
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="col-sm-6 mt-2">
-                      <h2 className="card-heading font-color text-uppercase fs-4">men</h2>
-                      <ul className="footer-menu p-1">
-                        <li>
-                          <Link className="footer-link font-color text-decoration-none text-uppercase" to="/men/shirts">
-                            shirts
-                          </Link>
-                        </li>
-                        <li>
-                          <Link className="footer-link font-color text-decoration-none text-uppercase" to="/men/pants">
-                            pants
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            className="footer-link font-color text-decoration-none text-uppercase"
-                            to="/men/hoodies"
-                          >
-                            hoodies
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
+                <div className="row ">
+                  <div className="col-lg-3 col-md-6 mt-2">
+                    <h2 className="card-heading font-color text-uppercase fs-4">woman</h2>
+                    <ul className="footer-menu p-1">
+                      <li>
+                        <Link
+                          className="footer-link font-color text-decoration-none text-uppercase"
+                          to="/women/dresses"
+                        >
+                          Dresses
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/women/pants">
+                          pants
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/women/skirts">
+                          skirts
+                        </Link>
+                      </li>
+                    </ul>
                   </div>
-                </div>
-
-                <div className="col-lg-6">
-                  <div className="row">
-                    <div className="col-sm-6 mt-2">
-                      <h2 className="card-heading font-color text-uppercase fs-4">kids</h2>
-                      <ul className="footer-menu p-1">
-                        <li>
-                          <Link className="footer-link font-color text-decoration-none text-uppercase" to="/kids">
-                            Dresses
-                          </Link>
-                        </li>
-                        <li>
-                          <Link className="footer-link font-color text-decoration-none text-uppercase" to="/kids">
-                            T-shirts
-                          </Link>
-                        </li>
-                        <li>
-                          <Link className="footer-link font-color text-decoration-none text-uppercase" to="/kids">
-                            Hoodies
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="col-sm-6 mt-2">
-                      <h2 className="card-heading font-color text-uppercase fs-4">links</h2>
-                      <ul className="footer-menu p-1">
-                        <li>
-                          <Link className="footer-link font-color text-decoration-none text-uppercase" to="/">
-                            home
-                          </Link>
-                        </li>
-                        <li>
-                          <Link className="footer-link font-color text-decoration-none text-uppercase" to="/login">
-                            login
-                          </Link>
-                        </li>
-                        <li>
-                          <Link className="footer-link font-color text-decoration-none text-uppercase" to="/contact">
-                            contact
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
+                  <div className="col-lg-3 col-md-6 mt-2">
+                    <h2 className="card-heading font-color text-uppercase fs-4">men</h2>
+                    <ul className="footer-menu p-1">
+                      <li>
+                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/men/shirts">
+                          shirts
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/men/pants">
+                          pants
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/men/hoodies">
+                          hoodies
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="col-lg-3 col-md-6 mt-2">
+                    <h2 className="card-heading font-color text-uppercase fs-4">kids</h2>
+                    <ul className="footer-menu p-1">
+                      <li>
+                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/kids">
+                          Dresses
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/kids">
+                          T-shirts
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/kids">
+                          Hoodies
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="col-lg-3 col-md-6 mt-2">
+                    <h2 className="card-heading font-color text-uppercase fs-4">links</h2>
+                    <ul className="footer-menu p-1">
+                      <li>
+                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/">
+                          home
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/login">
+                          login
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/contact">
+                          contact
+                        </Link>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Copyright message section */}
-          <div className="card container-fluid mt-3">
-            <div className="card-body p-4">
-              <div className="row">
-                <div className="col">
-                  <p className="text-center copyright m-0">
-                    <Link to="/" className="navbar-brand font-color" style={{ fontSize: 1 + "rem" }}>
-                      Zephyr{" "}
-                    </Link>
-                    - © Copyright 2025
-                  </p>
-                </div>
+        {/* Copyright message section */}
+        <div className="card container-fluid mb-3 mt-3">
+          <div className="card-body p-4">
+            <div className="row">
+              <div className="font-color col-12 mt-3 mb-3 d-flex align-items-center justify-content-center bottom-logo">
+                Zephir
+              </div>
+              <div className="col-12">
+                <p className="text-center copyright m-0">
+                  <Link to="/" className="navbar-brand font-color" style={{ fontSize: 1 + "rem" }}>
+                    Zephyr{" "}
+                  </Link>
+                  - © Copyright 2025
+                </p>
               </div>
             </div>
           </div>

@@ -740,3 +740,10 @@ input[type="number"] {
 .color-black {
   color: black;
 }
+.bottom-logo {
+  font-size: calc(var(--zy-xxxl) * 2);
+  text-transform: uppercase;
+  text-align: center;
+  /* padding: 20px; */
+  min-height: calc(var(--zy-xxxl) * 2);
+}
