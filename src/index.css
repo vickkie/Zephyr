@@ -642,7 +642,7 @@ input[type="number"] {
   mix-blend-mode: difference;
 }
 .banner-paragragh {
-  font-size: var(--zy-base) !important;
+  font-size: calc(var(--zy-sm) + 3px) !important;
 }
 .pagination {
   display: flex;

@@ -167,7 +167,7 @@ const SingleProduct = () => {
                     <h1 className="title-prod text-uppercase font-color my-2">{product.productName}</h1>
 
                     <div className="mb-1">
-                      <p className="banner-paragragh fs-6 fw-medium muted">{product.shortDescription}</p>
+                      <p className="banner-paragragh fs-6 fw-medium font-color font-mid">{product.shortDescription}</p>
                     </div>
 
                     <form className="contact-form my-5">
@@ -247,7 +247,7 @@ const SingleProduct = () => {
                     </form>
 
                     <div className="">
-                      <p className="banner-paragragh fs-6 fw-medium muted">{product.longDescription}</p>
+                      <p className="banner-paragragh fs-6 fw-medium font-color">{product.longDescription}</p>
                     </div>
                   </div>
                 </div>
