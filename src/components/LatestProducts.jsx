@@ -45,12 +45,12 @@ const LatestProducts = () => {
     },
     // when window width is >= 1024px
     1024: {
-      slidesPerView: 5,
+      slidesPerView: 4,
     },
   };
   return (
     <section className="slider mt-3">
-      <h2 className="font-color text-uppercase fs-1 m-5">Featured Products</h2>
+      <h2 className="font-color text-uppercase fs-1 m-5">NEW ARRIVALS</h2>
       <Swiper
         modules={[Autoplay, A11y]}
         spaceBetween={16}
@@ -68,6 +68,7 @@ const LatestProducts = () => {
               regularPrice={product.regularPrice}
               salePrice={product.salePrice}
               image={product.images[0]}
+              status={product?.status}
             />
           </SwiperSlide>
         ))}

@@ -231,13 +231,18 @@ const SingleProduct = () => {
                           </svg>
                         </button>
                       </div>
+
                       <button
                         type="submit"
                         onClick={updateBag}
                         className="btn text-uppercase d-block my-2 py-3 w-100 fw-bold"
-                        style={{ fontSize: 0.88 + "rem" }}
+                        disabled={product.status === "Sold"}
+                        style={{
+                          backgroundColor: product.status === "Sold" ? "gray" : "",
+                          cursor: product.status === "Sold" ? "not-allowed" : "",
+                        }}
                       >
-                        Add to bag
+                        {product.status === "Sold" ? "Sold Out" : "Add to Bag"}
                       </button>
                     </form>
 

@@ -110,33 +110,14 @@ import Lazyload from "../utils/lazyload";
 
 const defaultImg = "https://source.unsplash.com/random/500x500/?man,fashion,cloth,placeholder";
 
-const ProductCard = ({ id, productName, regularPrice, salePrice, image, images = [] }) => {
+const ProductCard = ({ id, productName, regularPrice, salePrice, image, images = [], status }) => {
   const { addToBag } = useContext(BagContext);
 
-  const [mainImg, setMainImg] = useState(image); // Main image (default)
-  const [hoverImg, setHoverImg] = useState(images[0] || image); // Hover image (first in images array)
+  const [mainImg, setMainImg] = useState(image);
+  const [hoverImg, setHoverImg] = useState(images[0] || image);
 
   // Lazyload initialization
   Lazyload();
-
-  // function removedef(def) {
-  //   return def !== defaultImg;
-  // }
-
-  // const gottenFirst = [image];
-  // console.log("gottenFirst", gottenFirst);
-
-  // const allImgs = [gottenFirst.flat(), images.flat()].flat();
-
-  // console.log("allImgs", allImgs);
-
-  // const finalImgs = allImgs.filter(removedef);
-
-  // console.log("finalImgs", finalImgs);
-
-  // const finalMain = console.log(finalImgs[0]);
-
-  // console.log("finalMain", finalMain);
 
   const item = {
     id,
@@ -149,12 +130,12 @@ const ProductCard = ({ id, productName, regularPrice, salePrice, image, images =
 
   const handleMouseEnter = () => {
     if (images.length > 0) {
-      setMainImg(hoverImg); // Show hover image on mouse enter
+      setMainImg(hoverImg);
     }
   };
 
   const handleMouseLeave = () => {
-    setMainImg(image); // Reset to main image on mouse leave
+    setMainImg(image);
   };
 
   return (
@@ -163,40 +144,47 @@ const ProductCard = ({ id, productName, regularPrice, salePrice, image, images =
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      {/* Image & Overlay */}
       <Link to={`/product/${id}`} className="product-link d-block position-relative overflow-hidden">
         <div className="image-container position-relative w-100 h-100">
           <img
-            className="lozad object-fit-cover w-100 h-100"
+            className={`lozad object-fit-cover w-100 h-100 ${status === "Sold" ? "sold-out-image" : ""}`}
             src={mainImg}
             alt="product"
-            style={{ transition: "opacity 0.5s ease" }}
           />
           {images.length > 0 && (
             <img
               className="lozad object-fit-cover w-100 h-100 position-absolute transition-opacity"
               src={hoverImg}
               alt="product-hover"
-              style={{
-                opacity: mainImg === hoverImg ? 1 : 0, // Only show hover image on hover
-                transition: "opacity 0.5s ease",
-              }}
+              style={{ opacity: mainImg === hoverImg ? 1 : 0, transition: "opacity 0.5s ease" }}
             />
           )}
+          {/* Sold Out Badge */}
+          {status === "Sold" && <span className="sold-out-badge">Sold Out</span>}
         </div>
       </Link>
+
+      {/* Product Info */}
       <div className="container-fluid p-3 pb-0">
         <div className="row">
           <div className="col-12">
             <h2 className="card-heading font-color text-uppercase fs-4">{productName}</h2>
           </div>
-          <div className=" row col-lg-12 col-md-12 col-sm-12 p-2 py-1">
+          <div className="row col-lg-12 col-md-12 col-sm-12 p-2 py-1">
             <p className="product-card-price font-color m-0">KES {salePrice.toFixed(2)}</p>
-            {/* <p className="product-card-price striked m-0">KES {regularPrice.toFixed(2)}</p> */}
           </div>
           <div className="col-12">
-            <Link onClick={() => addToBag(item)} className="btn add-cart-btn fw-medium p-1 px-3">
-              <span className="fas mx-1 fs-5">&#xf290;</span> <span className="pe-2">Add to bag</span>
-            </Link>
+            {/* Disable Add to Bag if Sold */}
+            <button
+              onClick={() => addToBag(item)}
+              className="btn add-cart-btn fw-medium p-1 px-3"
+              disabled={status === "Sold"}
+              style={{ opacity: status === "Sold" ? 0.5 : 1, cursor: status === "Sold" ? "not-allowed" : "pointer" }}
+            >
+              <span className="fas mx-1 fs-5">&#xf290;</span>
+              <span className="pe-2">{status === "Sold" ? "Unavailable" : "Add to bag"}</span>
+            </button>
           </div>
         </div>
       </div>

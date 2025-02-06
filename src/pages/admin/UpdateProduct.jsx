@@ -35,6 +35,7 @@ const UpdateProduct = () => {
   const [featured, setFeatured] = useState(existingProduct?.featured);
   const [isreversing, setisreversing] = useState(false);
   const [categories, setCategories] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState(existingProduct?.status);
 
   const productData = {
     productName,
@@ -45,7 +46,11 @@ const UpdateProduct = () => {
     selectedCategory,
     selectedSubCategory,
     featured,
+    selectedStatus,
   };
+  useEffect(() => {
+    console.log(existingProduct);
+  }, [existingProduct]);
 
   const successMessage = (productId) => (
     <div>
@@ -400,6 +405,39 @@ const UpdateProduct = () => {
           </div>
 
           <div className="col-sm-4">
+            {/* Product Status */}
+            <div className="card container-fluid p-3 mb-3">
+              <div className="card-body p-3">
+                <div className="row">
+                  <div className="col">
+                    <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Product Status</h2>
+                    <div className="d-flex flex-column gap-3 my-5">
+                      {["Available", "Sold"].map((status) => (
+                        <div key={status}>
+                          <input
+                            type="radio"
+                            className="btn-check"
+                            name="productStatus"
+                            value={status}
+                            id={`status-${status}`}
+                            checked={selectedStatus === status}
+                            onChange={(e) => setSelectedStatus(e.target.value)}
+                            autoComplete="off"
+                            required
+                          />
+                          <label
+                            className="filter-btn btn btn-sm border bag mx-lg-4 w-100"
+                            htmlFor={`status-${status}`}
+                          >
+                            {status}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             {/* Category */}
             <div className="card container-fluid p-3 mb-3">
               <div className="card-body p-3">

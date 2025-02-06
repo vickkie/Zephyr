@@ -16,6 +16,7 @@ const ProductGrid = (props) => {
                 salePrice={product?.salePrice}
                 image={product?.image}
                 images={product?.images}
+                status={product?.status}
               />
             </div>
           ))

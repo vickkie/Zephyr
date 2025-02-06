@@ -747,3 +747,19 @@ input[type="number"] {
   /* padding: 20px; */
   min-height: calc(var(--zy-xxxl) * 2);
 }
+.sold-out-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: red;
+  color: white;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 5px;
+}
+
+.sold-out-image {
+  filter: grayscale(100%) brightness(0.6); /* Make it gray and darker */
+}
