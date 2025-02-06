@@ -8,8 +8,8 @@ const Home = () => {
       <Header />
       <Hero />
       <LatestProducts />
-      <Categories />
       <Features />
+      <Categories />
       <ProductSlider />
       <CallToAction />
       <Footer />

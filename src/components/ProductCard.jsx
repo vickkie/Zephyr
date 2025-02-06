@@ -110,7 +110,7 @@ import Lazyload from "../utils/lazyload";
 
 const defaultImg = "https://source.unsplash.com/random/500x500/?man,fashion,cloth,placeholder";
 
-const ProductCard = ({ id, productName, regularPrice, salePrice, image, images = [], status }) => {
+const ProductCard = ({ id, productName, regularPrice, salePrice, image, images = [], status, height }) => {
   const { addToBag } = useContext(BagContext);
 
   const [mainImg, setMainImg] = useState(image);
@@ -143,6 +143,7 @@ const ProductCard = ({ id, productName, regularPrice, salePrice, image, images =
       className="card product-card position-relative p-2"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      style={{ height: height ? height : "" }}
     >
       {/* Image & Overlay */}
       <Link to={`/product/${id}`} className="product-link d-block position-relative overflow-hidden">
@@ -178,12 +179,14 @@ const ProductCard = ({ id, productName, regularPrice, salePrice, image, images =
             {/* Disable Add to Bag if Sold */}
             <button
               onClick={() => addToBag(item)}
-              className="btn add-cart-btn fw-medium p-1 px-3"
+              className={`btn  add-cart-btn fw-medium p-1 px-3 pe-2 ${status === "Sold" ? "soldout" : "available"}`}
               disabled={status === "Sold"}
               style={{ opacity: status === "Sold" ? 0.5 : 1, cursor: status === "Sold" ? "not-allowed" : "pointer" }}
             >
               <span className="fas mx-1 fs-5">&#xf290;</span>
-              <span className="pe-2">{status === "Sold" ? "Unavailable" : "Add to bag"}</span>
+              <span className={`pe-2 ${status === "Sold" ? "soldout" : "available"}`}>
+                {status === "Sold" ? "Unavailable" : "Add to bag"}
+              </span>
             </button>
           </div>
         </div>
