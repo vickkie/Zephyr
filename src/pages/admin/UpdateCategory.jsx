@@ -14,26 +14,28 @@ const EditCategory = () => {
   const [category, setCategory] = useState("");
   const [subCategories, setSubCategories] = useState([""]);
   const [categoryPic, setCategoryPic] = useState([]);
-
   const [selectedImage, setSelectedImage] = useState([]);
-  const [newSelected, setnewSelected] = useState(false);
-  const { data: categoryData, refetch } = useGet(`admin/category/${id}`);
+  const [newSelected, setNewSelected] = useState(false);
+  const { data: categoryData } = useGet(`admin/category/${id}`);
+
+  // Maintain categoryPicUrl properly
+  const [categoryPicUrl, setCategoryPicUrl] = useState("");
 
   useEffect(() => {
-    if (categoryData) {
+    if (categoryData?.category) {
       setCategory(categoryData.category.category);
       setSubCategories(categoryData.category.subCategories);
+      setCategoryPicUrl(categoryData.category.categoryPic); // Ensure it's set correctly
       setSelectedImage([categoryData.category.categoryPic]);
     }
   }, [categoryData]);
 
   const handleFileChange = (e) => {
-    setnewSelected(true);
+    setNewSelected(true);
     const files = Array.from(e.target.files);
-    const newFiles = files.filter((file) => !categoryPic.some((img) => img.name === file.name));
-    if (newFiles.length > 0) {
-      const previewUrls = newFiles.map((file) => URL.createObjectURL(file));
-      setCategoryPic(newFiles);
+    if (files.length > 0) {
+      const previewUrls = files.map((file) => URL.createObjectURL(file));
+      setCategoryPic(files);
       setSelectedImage(previewUrls);
     }
   };
@@ -41,6 +43,7 @@ const EditCategory = () => {
   const removeImage = () => {
     setCategoryPic([]);
     setSelectedImage([]);
+    setNewSelected(true); // Ensure user knows they need to upload a new one
   };
 
   const handleSubCategoryChange = (index, value) => {
@@ -49,57 +52,48 @@ const EditCategory = () => {
     setSubCategories(newSubCategories);
   };
 
-  const addSubCategory = () => {
-    setSubCategories([...subCategories, ""]);
-  };
-
-  const removeSubCategory = (index) => {
-    setSubCategories(subCategories.filter((_, i) => i !== index));
-  };
-
+  const addSubCategory = () => setSubCategories([...subCategories, ""]);
+  const removeSubCategory = (index) => setSubCategories(subCategories.filter((_, i) => i !== index));
   const updateCategoryHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    let categoryPicUrl = categoryData.category.categoryPic;
-    if (newSelected) {
-      try {
-        categoryPicUrl = await uploadImages(categoryPic);
-      } catch (error) {
-        toast.error("Image upload failed! Please try again.");
-        setLoading(false);
-        return;
-      }
-    }
-
     try {
-      //   console.log(
-      //     category,
-      //     subCategories,
-      //     Array.isArray(categoryPicUrl) ? categoryPicUrl[0][0] : categoryPicUrl || categoryData.category?.categoryPic
-      //   );
+      let newUrl = categoryPicUrl; // Default to existing image URL
+
+      if (newSelected && categoryPic.length > 0) {
+        try {
+          const uploadedUrls = await uploadImages(categoryPic);
+
+          newUrl = Array.isArray(uploadedUrls[0]) ? uploadedUrls[0][0] : uploadedUrls[0];
+          // console.log(newUrl);
+          setCategoryPicUrl(newUrl);
+        } catch (error) {
+          toast.error("Image upload failed! Please try again.");
+          setLoading(false);
+          return;
+        }
+      }
+      // console.log(newUrl || categoryPicUrl);
+
       const response = await axios.put(
         `${VITE_SERVER}/api/admin/update-category/${id}`,
         {
           category,
           subCategories,
-          categoryPic: Array.isArray(categoryPicUrl)
-            ? categoryPicUrl[0][0]
-            : categoryPicUrl || categoryData.category?.categoryPic,
+          categoryPic: newUrl || categoryPicUrl, // Send string, not array
         },
         { withCredentials: true }
       );
 
       setLoading(false);
-      setnewSelected(false);
+      setNewSelected(false);
 
-      //   console.log(response);
       if (response.data.success) {
         toast.success("Category updated successfully!");
         navigate("/admin/categories");
       } else {
         toast.error("Failed to update category!");
-        // console.log(response);
       }
     } catch (error) {
       setLoading(false);

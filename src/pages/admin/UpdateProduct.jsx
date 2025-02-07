@@ -121,7 +121,7 @@ const UpdateProduct = () => {
       const finalImgs = allUpdatedImgs.filter(removedef);
       const allproducts = { ...productData, images: finalImgs };
 
-      console.log(allproducts);
+      // console.log(allproducts);
 
       if (allUpdatedImgs.includes(defaultImg, 0) && allUpdatedImgs.length <= 1) {
         toast.error("You must have atleast 1 image!", { className: "toastify" });

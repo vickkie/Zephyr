@@ -24,7 +24,7 @@ const Categories = () => {
       const response = await axios.get(`${VITE_SERVER}/api/admin/all-categories`, {
         withCredentials: true,
       });
-      console.log("all-categories", response.data.categories);
+      // console.log("all-categories", response.data.categories);
       setAllCategories(response.data.categories);
       setLoading(false);
     } catch (error) {
@@ -54,7 +54,7 @@ const Categories = () => {
         const response = await axios.delete(`${VITE_SERVER}/api/admin/delete-category/${id}`, {
           withCredentials: true,
         });
-        console.log("deleteHandler", response.data);
+        // console.log("deleteHandler", response.data);
 
         response.data.success ? toast.success("Category deleted successfully!", { className: "toastify" }) : null;
 
