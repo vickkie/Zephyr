@@ -12,7 +12,6 @@ const Categories = ({ onSelectCategory }) => {
       try {
         const response = await axios.get(`${VITE_SERVER}/api/admin/all-categories`, { withCredentials: true });
 
-        console.log(response.data.categories);
         setCategories(response.data.categories);
       } catch (error) {
         console.error("Error fetching categories", error);

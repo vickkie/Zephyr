@@ -787,7 +787,7 @@ input[type="number"] {
 }
 
 .feature-card:hover {
-  transform: scale(1.05);
+  transform: scale(1.002);
   box-shadow: 0 8px 20px var(--font-color);
 }
 
@@ -823,4 +823,57 @@ input[type="number"] {
   .feature-heading {
     font-size: 1.3rem;
   }
+}
+.decoline-wrapper {
+  color: white;
+  justify-content: center;
+  align-items: center;
+  width: 50vw;
+}
+.decoline {
+  background-color: var(--font-color);
+  height: 5px;
+  width: 80%;
+}
+
+@media screen and (max-width: 768px) and (min-width: 467px) {
+  .decoline-wrapper {
+    width: 11vw !important;
+  }
+}
+@media screen and (max-width: 466px) {
+  .decoline-wrapper {
+    display: none !important;
+  }
+}
+@media only screen and (max-width: 1440px) {
+  .footer-payments {
+    margin: 0;
+  }
+}
+.footer-payments {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 29px;
+}
+.buildBy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--font-color);
+  flex-direction: row;
+  flex-wrap: nowrap;
+  font-size: calc(var(--zy-md)- 2px);
+  font-family: "Satoshi";
+}
+.lowest-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.buildBy a {
+  color: var(--primary-color);
+  font-family: "Chillax";
 }

@@ -50,7 +50,12 @@ const LatestProducts = () => {
   };
   return (
     <section className="slider mt-3">
-      <h2 className="font-color text-uppercase fs-1 m-5">NEW ARRIVALS</h2>
+      <div className="headeruzi col justify-content-between d-flex">
+        <h2 className="font-color text-uppercase fs-1 m-5">NEW ARRIVALS</h2>
+        <div className="d-flex decoline-wrapper">
+          <div className="decoline"></div>
+        </div>
+      </div>
       <Swiper
         modules={[Autoplay, A11y]}
         spaceBetween={16}
