@@ -877,3 +877,46 @@ input[type="number"] {
   color: var(--primary-color);
   font-family: "Chillax";
 }
+.glass-bg {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1); /* Light transparent background */
+  backdrop-filter: blur(3px); /* Blur effect */
+  -webkit-backdrop-filter: blur(4px); /* Safari support */
+  border-radius: 10px; /* Smooth edges */
+}
+.shop-herobtn {
+  border-radius: 30px;
+  color: var(--secondary-color);
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: unset;
+  font-weight: bold;
+  padding: 4px 10px;
+  justify-self: center;
+  backdrop-filter: blur(3px);
+  background: #ffffff8a;
+}
+.outro-banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.outro-video {
+  height: 70% !important;
+  width: 70% !important;
+  border-radius: 40px;
+  z-index: 32;
+}
+.outro-video2 {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 30;
+}
+.outro-backdrop-in {
+  backdrop-filter: blur(50px);
+  z-index: 31;
+}

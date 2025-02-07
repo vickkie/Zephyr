@@ -6,15 +6,13 @@ const Hero = () => {
 
   return (
     <section className="banner position-relative mt-3">
-      <div className="banner-content d-flex position-absolute top-0 bottom-0 start-0 end-0 align-items-end">
-        <div className="row align-items-end">
-          <div className="col h-100">
-            <h1 className="banner-heading lh-1 text-uppercase">
-              Fashion <br /> & Freedom
-            </h1>
-            <p className="banner-paragragh fs-5 fw-medium">
-              Bringing Your Fashion Brand&rsquo;s Unique Identity to Life Through <br /> Amazing Styles and Products.
-            </p>
+      <div className="banner-content d-flex position-absolute top-0 bottom-0 start-0 end-0 align-items-center justify-content-center">
+        <div className="row align-items-center">
+          <div className="col glass-bg  h-100">
+            <h1 className="banner-heading lh-1 text-uppercase">Fashion & Freedom</h1>
+            <div className=" shop-herobtn">
+              <div className="banner-paragragh fs-5 fw-medium">Shop now</div>
+            </div>
           </div>
         </div>
       </div>
