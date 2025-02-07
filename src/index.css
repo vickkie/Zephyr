@@ -6,6 +6,13 @@
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: "Playfair";
+  src: url("/fonts/PlayfairDisplay-MediumItalic.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 @font-face {
   font-family: "Chillax";
@@ -32,8 +39,6 @@
 }
 
 :root {
-  --primary-color: #cebd63;
-
   /* light mode  */
 
   /* --secondary-color: #f4f2ed;
@@ -47,8 +52,14 @@
   --font-color: #f4f2ed;
   --light-hover: rgba(255, 255, 255, 0.1);
   --light: rgba(255, 255, 255, 0.05); */
+  --primary-color: #cebd63;
 
   --heading-font: "Chillax", sans-serif;
+
+  --font-1: "Satoshi", sans-serif;
+  --font-2: "Chillax", sans-serif;
+  --font-4: "Playfair", var(--font-2);
+
   --paragraph-font: "Satoshi", sans-serif;
   --toastify-icon-color-success: var(--secondary-color);
   --toastify-color-progress-success: var(--secondary-color);
@@ -363,15 +374,23 @@ body {
   /* border: 1px solid rgba(255,255,255,.1); */
   border-radius: 0.5rem;
 }
+.singlep .product-card-price {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+}
 
+.singlep .product-card-price {
+  font-family: var(--font-1);
+  font-size: var(--zy-base);
+}
+.product-card-price {
+  font-family: var(--font-1);
+  font-size: var(--zy-base);
+}
 .product-card:hover {
   background-color: rgba(255, 255, 255, 0.1);
   transition: 300ms;
-}
-
-.product-card-price {
-  font-family: "Roboto Mono", monospace;
-  font-size: 0.88rem;
 }
 
 .striked {

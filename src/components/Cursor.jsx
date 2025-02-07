@@ -1,6 +1,22 @@
 import AnimatedCursor from "react-animated-cursor";
+import { useState, useEffect } from "react";
 
 const Cursor = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    const handleMediaChange = (e) => setIsMobile(e.matches);
+
+    handleMediaChange(mediaQuery);
+    mediaQuery.addEventListener("change", handleMediaChange);
+
+    return () => mediaQuery.removeEventListener("change", handleMediaChange);
+  }, []);
+
+  if (isMobile) {
+    return;
+  }
   return (
     <AnimatedCursor
       innerSize={12}

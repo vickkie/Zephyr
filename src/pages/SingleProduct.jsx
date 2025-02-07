@@ -6,6 +6,10 @@ import BagContext from "../contexts/BagContext";
 import { toast } from "react-toastify";
 
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/autoplay";
 // import "swiper/css/navigation";
 // import "swiper/swiper-bundle.css";
 
@@ -118,57 +122,47 @@ const SingleProduct = () => {
           <div className="col-lg-6">
             {allImages.length >= 1 && (
               <Swiper
+                modules={[Navigation, Pagination, Autoplay]}
                 spaceBetween={10}
                 slidesPerView={1}
-                navigation
-                // pagination={{ clickable: true }}
+                // navigation
+                pagination={{ clickable: true }}
+                autoplay={{ delay: 3000, disableOnInteraction: false }}
                 loop
-                flipEffect
                 className="product-images-slider"
               >
-                {/* Assuming product.images is an array of image URLs */}
-                {/* {console.log("allImages", allImages)} */}
-
-                {allImages !== null &&
-                  allImages?.map((imagex, index) => (
-                    <SwiperSlide key={index}>
-                      <div className="position-relative overflow-hidden h-100">
-                        <div className="image-backdrop-m position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>
-                        <div className=" position-absolute top-0 bottom-0 start-0 end-0 opacity-50">
-                          {/* <Navigation /> */}
-                        </div>
-
-                        <img
-                          className="product-image object-fit-cover w-100 h-100"
-                          src={imagex}
-                          alt={`product image ${index + 1}`}
-                        />
-                      </div>
-                    </SwiperSlide>
-                  ))}
-                {/* Notifier */}
-                <div className="swiper-notifier">
-                  <span>Swipe to view more →</span>
-                </div>
+                {allImages?.map((imagex, index) => (
+                  <SwiperSlide key={index}>
+                    <div className="position-relative overflow-hidden h-100">
+                      <div className="image-backdrop-m position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>
+                      <img
+                        className="product-image object-fit-cover w-100 h-100"
+                        src={imagex}
+                        alt={`product image ${index + 1}`}
+                      />
+                    </div>
+                  </SwiperSlide>
+                ))}
               </Swiper>
             )}
           </div>
 
           {/* Product Details Section */}
           <div className="col-lg-6">
-            <div className="card container-fluid h-auto p-lg-4 position-sticky top-0">
+            <div className="card singlep container-fluid h-auto p-lg-4 position-sticky top-0">
               <div className="card-body p-lg-4">
                 <div className="row">
                   <div className="col">
-                    <p className="product-card-price text-uppercase font-color mb-0">
-                      <span className="product-card-price font-color me-2">KES {product.salePrice?.toFixed(2)} </span>
-                      <span className="product-card-price striked ms-2">KES {product.regularPrice?.toFixed(2)} </span>
-                    </p>
                     <h1 className="title-prod text-uppercase font-color my-2">{product.productName}</h1>
 
                     <div className="mb-1">
                       <p className="banner-paragragh fs-6 fw-medium font-color font-mid">{product.shortDescription}</p>
                     </div>
+
+                    <p className="product-card-price text-uppercase font-color mb-0">
+                      <span className="product-card-price font-color me-2">KES {product.salePrice?.toFixed(2)} </span>
+                      <span className="product-card-price striked ms-2">KES {product.regularPrice?.toFixed(2)} </span>
+                    </p>
 
                     <form className="contact-form my-5">
                       <div className="d-flex align-items-center w-100 my-4">

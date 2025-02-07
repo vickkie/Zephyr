@@ -14,7 +14,7 @@
 }
 
 .banner-heading {
-  font-family: var(--heading-font);
+  font-family: var(--font-4);
   font-size: calc(var(--zy-md));
   color: black;
 }
