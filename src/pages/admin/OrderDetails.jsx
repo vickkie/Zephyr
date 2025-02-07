@@ -9,15 +9,16 @@ const { VITE_SERVER } = import.meta.env;
 
 const OrderDetails = () => {
   const navigate = useNavigate();
+  let { id } = useParams();
 
   const [loading, setLoading] = useState();
   const [order, setOrder] = useState({});
 
   const [selectedStatus, setSelectedStatus] = useState();
 
-  let { id } = useParams();
-
   const { responseData, isLoading, errorMessage, patchData } = usePatch(`admin/order/${order.orderId}`);
+  // console.log(responseData);
+  // console.log(order.orderId);
 
   const [isEditMode, setIsEditMode] = useState(false); // State to control edit mode
   const [formData, setFormData] = useState({
@@ -55,7 +56,7 @@ const OrderDetails = () => {
       const response = await axios.get(`${VITE_SERVER}/api/admin/order/${id}`, {
         withCredentials: true,
       });
-      // console.log(response.data);
+      console.log(response.data.order);
       if (response.data.success) {
         setOrder(response.data.order);
         setFormData({
@@ -166,9 +167,10 @@ const OrderDetails = () => {
                 <div className="col">
                   <h2 className="card-heading text-uppercase fs-4 font-color">Items in Bag</h2>
                   {/* <!-- Products  --> */}
-                  {order?.products?.map((item) => (
-                    <BagItem key={item?.product?._id} {...item?.product} quantity={item?.quantity} />
-                  ))}
+                  {Array.isArray(order.products) &&
+                    order.products
+                      .filter((item) => item.product !== null) // Remove items where product is null
+                      .map((item) => <BagItem key={item?.product?._id} {...item?.product} quantity={item?.quantity} />)}
                 </div>
               </div>
             </div>
@@ -640,7 +642,7 @@ const OrderDetails = () => {
 // eslint-disable-next-line react/prop-types
 const BagItem = ({ images, productCode, productName, quantity, salePrice }) => {
   // const { increaseQuantity, decreaseQuantity, removeFromBag } = useContext(BagContext);
-  // console.log(images);
+  console.log(images);
 
   return (
     <div className="row mt-4 g-3">

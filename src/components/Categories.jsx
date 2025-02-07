@@ -1,12 +1,12 @@
 import "./Categories.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 const { VITE_SERVER } = import.meta.env;
 
 const Categories = ({ onSelectCategory }) => {
   const [categories, setCategories] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -33,7 +33,15 @@ const Categories = ({ onSelectCategory }) => {
                   <div
                     className="categories-box"
                     style={{ backgroundImage: `url(${category?.categoryPic})` }}
-                    onClick={() => onSelectCategory(category)}
+                    onClick={() => {
+                      // onSelectCategory(category);
+                      navigate("/shop", {
+                        state: {
+                          category,
+                          top: true,
+                        },
+                      });
+                    }}
                   >
                     <div className="overlay"></div>
                     <span className="category-title">{category?.category}</span>
