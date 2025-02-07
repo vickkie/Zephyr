@@ -30,7 +30,7 @@ const Hero = () => {
           Your browser does not support the video tag.
         </video>
 
-        <img className="object-fit-cover w-100 h-100 lozad" src="/images/22.webp" alt="home banner" />
+        <img className="object-fit-cover w-100 h-100 lozad" data-src="/images/22.webp" alt="home banner" />
       </div>
     </section>
   );
