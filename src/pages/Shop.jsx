@@ -83,19 +83,23 @@ const Shop = ({ category: initialCategory, subCategory: initialSubCategory }) =>
   return (
     <>
       <Header />
-      <PageTitle title={`Shop / ${category} - ${subCategory || ""}`} />
+      <div className="col d-flex justify-content-between align-items-center">
+        <PageTitle title={`Shop / ${category} - ${subCategory || ""}`} />
+        <div className="  mt-3">
+          <select className="font-color login-input" value={category} onChange={(e) => setCategory(e.target.value)}>
+            <option className="color-black" value="all">
+              All Categories
+            </option>
+            {categories.map((cat) => (
+              <option className="color-black" key={cat._id} value={cat.category}>
+                {cat.category}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
       {/* Category Filter Dropdown */}
-      <div className="container mt-3">
-        <select className="form-select" value={category} onChange={(e) => setCategory(e.target.value)}>
-          <option value="all">All Categories</option>
-          {categories.map((cat) => (
-            <option key={cat._id} value={cat.category}>
-              {cat.category}
-            </option>
-          ))}
-        </select>
-      </div>
 
       {loading ? (
         <div className="d-flex justify-content-center align-items-center h-100 w-100">

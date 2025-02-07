@@ -154,7 +154,7 @@ const OrderDetails = () => {
   }, [responseData, isLoading, errorMessage]);
 
   return (
-    <main className="container py-3">
+    <main className=" py-3">
       {/* <!-- Title  --> */}
       <h1 className="title text-uppercase text-center mt-5">Order #{order?.orderId}</h1>
       <h5 className="text-uppercase text-center mb-5">{/* Checkout */}</h5>
@@ -483,8 +483,12 @@ const OrderDetails = () => {
                         onChange={handleChange}
                         className="login-input font-color d-block w-70 mb-2"
                       >
-                        <option value="Unpaid">Unpaid</option>
-                        <option value="Paid">Paid</option>
+                        <option className="color-black" value="Unpaid">
+                          Unpaid
+                        </option>
+                        <option className="color-black" value="Paid">
+                          Paid
+                        </option>
                       </select>
                     ) : (
                       <span className="product-card-price font-color mb-0">{order?.paymentStatus}</span>

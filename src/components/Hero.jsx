@@ -9,7 +9,7 @@ const Hero = () => {
       <div className="banner-content d-flex position-absolute top-0 bottom-0 start-0 end-0 align-items-center justify-content-center">
         <div className="row align-items-center">
           <div className="col glass-bg  h-100">
-            <h1 className="banner-heading lh-1 text-lowercase">Fashion & Freedom</h1>
+            <h1 className="banner-heading lh-1 text-lowercase mb-3">Glam & Grandeur</h1>
             <div className=" shop-herobtn">
               <div className="banner-paragragh fs-5 fw-medium">Shop now</div>
             </div>

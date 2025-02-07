@@ -20,24 +20,24 @@ const Outro = () => {
         <div className="image-backdrop-m outro-backdrop position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>
 
         <video
-          className="position-absolute  outro-video2 object-fit-cover w-100 h-100"
+          className="position-absolute  outro-video2 object-fit-cover w-100 h-100 lozad"
           autoPlay
           loop
           muted
           preload="metadata"
+          data-src="/videos/17_carrossel_desktop_sunglasses_2.mp4"
         >
-          <source src="/videos/17_carrossel_desktop_sunglasses_2.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
         <div className="glass-bg outro-backdrop-in position-absolute top-0 bottom-0 start-0 end-0 "></div>
         <video
-          className="position-absolute  outro-video object-fit-cover w-100 h-100"
+          className="lozad position-absolute outro-video object-fit-cover w-100 h-100"
           autoPlay
           loop
           muted
           preload="metadata"
+          data-src="/videos/17_carrossel_desktop_sunglasses_2.mp4"
         >
-          <source src="/videos/17_carrossel_desktop_sunglasses_2.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
 
