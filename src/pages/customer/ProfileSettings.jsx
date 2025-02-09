@@ -20,7 +20,7 @@ const ProfileSettings = () => {
   const id = location.state?.id;
   const user = authData;
 
-  console.log(user);
+  // console.log(user);
 
   const { postData, isLoading, error, errorMessage, updateStatus, responseData } = usePut("customer/updateImage");
 
@@ -71,7 +71,7 @@ const ProfileSettings = () => {
           token: user.token,
         };
 
-        console.log(updatedara);
+        // console.log(updatedara);
 
         postData(updatedara);
 

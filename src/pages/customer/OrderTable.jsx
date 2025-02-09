@@ -2,6 +2,8 @@
 import { Link } from "react-router-dom";
 
 const OrdersTable = ({ orders, action, deleteHandler }) => {
+  // console.log(orders.length);
+  // console.log(orders[0]);
   return (
     <div className="card container-fluid bg-colo h-100">
       <div className="card-body p-4">

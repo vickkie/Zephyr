@@ -29,7 +29,7 @@ const Profile = () => {
       const response = await axios.get(`${VITE_SERVER}/api/customer/${user._id}`, {
         withCredentials: true,
       });
-      console.log("customer", response);
+      // console.log("customer", response);
       response ? setCustomer({ ...response.data.customer }) : navigate("/404");
     } catch (error) {
       console.error(error);
@@ -49,7 +49,7 @@ const Profile = () => {
       const response = await axios.get(`${VITE_SERVER}/api/orders/${user._id}`, {
         withCredentials: true,
       });
-      console.log("myOders", response);
+      // console.log("myOders", response);
       response ? setMyOrders(response.data.orders) : navigate("/404");
     } catch (error) {
       console.error(error);
@@ -145,13 +145,13 @@ const Profile = () => {
                 <button
                   className="myButton"
                   onClick={() => {
-                    console.log(customer),
-                      navigate(`/profile/settings`, {
-                        state: {
-                          user: authData,
-                          id: user?._id,
-                        },
-                      });
+                    // console.log(customer),
+                    navigate(`/profile/settings`, {
+                      state: {
+                        user: authData,
+                        id: user?._id,
+                      },
+                    });
                   }}
                 >
                   Profile settings

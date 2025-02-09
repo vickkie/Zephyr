@@ -333,7 +333,8 @@ body {
 }
 
 .card-heading {
-  font-family: var(--heading-font);
+  font-family: var(--font-2);
+  font-weight: bolder;
   font-size: var(--zy-sm) !important;
 }
 

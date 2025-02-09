@@ -61,7 +61,7 @@ const Orders = () => {
         const response = await axios.delete(`${VITE_SERVER}/api/admin/order/${id}`, {
           withCredentials: true,
         });
-        console.log("deleteHandler", response.data);
+        // console.log("deleteHandler", response.data);
 
         response.data.success ? toast.success("Order deleted successfully!", { className: "toastify" }) : null;
 

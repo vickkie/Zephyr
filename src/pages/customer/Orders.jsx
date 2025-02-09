@@ -17,7 +17,7 @@ const Orders = () => {
 
   const { authData } = useContext(AuthContext);
 
-  console.log(authData);
+  // console.log(authData);
   /**
    * The function fetches all orders from the server and updates the state with the retrieved data
    * while handling loading states and error messages.
@@ -25,10 +25,11 @@ const Orders = () => {
   const fetchAllOrders = async () => {
     try {
       setLoading(true);
-      console.log(`${VITE_SERVER}/api/orders/${authData?._id}`);
+      // console.log(`${VITE_SERVER}/api/orders/${authData?._id}`);
       const response = await axios.get(`${VITE_SERVER}/api/orders/${authData?._id}`, {
         withCredentials: true,
       });
+      // console.log(response.data);
 
       if (response.data.success) {
         setAllOrders(response.data.orders);
@@ -102,7 +103,7 @@ const Orders = () => {
   return (
     <main className="container-fluid mt-3">
       <div className="row gap-3">
-        <div className="col-md-3 p-0">
+        <div className="col-sm-12 col-md-3 col-lg-3 p-0">
           <div className="card container-fluid position-sticky top-0">
             <div className="card-body p-4">
               <div className="row h-100 ">

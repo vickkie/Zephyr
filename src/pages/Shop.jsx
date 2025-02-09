@@ -12,7 +12,7 @@ const Shop = ({ category: initialCategory, subCategory: initialSubCategory }) =>
   const navSubCategory = location.state?.subcategory;
 
   const top = location.state?.top;
-  console.log(navCategory, navSubCategory);
+  // console.log(navCategory, navSubCategory);
 
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);

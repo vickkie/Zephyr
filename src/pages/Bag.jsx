@@ -320,7 +320,7 @@ const Bag = () => {
   return (
     <>
       <Header />
-      <form className="container py-3" onSubmit={placeOrder}>
+      <form className=" py-3" onSubmit={placeOrder}>
         {/* <!-- Title  --> */}
         <h1 className="title text-uppercase text-center mt-5">Your Bag</h1>
         <h5 className="text-uppercase text-center mb-5">{/* Checkout */}</h5>
