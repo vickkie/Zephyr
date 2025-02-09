@@ -17,6 +17,7 @@ import FloatingThemeToggler from "./components/Theme";
 import ScrollTop from "./utils/ScrollTop";
 import Loading from "./utils/Loading/Loading";
 import FaviconUpdater from "./components/FaviconUpdater";
+import SubscribePopup from "./components/SubscribePopup";
 
 const Shop = lazy(() => import("./pages/Shop"));
 const Contact = lazy(() => import("./pages/Contact"));
@@ -76,6 +77,7 @@ function App() {
   return (
     <>
       <FaviconUpdater />
+      <SubscribePopup />
       {/* <appContext.Provider value={{search, SetSearch}} > */}
       <ScrollTop />
       <AuthProvider>
