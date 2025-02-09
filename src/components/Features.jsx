@@ -1,5 +1,4 @@
 import { Fade, Slide } from "react-awesome-reveal";
-import { Truck, CreditCard, Headphones, Gift } from "lucide-react"; // Importing icons from lucide-react
 
 const Features = () => {
   return (

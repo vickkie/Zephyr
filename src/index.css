@@ -986,6 +986,11 @@ input[type="number"] {
     display: none;
   }
 }
+@media screen and (min-width: 1400px) {
+  .subscribe-popup {
+    max-width: 80vw !important;
+  }
+}
 
 /* Modal animation */
 @keyframes slideIn {
