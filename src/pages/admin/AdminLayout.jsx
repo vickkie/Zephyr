@@ -158,6 +158,7 @@ const AdminLayout = () => {
   }, []);
 
   useEffect(() => {
+    console.log(authData);
     if (!authData) {
       navigate("/logout");
       navigate("/login");

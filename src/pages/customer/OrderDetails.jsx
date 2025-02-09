@@ -25,7 +25,7 @@ const OrderDetails = () => {
       const response = await axios.get(`${VITE_SERVER}/api/order/${id}`, {
         withCredentials: true,
       });
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data.success) {
         setOrder(response.data.order);
         setSelectedStatus(response.data.order.orderStatus);
@@ -87,7 +87,7 @@ const OrderDetails = () => {
   }, []);
 
   return (
-    <main className="container py-3">
+    <main className=" py-3">
       {/* <!-- Title  --> */}
       <h1 className="title text-uppercase text-center mt-5">Order #{order?.orderId}</h1>
       <h5 className="text-uppercase text-center mb-5">{/* Checkout */}</h5>
@@ -100,9 +100,10 @@ const OrderDetails = () => {
                 <div className="col">
                   <h2 className="card-heading text-uppercase fs-4 font-color">Items in Bag</h2>
                   {/* <!-- Products  --> */}
-                  {order?.products?.map((item) => (
-                    <BagItem key={item?.product?._id} {...item?.product} quantity={item?.quantity} />
-                  ))}
+                  {Array.isArray(order.products) &&
+                    order.products
+                      .filter((item) => item.product !== null) // Remove items where product is null
+                      .map((item) => <BagItem key={item?.product?._id} {...item?.product} quantity={item?.quantity} />)}
                 </div>
               </div>
             </div>
