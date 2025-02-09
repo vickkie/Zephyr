@@ -110,6 +110,7 @@ body {
   font-weight: 300;
   line-height: 160%;
   cursor: pointer !important;
+  /* overflow-x: hidden; */
 }
 
 /* Header styling  */
@@ -831,6 +832,9 @@ input[type="number"] {
   .features-title {
     font-size: 2rem;
   }
+  .lowest-wrapper {
+    gap: 1rem;
+  }
 
   .feature-card {
     padding: 25px;
@@ -884,8 +888,8 @@ input[type="number"] {
   color: var(--font-color);
   flex-direction: row;
   flex-wrap: nowrap;
-  font-size: calc(var(--zy-md)- 2px);
-  font-family: "Satoshi";
+  font-size: calc(var(--zy-sm) + 2px);
+  font-family: var(--font-2);
 }
 .lowest-wrapper {
   display: flex;
@@ -895,7 +899,10 @@ input[type="number"] {
 }
 .buildBy a {
   color: var(--primary-color);
-  font-family: "Chillax";
+  font-family: var(--font-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .glass-bg {
   padding: 20px;
@@ -1078,4 +1085,18 @@ input[type="number"] {
 
 .dismiss-btn:hover {
   color: var(--primary-color);
+}
+.heart-icon {
+  width: 0.9rem;
+  /* transform: rotate(-45deg); */
+  animation: beat 1s infinite;
+}
+@keyframes beat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
 }
