@@ -18,6 +18,7 @@ import ScrollTop from "./utils/ScrollTop";
 import Loading from "./utils/Loading/Loading";
 import FaviconUpdater from "./components/FaviconUpdater";
 import SubscribePopup from "./components/SubscribePopup";
+import AddHeroVideo from "./pages/admin/AddHeroVideo";
 
 const Shop = lazy(() => import("./pages/Shop"));
 const Contact = lazy(() => import("./pages/Contact"));
@@ -41,6 +42,8 @@ const UpdateCategory = lazy(() => import("./pages/admin/UpdateCategory"));
 const CreateAnnouncement = lazy(() => import("./pages/admin/CreateAnnouncement"));
 const Announcements = lazy(() => import("./pages/admin/Announcements"));
 const UpdateAnnouncement = lazy(() => import("./pages/admin/UpdateAnnouncement"));
+const Settings = lazy(() => import("./pages/admin/Settings"));
+const HeroControl = lazy(() => import("./pages/admin/HeroControl"));
 
 const CustomerOrders = lazy(() => import("./pages/customer/Orders"));
 const CustomerOrdersDetails = lazy(() => import("./pages/customer/OrderDetails"));
@@ -123,6 +126,8 @@ function App() {
                   <Route path="" element={<Dashboard />} />
 
                   <Route path="dashboard" element={<Dashboard />} />
+                  <Route path="hero-settings" element={<HeroControl />} />
+                  <Route path="add-hero-video" element={<AddHeroVideo />} />
                   <Route path="announcements" element={<Announcements />} />
                   <Route path="add-announcement" element={<CreateAnnouncement />} />
                   <Route path="edit-announcement/:id" element={<UpdateAnnouncement />} />
@@ -137,6 +142,7 @@ function App() {
                   <Route path="editproduct/:id" element={<UpdateProduct />} />
                   <Route path="customers" element={<Customers />} />
                   <Route path="customers/:id" element={<CustomerDetails />} />
+                  <Route path="settings" element={<Settings />} />
                 </Route>
               </Route>
 

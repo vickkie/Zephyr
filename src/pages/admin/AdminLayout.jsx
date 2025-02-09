@@ -120,8 +120,8 @@ const AdminHeader = () => {
             </li>
             <li className="nav-link">
               <NavLink
-                to="announcements"
-                id="announcements"
+                to="settings"
+                id="settings"
                 className="btn d-flex align-items-center nav-link font-color bg-color px-2 py-2 mx-2 text-uppercase"
                 style={{ fontSize: 0.88 + "rem" }}
               >

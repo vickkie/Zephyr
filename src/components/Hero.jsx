@@ -56,7 +56,7 @@ const Hero = () => {
         <div className="image-backdrop-m position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>
 
         {isLoading ? (
-          <p className="loading-message">Loading video...</p>
+          ""
         ) : (
           <video
             className="position-absolute top-0 bottom-0 start-0 end-0 object-fit-cover w-100 h-100"
