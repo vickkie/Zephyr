@@ -3,6 +3,52 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 ("react-router-dom");
 
+const SocialButtons = () => {
+  return (
+    <div className="socials-buttons">
+      <a
+        href="https://instagram.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="social-networks instagram transit"
+        aria-label="instagram"
+        style={{ backgroundColor: "rgba(1, 1, 1, 0)" }}
+      >
+        <img
+          src="/svg/g_instagram.png"
+          alt="Instagram icon, png, black"
+          className="social-img"
+          style={{ filter: "invert(0%)" }}
+        />
+      </a>
+
+      <a
+        href="https://youtube.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="social-networks github transit"
+        aria-label="youtube"
+        style={{ backgroundColor: "rgba(1, 1, 1, 0)" }}
+      >
+        <img src="/svg/youtube.svg" alt="GitHub icon" className="social-img" style={{ filter: "invert(0%)" }} />
+      </a>
+
+      <a
+        href="https://tiktok.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="social-networks linktree transit"
+        aria-label="tiktok"
+        style={{ backgroundColor: "rgba(1, 1, 1, 0)" }}
+      >
+        <img src="/svg/tiktok-icon.svg" alt="Tiktok icon" className="social-img" style={{ filter: "invert(0%)" }} />
+      </a>
+    </div>
+  );
+};
+
+export { SocialButtons };
+
 const Footer = () => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState();
@@ -36,7 +82,7 @@ const Footer = () => {
               <div className="row h-100 ">
                 <div className="col d-flex flex-column justify-content-between">
                   <div>
-                    <Link to="/" className="navbar-brand font-color text-uppercase fs-3">
+                    <Link to="/" aria-label="home" className="navbar-brand font-color text-uppercase fs-3">
                       ZEPHIR
                     </Link>
                     <p className="card-text mb-2">
@@ -45,15 +91,7 @@ const Footer = () => {
                     </p>
                   </div>
                   <div className="mt-2">
-                    <Link to="#" className="footer-link text-uppercase text-decoration-none me-2">
-                      <i className="ai ai-instagram-logo fs-1"></i>
-                    </Link>
-                    <Link to="#" className="footer-link text-uppercase text-decoration-none me-2">
-                      <i className="ai ai-dribbble-logo fs-1"></i>
-                    </Link>
-                    <Link to="#" className="footer-link text-uppercase text-decoration-none me-2">
-                      <i className="ai ai-behance-logo fs-1"></i>
-                    </Link>
+                    <SocialButtons />
                   </div>
                 </div>
               </div>
