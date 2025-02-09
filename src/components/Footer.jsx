@@ -1,5 +1,31 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+("react-router-dom");
+
 const Footer = () => {
+  const navigate = useNavigate();
+  const [categories, setCategories] = useState();
+  const { VITE_SERVER } = import.meta.env;
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(`${VITE_SERVER}/api/admin/all-categories`, { withCredentials: true });
+
+        const filteredCategories = response.data.categories.slice(0, 3).map((category) => ({
+          category: category.category,
+          subCategories: category.subCategories.slice(0, 4),
+        }));
+        setCategories(filteredCategories);
+      } catch (error) {
+        console.error("Error fetching categories", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   return (
     <footer className="container-fluid mt-3 p-0">
       <div className="row g-3">
@@ -38,92 +64,55 @@ const Footer = () => {
         {/* Section with all the links for other webpages */}
         <div className="col-lg-9">
           <div className="card h-100 container-fluid">
-            <div className="card-body  p-4 sm-text-center">
+            <div className="card-body p-4 sm-text-center">
               <div className="row">
-                <div className="row ">
-                  <div className="col-lg-3 col-md-6 mt-2">
-                    <h2 className="card-heading font-color text-uppercase fs-4">woman</h2>
-                    <ul className="footer-menu p-1">
-                      <li>
-                        <Link
-                          className="footer-link font-color text-decoration-none text-uppercase"
-                          to="/women/dresses"
-                        >
-                          Dresses
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/women/pants">
-                          pants
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/women/skirts">
-                          skirts
-                        </Link>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="col-lg-3 col-md-6 mt-2">
-                    <h2 className="card-heading font-color text-uppercase fs-4">men</h2>
-                    <ul className="footer-menu p-1">
-                      <li>
-                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/men/shirts">
-                          shirts
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/men/pants">
-                          pants
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/men/hoodies">
-                          hoodies
-                        </Link>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="col-lg-3 col-md-6 mt-2">
-                    <h2 className="card-heading font-color text-uppercase fs-4">kids</h2>
-                    <ul className="footer-menu p-1">
-                      <li>
-                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/kids">
-                          Dresses
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/kids">
-                          T-shirts
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/kids">
-                          Hoodies
-                        </Link>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="col-lg-3 col-md-6 mt-2">
-                    <h2 className="card-heading font-color text-uppercase fs-4">links</h2>
-                    <ul className="footer-menu p-1">
-                      <li>
-                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/">
-                          home
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/login">
-                          login
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="footer-link font-color text-decoration-none text-uppercase" to="/contact">
-                          contact
-                        </Link>
-                      </li>
-                    </ul>
-                  </div>
+                {Array.isArray(categories) &&
+                  categories.map((category, index) => (
+                    <div key={index} className="col-lg-3 col-6 mt-2">
+                      <h2 className="card-heading font-color text-uppercase fs-4">{category.category}</h2>
+                      <ul className="footer-menu p-1">
+                        {Array.isArray(category.subCategories) &&
+                          category.subCategories.map((subcategory, subIndex) => (
+                            <li key={subIndex} className="py-2">
+                              <div
+                                className="footer-link font-color text-decoration-none text-uppercase"
+                                onClick={() => {
+                                  navigate(`/shop`, {
+                                    state: {
+                                      category: category.category,
+                                      subcategory: subcategory,
+                                      top: true,
+                                    },
+                                  });
+                                }}
+                              >
+                                {subcategory}
+                              </div>
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
+                  ))}
+
+                <div className="col-lg-3 col-6 mt-2">
+                  <h2 className="card-heading font-color text-uppercase fs-4">links</h2>
+                  <ul className="footer-menu p-1">
+                    <li>
+                      <Link className="footer-link font-color text-decoration-none text-uppercase" to="/">
+                        home
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="footer-link font-color text-decoration-none text-uppercase" to="/login">
+                        login
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="footer-link font-color text-decoration-none text-uppercase" to="/contact">
+                        contact
+                      </Link>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>

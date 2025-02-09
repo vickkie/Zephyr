@@ -8,15 +8,17 @@ const { VITE_SERVER } = import.meta.env;
 
 const Shop = ({ category: initialCategory, subCategory: initialSubCategory }) => {
   const location = useLocation();
-  const navCategory = location.state?.category; // Get category from navigation state
+  const navCategory = location.state?.category;
+  const navSubCategory = location.state?.subcategory;
+
   const top = location.state?.top;
-  // console.log(top);
+  console.log(navCategory, navSubCategory);
 
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState(navCategory?.category || initialCategory || "all");
-  const [subCategory, setSubCategory] = useState(initialSubCategory || "");
+  const [category, setCategory] = useState(navCategory || initialCategory || "all");
+  const [subCategory, setSubCategory] = useState(navSubCategory?.subcategory || initialSubCategory || "");
 
   /** Fetch all available categories **/
   const fetchCategories = async () => {

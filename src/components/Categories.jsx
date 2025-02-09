@@ -38,7 +38,7 @@ const Categories = ({ onSelectCategory }) => {
                       // onSelectCategory(category);
                       navigate("/shop", {
                         state: {
-                          category,
+                          category: category.category,
                           top: true,
                         },
                       });
