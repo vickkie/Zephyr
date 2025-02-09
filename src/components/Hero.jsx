@@ -1,7 +1,9 @@
 import "./Hero.css";
 import Lazyload from "../utils/lazyload";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate = useNavigate();
   Lazyload();
 
   return (
@@ -11,7 +13,14 @@ const Hero = () => {
           <div className="col glass-bg  h-100">
             <h1 className="banner-heading lh-1 text-lowercase mb-3">Glam & Grandeur</h1>
             <div className=" shop-herobtn">
-              <div className="banner-paragragh fs-5 fw-medium">Shop now</div>
+              <div
+                className="banner-paragragh fs-5 fw-medium"
+                onClick={() => {
+                  navigate("/shop", { state: { top: true } });
+                }}
+              >
+                Shop now
+              </div>
             </div>
           </div>
         </div>
