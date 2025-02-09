@@ -31,8 +31,9 @@ const Categories = ({ onSelectCategory }) => {
               categories.map((category) => (
                 <div className="col-12 col-sm-6 col-md-4 col-lg-3" key={category._id}>
                   <div
-                    className="categories-box"
-                    style={{ backgroundImage: `url(${category?.categoryPic})` }}
+                    className="categories-box lozad-back"
+                    data-background-image={category?.categoryPic}
+                    // style={{ backgroundImage: `url(${category?.categoryPic})` }}
                     onClick={() => {
                       // onSelectCategory(category);
                       navigate("/shop", {

@@ -13,8 +13,6 @@ const Categories = () => {
   const [loading, setLoading] = useState(false);
   const [allCategories, setAllCategories] = useState([]);
 
-  Lazyload();
-
   /**
    * Fetches all categories from the server
    */
@@ -73,6 +71,8 @@ const Categories = () => {
   useEffect(() => {
     fetchAllCategories();
   }, []);
+
+  Lazyload();
 
   return (
     <>
@@ -134,7 +134,7 @@ const Categories = () => {
 
                               <td className="table-image">
                                 <img
-                                  className="lozad object-fit-cover rounded-circle p-3"
+                                  className="lozad-back object-fit-cover rounded-circle p-3"
                                   data-src={category?.categoryPic}
                                   alt=""
                                 />
