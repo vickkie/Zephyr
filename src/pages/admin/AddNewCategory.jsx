@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { uploadImages } from "../../utils/uploadImages";
 import axios from "axios";
 import useGet from "../../hooks/useGet";
-import { Link } from "react-router-dom";
 
 const { VITE_SERVER } = import.meta.env;
 
@@ -12,7 +11,7 @@ const AddNewCategory = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { data: allCategories, refetch } = useGet("admin/all-categories");
+  const { data: allCategories } = useGet("admin/all-categories");
 
   const [category, setCategory] = useState("");
   const [subCategories, setSubCategories] = useState([""]);

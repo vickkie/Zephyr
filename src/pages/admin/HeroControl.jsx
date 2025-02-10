@@ -68,6 +68,36 @@ const HeroControl = () => {
     }
   };
 
+  const activateHandler = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: `Do you want to delete this hero video?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (result.isConfirmed) {
+      setLoading(true);
+      try {
+        const response = await axios.put(`${VITE_SERVER}/api/hero/video/${id}`, {
+          withCredentials: true,
+        });
+        // console.log("deleteHandler", response.data);
+
+        response.data.success ? toast.success("Video activated successfully!", { className: "toastify" }) : null;
+
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        error.message ? toast.error(error.message, { className: "toastify" }) : null;
+        setLoading(false);
+      }
+    }
+  };
+
   useEffect(() => {
     fetchAllHeroVideos();
   }, []);
@@ -110,7 +140,7 @@ const HeroControl = () => {
                     </div>
                   </div>
 
-                  <p className="card-text font-color fs-6">Find all your Hero Videos below. Manage them as needed.</p>
+                  <p className="card-text font-color fs-6">Find all your Hero Videos below. Activate by editing.</p>
                   <div className="table-responsive">
                     {loading ? (
                       <div className="d-flex h-100 justify-content-center align-items-center">

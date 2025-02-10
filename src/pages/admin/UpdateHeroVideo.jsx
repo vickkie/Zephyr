@@ -35,7 +35,7 @@ const UpdateHeroVideo = () => {
 
     setLoading(true);
     try {
-      const response = await axios.put(`${VITE_SERVER}/api/hero/video`, { videoUrl }, { withCredentials: true });
+      const response = await axios.put(`${VITE_SERVER}/api/hero/video`, { videoUrl, id }, { withCredentials: true });
 
       if (response.data.success) {
         toast.success("Video updated successfully!");

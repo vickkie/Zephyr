@@ -43,7 +43,7 @@ const AdminHeader = () => {
     <nav className="navbar navbar-expand-lg">
       <div className="container-fluid px-4 py-2">
         <NavLink className="navbar-brand font-color position-relative" to="/">
-          Zephyr
+          ZEPHIR
           <span className="position-absolute top-0 start-50 translate-middle fs-6">
             <i className="ai ai-crown-fill bag"></i>
           </span>
