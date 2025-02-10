@@ -154,7 +154,11 @@ const HeroControl = () => {
                               <td className="p-2">{video.isActive ? "Yes" : "No"}</td>
 
                               <td>
-                                <Link to={`/admin/category/${video._id}`} className="text-decoration-none me-3">
+                                <Link
+                                  to={`/admin/edit-hero-video/${video._id}`}
+                                  state={{ id: video._id }}
+                                  className="text-decoration-none me-3"
+                                >
                                   <svg
                                     width="30px"
                                     height="30px"

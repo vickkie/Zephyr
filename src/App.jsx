@@ -19,6 +19,7 @@ import Loading from "./utils/Loading/Loading";
 import FaviconUpdater from "./components/FaviconUpdater";
 import SubscribePopup from "./components/SubscribePopup";
 import AddHeroVideo from "./pages/admin/AddHeroVideo";
+import UpdateHeroVideo from "./pages/admin/UpdateHeroVideo";
 
 const Shop = lazy(() => import("./pages/Shop"));
 const Contact = lazy(() => import("./pages/Contact"));
@@ -124,10 +125,11 @@ function App() {
               <Route element={<ProtectedRoutes />}>
                 <Route path="/admin" element={<AdminLayout />}>
                   <Route path="" element={<Dashboard />} />
-
                   <Route path="dashboard" element={<Dashboard />} />
                   <Route path="hero-settings" element={<HeroControl />} />
                   <Route path="add-hero-video" element={<AddHeroVideo />} />
+                  <Route path="announcements" element={<Announcements />} />
+                  <Route path="edit-hero-video/:id" element={<UpdateHeroVideo />} />
                   <Route path="announcements" element={<Announcements />} />
                   <Route path="add-announcement" element={<CreateAnnouncement />} />
                   <Route path="edit-announcement/:id" element={<UpdateAnnouncement />} />
