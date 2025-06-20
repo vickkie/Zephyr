@@ -31,6 +31,8 @@ const uploadImages = async (files) => {
       const formData = new FormData();
       formData.append("file", file);
 
+      console.log(import.meta.env.MODE);
+
       // Local upload
       if (import.meta.env.MODE === "production") {
         console.log("Uploading to local server:", Local_Upload_Url);
