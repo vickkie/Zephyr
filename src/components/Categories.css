@@ -1,7 +1,7 @@
 .categories-banner {
   width: 100%;
   min-height: 500px;
-  background: linear-gradient(to left, #cebd63, #d1b370);
+  background: var(--primary-color);
 
   border-radius: 12px;
   overflow: hidden;

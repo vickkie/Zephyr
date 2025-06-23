@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import IsAuthenticatedContext from "../contexts/IsAuthenticatedContext";
 import { AuthContext } from "../contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 const { VITE_SERVER } = import.meta.env;
 
@@ -98,6 +99,10 @@ const Login = () => {
               onChange={(e) => onChangeHandler(e)}
               required
             />
+
+            <Link to="/forgot-password" className="forgot-password-link">
+              Forgot Password?
+            </Link>
 
             <button type="submit" className="btn text-uppercase d-block my-2 py-3" style={{ fontSize: 0.88 + "rem" }}>
               Submit
