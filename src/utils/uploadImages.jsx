@@ -34,7 +34,7 @@ const uploadImages = async (files) => {
       console.log(import.meta.env.MODE);
 
       // Local upload
-      if (import.meta.env.DEV {
+      if (import.meta.env.MODE === "development") {
         console.log("Uploading to local server:", Local_Upload_Url);
         const localResponse = await axios.post(Local_Upload_Url, formData, {
           headers: {
