@@ -26,3 +26,15 @@ export const unwrap = (response) => {
   }
   return body.data ?? body;
 };
+
+/**
+ * Convert a Paystack smallest-unit amount (kobo/cents) to a whole-currency
+ * display string. All Paystack-supported currencies (KES, NGN, USD, ZAR, GHS)
+ * use 2-decimal smallest units, so divide by 100. If a zero-decimal currency
+ * is added in the future, add it to NO_DECIMALS.
+ */
+const NO_DECIMALS = [];
+export const fromSmallestUnit = (amountSmall, currency = "KES") => {
+  const divisor = NO_DECIMALS.includes(currency) ? 1 : 100;
+  return (Number(amountSmall) / divisor).toFixed(2);
+};

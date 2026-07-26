@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { api, unwrap } from "../../utils/api";
+import { api, unwrap, fromSmallestUnit } from "../../utils/api";
 
 const STATUSES = ["pending", "success", "failed", "abandoned"];
 
@@ -80,7 +80,9 @@ const Transactions = () => {
           <div className="card container-fluid position-sticky top-0">
             <div className="card-body p-4">
               <div className="row h-100">
-                <h3 className="card-heading font-color fs-6 text-uppercase">Filters</h3>
+                <h3 className="card-heading font-color fs-6 text-uppercase">
+                  Filters
+                </h3>
 
                 <form onSubmit={onSearchSubmit} className="my-3">
                   <input
@@ -90,13 +92,20 @@ const Transactions = () => {
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />
-                  <button type="submit" className="btn btn-sm w-100" style={{ fontSize: "0.8rem" }}>
+                  <button
+                    type="submit"
+                    className="btn btn-sm w-100"
+                    style={{ fontSize: "0.8rem" }}
+                  >
                     Search
                   </button>
                 </form>
 
                 <div className="d-flex flex-column gap-3 my-2">
-                  <span className="product-card-price font-color" style={{ fontSize: "0.8rem" }}>
+                  <span
+                    className="product-card-price font-color"
+                    style={{ fontSize: "0.8rem" }}
+                  >
                     Status
                   </span>
                   <input
@@ -109,7 +118,10 @@ const Transactions = () => {
                     onChange={(e) => setStatus(e.target.value)}
                     autoComplete="off"
                   />
-                  <label className="filter-btn btn btn-sm border bag mx-lg-4" htmlFor="tx-all">
+                  <label
+                    className="filter-btn btn btn-sm border bag mx-lg-4"
+                    htmlFor="tx-all"
+                  >
                     All
                   </label>
                   {STATUSES.map((s) => (
@@ -124,13 +136,19 @@ const Transactions = () => {
                         onChange={(e) => setStatus(e.target.value)}
                         autoComplete="off"
                       />
-                      <label className="filter-btn btn btn-sm border bag mx-lg-4 text-capitalize" htmlFor={`tx-${s}`}>
+                      <label
+                        className="filter-btn btn btn-sm border bag mx-lg-4 text-capitalize"
+                        htmlFor={`tx-${s}`}
+                      >
                         {s}
                       </label>
                     </div>
                   ))}
 
-                  <span className="product-card-price font-color mt-3" style={{ fontSize: "0.8rem" }}>
+                  <span
+                    className="product-card-price font-color mt-3"
+                    style={{ fontSize: "0.8rem" }}
+                  >
                     Method
                   </span>
                   <input
@@ -141,7 +159,10 @@ const Transactions = () => {
                     onChange={(e) => setMethod(e.target.value)}
                   />
 
-                  <span className="product-card-price font-color mt-3" style={{ fontSize: "0.8rem" }}>
+                  <span
+                    className="product-card-price font-color mt-3"
+                    style={{ fontSize: "0.8rem" }}
+                  >
                     Sort
                   </span>
                   <select
@@ -172,26 +193,39 @@ const Transactions = () => {
           <div className="card container-fluid p-3">
             <div className="card-body p-3">
               <div className="d-flex justify-content-between align-items-center mb-3">
-                <h2 className="card-heading text-uppercase fs-5 font-color mb-0">Transactions</h2>
-                <span className="product-card-price font-color" style={{ fontSize: "0.8rem" }}>
+                <h2 className="card-heading text-uppercase fs-5 font-color mb-0">
+                  Transactions
+                </h2>
+                <span
+                  className="product-card-price font-color"
+                  style={{ fontSize: "0.8rem" }}
+                >
                   {total} total
                 </span>
               </div>
 
               {loading ? (
                 <div className="d-flex h-100 justify-content-center align-items-center py-5">
-                  <span className="spinner-grow spinner-grow bag" aria-hidden="true"></span>
+                  <span
+                    className="spinner-grow spinner-grow bag"
+                    aria-hidden="true"
+                  ></span>
                 </div>
               ) : error ? (
                 <div className="text-center py-5">
                   <p className="font-color product-card-price">{error}</p>
-                  <button className="btn btn-sm" onClick={() => fetchTransactions(page)}>
+                  <button
+                    className="btn btn-sm"
+                    onClick={() => fetchTransactions(page)}
+                  >
                     Retry
                   </button>
                 </div>
               ) : transactions.length === 0 ? (
                 <div className="text-center py-5">
-                  <p className="font-color product-card-price">No transactions found.</p>
+                  <p className="font-color product-card-price">
+                    No transactions found.
+                  </p>
                 </div>
               ) : (
                 <div className="table-responsive">
@@ -212,20 +246,30 @@ const Transactions = () => {
                         <tr key={tx._id}>
                           <td style={{ fontSize: "0.8rem" }}>{tx.reference}</td>
                           <td style={{ fontSize: "0.85rem" }}>
-                            {tx.user?.email || (tx.metadata?.email) || "—"}
+                            {tx.user?.email || tx.metadata?.email || "—"}
                           </td>
                           <td>
-                            {tx.currency} {(tx.amount / 100).toFixed(2)}
+                            {tx.currency}{" "}
+                            {fromSmallestUnit(tx.amount, tx.currency)}
                           </td>
-                          <td className="text-capitalize">{tx.method || "—"}</td>
+                          <td className="text-capitalize">
+                            {tx.method || "—"}
+                          </td>
                           <td>
-                            <span className={`badge ${statusBadgeClass(tx.status)} text-capitalize`}>{tx.status}</span>
+                            <span
+                              className={`badge ${statusBadgeClass(tx.status)} text-capitalize`}
+                            >
+                              {tx.status}
+                            </span>
                           </td>
                           <td style={{ fontSize: "0.8rem" }}>
                             {new Date(tx.createdAt).toLocaleDateString()}
                           </td>
                           <td>
-                            <Link to={`/admin/transactions/${tx._id}`} className="btn btn-sm">
+                            <Link
+                              to={`/admin/transactions/${tx._id}`}
+                              className="btn btn-sm"
+                            >
                               View
                             </Link>
                           </td>
@@ -243,7 +287,10 @@ const Transactions = () => {
                       >
                         Prev
                       </button>
-                      <span className="product-card-price font-color" style={{ fontSize: "0.8rem" }}>
+                      <span
+                        className="product-card-price font-color"
+                        style={{ fontSize: "0.8rem" }}
+                      >
                         Page {page} of {pages}
                       </span>
                       <button

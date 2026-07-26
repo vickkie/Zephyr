@@ -103,3 +103,14 @@
 - `npm run lint`: FAILS — 110 problems (87 errors, 23 warnings). Pre-existing baseline. Mostly `no-unused-vars` (unused `React` imports), `react-hooks/exhaustive-deps`, `react/prop-types`. These are pre-existing and NOT introduced by this work; I will not fold them into enhancement commits.
 - Test suite: NONE. No test runner configured (no vitest/jest). Baseline = 0 tests.
 - Notable pre-existing issues (detailed in audit-frontend.md): Bag.jsx collects card numbers/CVV in plaintext and posts to backend; Login.jsx has `console.log` of response data; AuthContext reads `localStorage.getItem("authData")` then `JSON.parse(storedAuthData)` in both branches of ternary (crashes when null).
+
+## Phase 11 — Independent review findings (frontend-side)
+
+- **#5 Guest authProvider localStorage crash** — `contexts/AuthContext.jsx` now wraps `JSON.parse(storedAuthData)` in try/catch; corrupted storage is removed and falls back to null instead of crashing the app on load.
+- **#8 Frontend currency hardcode** — `utils/api.js` exports `fromSmallestUnit(amount, currency)`; admin `Transactions.jsx` and `TransactionDetails.jsx` use it instead of the hardcoded `/100` division. All Paystack-supported currencies (KES, NGN, USD, ZAR, GHS) use 2-decimal smallest units.
+
+## Phase 12 — Final self-review
+
+- `npm run build` succeeds (all lazy-loaded routes present).
+- `eslint` clean on all changed files (`AuthContext.jsx`, `utils/api.js`, `Transactions.jsx`, `TransactionDetails.jsx`).
+- No new dependencies introduced.

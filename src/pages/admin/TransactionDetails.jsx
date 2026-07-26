@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import { api, unwrap } from "../../utils/api";
+import { api, unwrap, fromSmallestUnit } from "../../utils/api";
 
 const statusBadgeClass = (status) => {
   switch (status) {
@@ -100,7 +100,9 @@ const TransactionDetails = () => {
       <div className="card container-fluid p-3">
         <div className="card-body p-4">
           <div className="d-flex justify-content-between align-items-center mb-4">
-            <h2 className="card-heading text-uppercase fs-5 font-color mb-0">Transaction Details</h2>
+            <h2 className="card-heading text-uppercase fs-5 font-color mb-0">
+              Transaction Details
+            </h2>
             <Link to="/admin/transactions" className="btn btn-sm">
               Back
             </Link>
@@ -108,7 +110,9 @@ const TransactionDetails = () => {
 
           <div className="row g-4">
             <div className="col-md-6">
-              <h3 className="card-heading font-color fs-6 text-uppercase mb-3">Payment</h3>
+              <h3 className="card-heading font-color fs-6 text-uppercase mb-3">
+                Payment
+              </h3>
               <ul className="list-unstyled product-card-price font-color">
                 <li className="mb-2">
                   <strong>Reference:</strong> {tx.reference}
@@ -117,14 +121,20 @@ const TransactionDetails = () => {
                   <strong>Gateway Ref:</strong> {tx.gatewayReference || "—"}
                 </li>
                 <li className="mb-2">
-                  <strong>Amount:</strong> {tx.currency} {(tx.amount / 100).toFixed(2)}
+                  <strong>Amount:</strong> {tx.currency}{" "}
+                  {fromSmallestUnit(tx.amount, tx.currency)}
                 </li>
                 <li className="mb-2">
-                  <strong>Method:</strong> <span className="text-capitalize">{tx.method || "—"}</span>
+                  <strong>Method:</strong>{" "}
+                  <span className="text-capitalize">{tx.method || "—"}</span>
                 </li>
                 <li className="mb-2">
                   <strong>Status:</strong>{" "}
-                  <span className={`badge ${statusBadgeClass(tx.status)} text-capitalize`}>{tx.status}</span>
+                  <span
+                    className={`badge ${statusBadgeClass(tx.status)} text-capitalize`}
+                  >
+                    {tx.status}
+                  </span>
                 </li>
                 <li className="mb-2">
                   <strong>Gateway Response:</strong> {tx.gatewayResponse || "—"}
@@ -134,18 +144,23 @@ const TransactionDetails = () => {
                   {tx.paidAt ? new Date(tx.paidAt).toLocaleString() : "—"}
                 </li>
                 <li className="mb-2">
-                  <strong>Created:</strong> {new Date(tx.createdAt).toLocaleString()}
+                  <strong>Created:</strong>{" "}
+                  {new Date(tx.createdAt).toLocaleString()}
                 </li>
               </ul>
             </div>
 
             <div className="col-md-6">
-              <h3 className="card-heading font-color fs-6 text-uppercase mb-3">Customer & Order</h3>
+              <h3 className="card-heading font-color fs-6 text-uppercase mb-3">
+                Customer & Order
+              </h3>
               <ul className="list-unstyled product-card-price font-color">
                 <li className="mb-2">
                   <strong>Customer:</strong>{" "}
                   {customer ? (
-                    <Link to={`/admin/customers/${customer._id}`}>{customer.email}</Link>
+                    <Link to={`/admin/customers/${customer._id}`}>
+                      {customer.email}
+                    </Link>
                   ) : (
                     tx.metadata?.email || "Guest"
                   )}
@@ -153,7 +168,9 @@ const TransactionDetails = () => {
                 <li className="mb-2">
                   <strong>Order:</strong>{" "}
                   {order ? (
-                    <Link to={`/admin/orders/${order._id}`}>#{order.orderId || order._id}</Link>
+                    <Link to={`/admin/orders/${order._id}`}>
+                      #{order.orderId || order._id}
+                    </Link>
                   ) : (
                     "—"
                   )}
@@ -175,17 +192,31 @@ const TransactionDetails = () => {
           <hr className="font-color my-4" />
 
           <div className="d-flex flex-wrap gap-2 align-items-center">
-            <span className="product-card-price font-color me-2">Admin actions:</span>
-            <button className="btn btn-sm btn-success" onClick={() => updateStatus("success")}>
+            <span className="product-card-price font-color me-2">
+              Admin actions:
+            </span>
+            <button
+              className="btn btn-sm btn-success"
+              onClick={() => updateStatus("success")}
+            >
               Mark Success
             </button>
-            <button className="btn btn-sm btn-danger" onClick={() => updateStatus("failed")}>
+            <button
+              className="btn btn-sm btn-danger"
+              onClick={() => updateStatus("failed")}
+            >
               Mark Failed
             </button>
-            <button className="btn btn-sm btn-secondary" onClick={() => updateStatus("abandoned")}>
+            <button
+              className="btn btn-sm btn-secondary"
+              onClick={() => updateStatus("abandoned")}
+            >
               Mark Abandoned
             </button>
-            <span className="product-card-price font-color ms-2" style={{ fontSize: "0.75rem" }}>
+            <span
+              className="product-card-price font-color ms-2"
+              style={{ fontSize: "0.75rem" }}
+            >
               Refund support is a future extension.
             </span>
           </div>
