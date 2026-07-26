@@ -7,7 +7,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import { api, unwrap } from "../utils/api";
 
-const { VITE_SERVER, VITE_GOOGLE_CLIENT_ID } = import.meta.env;
+const { VITE_GOOGLE_CLIENT_ID } = import.meta.env;
 
 const Login = () => {
   const navigate = useNavigate();
@@ -113,7 +113,7 @@ const Login = () => {
       // GIS may not be ready yet; safe to ignore — the button still renders.
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [VITE_GOOGLE_CLIENT_ID]);
+  }, []);
 
   // Inject the Google Identity Services script once.
   useEffect(() => {
@@ -125,7 +125,8 @@ const Login = () => {
     script.async = true;
     script.defer = true;
     document.head.appendChild(script);
-  }, [VITE_GOOGLE_CLIENT_ID]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -217,6 +218,6 @@ const Login = () => {
       <Footer />
     </>
   );
-};;
+};
 
 export default Login;

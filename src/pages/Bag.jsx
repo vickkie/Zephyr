@@ -7,7 +7,7 @@ import { Header } from "../components";
 import { AuthContext } from "../contexts/AuthContext";
 import { api, unwrap } from "../utils/api";
 
-const { VITE_SERVER, VITE_PAYSTACK_PUBLIC_KEY } = import.meta.env;
+const { VITE_PAYSTACK_PUBLIC_KEY } = import.meta.env;
 
 // eslint-disable-next-line react/prop-types
 const BagItem = ({ id, image, productName, quantity, salePrice }) => {
@@ -165,19 +165,17 @@ const BagItem = ({ id, image, productName, quantity, salePrice }) => {
 
 const Bag = () => {
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
   const { authData, setAuthData } = useContext(AuthContext);
 
   // check if customer is logged in
-  const { isAuthenticated, user, login } = useContext(IsAuthenticatedContext);
+  const { isAuthenticated, login } = useContext(IsAuthenticatedContext);
 
   // use bag context to get all items of the bag
-  const { bagItems, emptyBag } = useContext(BagContext);
+  const { bagItems } = useContext(BagContext);
 
   // creating states for order summery
   const [subTotal, setSubTotal] = useState(0);
   const [total, setTotal] = useState(0);
-  const [autofill, setAutofill] = useState(false);
 
   const shippingFees = 0;
 
@@ -288,10 +286,6 @@ const Bag = () => {
   useEffect(() => {
     setTotal(subTotal + shippingFees);
   }, [subTotal]);
-
-  useEffect(() => {
-    authData?.address ? setAutofill(true) : null;
-  }, [authData]);
 
   return (
     <>
@@ -547,9 +541,9 @@ const Bag = () => {
                       Payment
                     </h2>
                     <p className="product-card-price font-color mb-2">
-                      You'll be redirected to Paystack's secure checkout to
-                      complete your payment. We never see or store your card
-                      details.
+                      You&apos;ll be redirected to Paystack&apos;s secure
+                      checkout to complete your payment. We never see or store
+                      your card details.
                     </p>
                     <div className="d-flex align-items-center gap-2 flex-wrap">
                       <span
