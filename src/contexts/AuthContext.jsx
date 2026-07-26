@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
     // Load from localStorage or use initial client details
     const storedAuthData = localStorage.getItem("authData");
 
-    return storedAuthData ? JSON.parse(storedAuthData) : JSON.parse(storedAuthData);
+    return storedAuthData ? JSON.parse(storedAuthData) : null;
   });
 
   // Store authData in localStorage whenever it changes
