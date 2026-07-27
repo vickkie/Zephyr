@@ -77,16 +77,16 @@ Frontend changes are minimal — it already redirects to `authorization_url`.
 - [ ] Run `npm test` — all green
 
 ### Phase 5 — Frontend: minimal changes
-- [ ] `PaystackCallback.jsx`: rename to `PaymentCallback.jsx` (or keep name
-      for backward compat — decision pending). It already polls
-      `GET /api/payments/verify/:reference` which the backend now proxies to
-      UziPay. Likely NO change needed.
-- [ ] `Bag.jsx`: already redirects to `authorization_url` — likely NO change
-      needed.
-- [ ] Verify `callback_url` in `Bag.jsx` points to
-      `${window.location.origin}/paystack/callback` (keep path for compat)
-- [ ] Add `.env.example` to frontend repo (currently missing) with
-      `VITE_SERVER`, `VITE_PAYSTACK_PUBLIC_KEY`, `VITE_GOOGLE_CLIENT_ID`
+- [x] `PaystackCallback.jsx`: kept original name for backward compat. It
+      already polls `GET /api/payments/verify/:reference` which the backend
+      now proxies to UziPay. NO change needed.
+- [x] `Bag.jsx`: already redirects to `authorization_url` — NO change needed.
+- [x] Verified `callback_url` in `Bag.jsx` points to
+      `${window.location.origin}/paystack/callback` (kept path for compat)
+- [x] `.env.example` already exists with `VITE_SERVER`,
+      `VITE_PAYSTACK_PUBLIC_KEY`, `VITE_GOOGLE_CLIENT_ID` — NO change needed
+- [x] No frontend code changes required — the existing flow works with UziPay
+      because it uses the backend's `authorization_url` and `verify` endpoints
 
 ### Phase 6 — Review & PRs
 - [ ] Independent review (subagent) — security, idempotency, regressions,
