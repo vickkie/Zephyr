@@ -27,6 +27,7 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Bag = lazy(() => import("./pages/Bag"));
 const SingleProduct = lazy(() => import("./pages/SingleProduct"));
 const Profile = lazy(() => import("./pages/Profile"));
+const PaystackCallback = lazy(() => import("./pages/PaystackCallback"));
 
 const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
 const Products = lazy(() => import("./pages/admin/Products"));
@@ -51,6 +52,10 @@ const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const CustomerOrders = lazy(() => import("./pages/customer/Orders"));
 const CustomerOrdersDetails = lazy(() => import("./pages/customer/OrderDetails"));
 const ProfileSettings = lazy(() => import("./pages/customer/ProfileSettings"));
+const AdminTransactions = lazy(() => import("./pages/admin/Transactions"));
+const AdminTransactionDetails = lazy(
+  () => import("./pages/admin/TransactionDetails"),
+);
 
 const { VITE_SERVER } = import.meta.env;
 
@@ -94,7 +99,10 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/shop" element={<Shop category={"all"} />} />
-              <Route path="/kids" element={<Shop category={"kids"} subCategory={""} />} />
+              <Route
+                path="/kids"
+                element={<Shop category={"kids"} subCategory={""} />}
+              />
               <Route path="/search/:query" element={<Search />} />
               <Route path="/product/:id" element={<SingleProduct />} />
               <Route path="/contact" element={<Contact />} />
@@ -103,20 +111,45 @@ function App() {
               <Route path="/reset-password" element={<ResetPassword />} />
 
               <Route path="/bag" element={<Bag />} />
+              <Route path="/paystack/callback" element={<PaystackCallback />} />
               <Route path="/logout" element={<Logout />} />
 
               <Route path="/women">
-                <Route path="all" element={<Shop category={"women"} subCategory={""} />} />
-                <Route path="dresses" element={<Shop category={"women"} subCategory={"dresses"} />} />
-                <Route path="skirts" element={<Shop category={"women"} subCategory={"skirts"} />} />
-                <Route path="pants" element={<Shop category={"women"} subCategory={"pants"} />} />
+                <Route
+                  path="all"
+                  element={<Shop category={"women"} subCategory={""} />}
+                />
+                <Route
+                  path="dresses"
+                  element={<Shop category={"women"} subCategory={"dresses"} />}
+                />
+                <Route
+                  path="skirts"
+                  element={<Shop category={"women"} subCategory={"skirts"} />}
+                />
+                <Route
+                  path="pants"
+                  element={<Shop category={"women"} subCategory={"pants"} />}
+                />
               </Route>
 
               <Route path="/men">
-                <Route path="all" element={<Shop category={"men"} subCategory={""} />} />
-                <Route path="hoodies" element={<Shop category={"men"} subCategory={"hoodies"} />} />
-                <Route path="shirts" element={<Shop category={"men"} subCategory={"shirts"} />} />
-                <Route path="pants" element={<Shop category={"men"} subCategory={"pants"} />} />
+                <Route
+                  path="all"
+                  element={<Shop category={"men"} subCategory={""} />}
+                />
+                <Route
+                  path="hoodies"
+                  element={<Shop category={"men"} subCategory={"hoodies"} />}
+                />
+                <Route
+                  path="shirts"
+                  element={<Shop category={"men"} subCategory={"shirts"} />}
+                />
+                <Route
+                  path="pants"
+                  element={<Shop category={"men"} subCategory={"pants"} />}
+                />
               </Route>
 
               <Route element={<ProtectedCustomer />}>
@@ -133,12 +166,26 @@ function App() {
                   <Route path="hero-settings" element={<HeroControl />} />
                   <Route path="add-hero-video" element={<AddHeroVideo />} />
                   <Route path="announcements" element={<Announcements />} />
-                  <Route path="edit-hero-video/:id" element={<UpdateHeroVideo />} />
+                  <Route
+                    path="edit-hero-video/:id"
+                    element={<UpdateHeroVideo />}
+                  />
                   <Route path="announcements" element={<Announcements />} />
-                  <Route path="add-announcement" element={<CreateAnnouncement />} />
-                  <Route path="edit-announcement/:id" element={<UpdateAnnouncement />} />
+                  <Route
+                    path="add-announcement"
+                    element={<CreateAnnouncement />}
+                  />
+                  <Route
+                    path="edit-announcement/:id"
+                    element={<UpdateAnnouncement />}
+                  />
                   <Route path="orders" element={<Orders />} />
                   <Route path="orders/:id" element={<OrderDetails />} />
+                  <Route path="transactions" element={<AdminTransactions />} />
+                  <Route
+                    path="transactions/:id"
+                    element={<AdminTransactionDetails />}
+                  />
                   <Route path="category/:id" element={<UpdateCategory />} />
                   <Route path="add-category" element={<AddNewCategory />} />
 

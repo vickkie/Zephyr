@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useContext, useEffect, useId, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BagContext from "../contexts/BagContext";
@@ -6,12 +5,16 @@ import IsAuthenticatedContext from "../contexts/IsAuthenticatedContext";
 import { toast } from "react-toastify";
 import { Header } from "../components";
 import { AuthContext } from "../contexts/AuthContext";
-const { VITE_SERVER } = import.meta.env;
+import { api, unwrap } from "../utils/api";
+
+const { VITE_PAYSTACK_PUBLIC_KEY } = import.meta.env;
 
 // eslint-disable-next-line react/prop-types
 const BagItem = ({ id, image, productName, quantity, salePrice }) => {
-  const { increaseQuantity, decreaseQuantity, removeFromBag } = useContext(BagContext);
+  const { increaseQuantity, decreaseQuantity, removeFromBag } =
+    useContext(BagContext);
   const navigate = useNavigate();
+  const inputId = useId();
   return (
     <div className="row mt-4 g-3">
       <div className="col-sm-2">
@@ -22,11 +25,17 @@ const BagItem = ({ id, image, productName, quantity, salePrice }) => {
           }}
         >
           <div className="image-backdrop position-absolute top-0 bottom-0 start-0 end-0 opacity-0"></div>
-          <img className="object-fit-cover w-100 h-100" src={image} alt="bag item" />
+          <img
+            className="object-fit-cover w-100 h-100"
+            src={image}
+            alt="bag item"
+          />
         </div>
       </div>
       <div className="col">
-        <h5 className="item-name card-heading font-color fs-5 mb-0">{productName}</h5>
+        <h5 className="item-name card-heading font-color fs-5 mb-0">
+          {productName}
+        </h5>
         <p className="product-card-price font-color mb-0">
           KES {salePrice}.00 x {quantity}
         </p>
@@ -37,10 +46,20 @@ const BagItem = ({ id, image, productName, quantity, salePrice }) => {
           }}
           className="bag text-decoration-none text-center"
         >
-          <svg width="26px" height="26px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            width="26px"
+            height="26px"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
-            <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" />
+            <g
+              id="SVGRepo_tracerCarrier"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
 
             <g id="SVGRepo_iconCarrier">
               {" "}
@@ -111,7 +130,7 @@ const BagItem = ({ id, image, productName, quantity, salePrice }) => {
             style={{ minHeight: 2.2 + "rem", padding: 0.3 + "rem" }}
             type="number"
             name="quantity"
-            id={useId()}
+            id={inputId}
             value={quantity}
             min={1}
             readOnly
@@ -145,21 +164,18 @@ const BagItem = ({ id, image, productName, quantity, salePrice }) => {
 };
 
 const Bag = () => {
-  const [loading, setLoading] = useState();
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const { authData, setAuthData } = useContext(AuthContext);
 
   // check if customer is logged in
-  const { isAuthenticated, user, login } = useContext(IsAuthenticatedContext);
-  // console.log(user.id);
+  const { isAuthenticated, login } = useContext(IsAuthenticatedContext);
 
   // use bag context to get all items of the bag
-  const { bagItems, removeFromBag, emptyBag } = useContext(BagContext);
+  const { bagItems } = useContext(BagContext);
 
   // creating states for order summery
   const [subTotal, setSubTotal] = useState(0);
   const [total, setTotal] = useState(0);
-  const [autofill, setAutofill] = useState(false);
 
   const shippingFees = 0;
 
@@ -171,151 +187,105 @@ const Bag = () => {
   const [city, setCity] = useState(authData?.address?.city);
   const [state, setState] = useState(authData?.address?.state);
 
-  //payment details
-
-  const [paymentMethod, setPaymentMethod] = useState("Card");
-  const [cardDetails, setCardDetails] = useState({
-    cardNumber: "",
-    cardHolderName: "",
-    expiryDate: "",
-    securityCode: "",
-  });
-  const [mpesaPhoneNumber, setMpesaPhoneNumber] = useState("");
-
-  const paymentData = {
-    paymentMethod,
-    amount: total,
-  };
-
-  if (paymentMethod === "Card") {
-    paymentData.cardDetails = cardDetails;
-  } else if (paymentMethod === "Mpesa") {
-    paymentData.mpesaPhoneNumber = mpesaPhoneNumber;
-  }
-
-  const handlePaymentMethodChange = (e) => {
-    setPaymentMethod(e.target.value);
-  };
-
-  const handleCardDetailChange = (e) => {
-    const { name, value } = e.target;
-    setCardDetails((prevDetails) => ({
-      ...prevDetails,
-      [name]: value,
-    }));
-  };
-
-  const handleMpesaPhoneNumberChange = (e) => {
-    setMpesaPhoneNumber(e.target.value);
-  };
-
-  /**
-   * The onChangeHandler function updates the formData state with the new value based on the input
-   * field name.
-   */
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   /**
-   * The `placeOrder` function is an asynchronous function that handles placing an order by sending a
-   * POST request with order details to a server, handling success and error responses accordingly.
+   * Initialize a Paystack checkout.
+   *
+   * The server creates an unpaid Order + a pending Transaction and returns
+   * Paystack's hosted `authorization_url`. We redirect there; Paystack handles
+   * card entry (PCI scope stays with them). On return, /paystack/callback
+   * verifies with the server. The webhook is the source of truth — this
+   * redirect never finalizes a payment (fixes audit F-C1/F-S1).
    */
   const placeOrder = async (e) => {
     e.preventDefault();
+    if (bagItems.length === 0) {
+      toast.error("Your bag is empty", { className: "toastify" });
+      return;
+    }
+
     setLoading(true);
 
-    const products = bagItems.map((item) => {
-      return {
-        id: item.id,
-        quantity: item.quantity,
-      };
-    });
+    const products = bagItems.map((item) => ({
+      id: item.id,
+      quantity: item.quantity,
+    }));
 
-    const addresses = {
-      state: state,
-      street: street,
-      country: country,
-      pincode: pincode,
-      city: city,
+    const shippingAddress = {
+      state,
+      street,
+      country,
+      pincode,
+      city,
     };
+
+    // Use the logged-in user's email if available; otherwise the guest field.
+    const email = isAuthenticated ? authData?.email : formData.email;
 
     const payload = {
       products,
-      ...formData,
-      ...addresses,
-      paymentData,
-      shippingFees,
+      shippingAddress,
+      email,
+      fullName: formData.fullName,
+      phone: formData.phone,
+      // Guest can optionally create an account at checkout:
+      password: formData.password || undefined,
+      confirmPassword: formData.confirmPassword || undefined,
       subTotal,
+      shippingFees,
       total,
-      orderBy: user?._id,
+      currency: "KES",
+      callback_url: `${window.location.origin}/paystack/callback`,
     };
 
-    console.log(payload);
-    // return;
-
     try {
-      const response = await axios.post(VITE_SERVER + "/api/place-order", payload, {
-        withCredentials: true,
-        headers: {},
-      });
+      const response = await api.post("/api/payments/initialize", payload);
+      const data = unwrap(response);
 
-      if (response.data.createdOrder) {
-        console.log(response.data);
-        toast.success("Order Placed Successfully!", { className: "toastify", autoClose: 6000 });
-
-        // empty bag
-        emptyBag();
-
-        // login user if registered
-        if (response.data.createdCustomer) {
-          login({
-            _id: response.data.createdCustomer._id,
-            role: response.data.createdCustomer.role,
-          });
-          toast.success("logged in successfully!", { className: "toastify" });
-        }
-        if (response.data.updatedCustomer) {
-          console.log(response.data.updatedCustomer);
-          setAuthData(response.data.updatedCustomer);
-        }
-
-        navigate("/profile");
+      // If the server created a customer (guest checkout), log them in locally.
+      if (data.customer && !isAuthenticated) {
+        login({ _id: data.customer._id, role: data.customer.role });
+        setAuthData(data.customer);
       }
 
-      setLoading(false);
+      // Redirect to Paystack's hosted checkout.
+      if (data.authorization_url) {
+        window.location.href = data.authorization_url;
+      } else {
+        toast.error("No payment URL returned. Please try again.", {
+          className: "toastify",
+        });
+        setLoading(false);
+      }
     } catch (error) {
-      console.error(error);
-      error.response.status === 400
-        ? toast.error(error.response.data.message, { className: "toastify" })
-        : toast.error("Couldn't place order due to an Error", { className: "toastify" });
-    } finally {
+      const msg =
+        error?.payload?.message ||
+        error?.message ||
+        "Couldn't start checkout due to an error";
+      toast.error(msg, { className: "toastify" });
       setLoading(false);
-      // navigate("/profile");
     }
   };
 
-  // when bagItems changes, it multiply price of each item with it's quantity using map method and then adds up all using reduce method, and set the value of subtotal
+  // when bagItems changes, compute subtotal
   useEffect(() => {
     setSubTotal(
-      bagItems.length > 0 ? bagItems.map((item) => item.salePrice * item.quantity).reduce((a, b) => a + b) : 0
+      bagItems.length > 0
+        ? bagItems
+            .map((item) => item.salePrice * item.quantity)
+            .reduce((a, b) => a + b)
+        : 0,
     );
   }, [bagItems]);
 
-  // when subtotal changes we update the value of total by adding shipping fees to the latest subtotal amount
+  // when subtotal changes we update total
   useEffect(() => {
     setTotal(subTotal + shippingFees);
   }, [subTotal]);
-
-  useEffect(() => {
-    authData?.address ? setAutofill(true) : null;
-  }, [authData]);
-
-  const formatCardNumber = (value) => {
-    const digits = value.replace(/\D/g, "").slice(0, 16); // Limit to 16 digits
-    return digits.replace(/(\d{4})(?=\d)/g, "$1 ");
-  };
 
   return (
     <>
@@ -331,10 +301,14 @@ const Bag = () => {
               <div className="card-body p-3">
                 <div className="row">
                   <div className="col">
-                    <h2 className="card-heading text-uppercase fs-4 font-color">Items in Bag</h2>
+                    <h2 className="card-heading text-uppercase fs-4 font-color">
+                      Items in Bag
+                    </h2>
                     {/* <!-- Products  --> */}
                     {bagItems.length > 0 ? (
-                      bagItems.map((item) => <BagItem key={item.id} {...item} />)
+                      bagItems.map((item) => (
+                        <BagItem key={item.id} {...item} />
+                      ))
                     ) : (
                       <div className="font-color">...No Items in bag</div>
                     )}
@@ -343,14 +317,21 @@ const Bag = () => {
               </div>
             </div>
 
-            {/* Customer Info for sign up */}
-            <div className={`card container-fluid p-3 mb-1 ${isAuthenticated ? "d-none" : ""}`}>
+            {/* Customer Info for sign up (guests only) */}
+            <div
+              className={`card container-fluid p-3 mb-1 ${isAuthenticated ? "d-none" : ""}`}
+            >
               <div className="card-body p-3">
                 <div className="row">
                   <div className="col">
-                    <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Customer Info</h2>
+                    <h2 className="card-heading text-uppercase fs-4 font-color mb-4">
+                      Customer Info
+                    </h2>
 
-                    <label htmlFor="fullName" className="font-color product-card-price mb-1">
+                    <label
+                      htmlFor="fullName"
+                      className="font-color product-card-price mb-1"
+                    >
                       Full Name *
                     </label>
                     <input
@@ -365,7 +346,10 @@ const Bag = () => {
 
                     <div className="row gap-3 px-2">
                       <div className="col-md p-0">
-                        <label htmlFor="email" className="font-color product-card-price mb-1">
+                        <label
+                          htmlFor="email"
+                          className="font-color product-card-price mb-1"
+                        >
                           Email *
                         </label>
                         <input
@@ -379,7 +363,10 @@ const Bag = () => {
                         />
                       </div>
                       <div className="col-md p-0">
-                        <label htmlFor="phone" className="font-color product-card-price mb-1">
+                        <label
+                          htmlFor="phone"
+                          className="font-color product-card-price mb-1"
+                        >
                           Phone *
                         </label>
                         <input
@@ -394,10 +381,16 @@ const Bag = () => {
                       </div>
                     </div>
 
+                    <p className="product-card-price font-color mt-3 mb-1">
+                      Optional: create an account to track your order.
+                    </p>
                     <div className={`row gap-3 px-2 `}>
                       <div className="col-md p-0">
-                        <label htmlFor="password" className="font-color product-card-price mb-1">
-                          Password *
+                        <label
+                          htmlFor="password"
+                          className="font-color product-card-price mb-1"
+                        >
+                          Password
                         </label>
                         <input
                           type="password"
@@ -406,12 +399,15 @@ const Bag = () => {
                           name="password"
                           onChange={(e) => onChangeHandler(e)}
                           placeholder=""
-                          required={!isAuthenticated}
+                          autoComplete="new-password"
                         />
                       </div>
                       <div className="col-md p-0">
-                        <label htmlFor="confirmPassword" className="font-color product-card-price mb-1">
-                          Confirm Password *
+                        <label
+                          htmlFor="confirmPassword"
+                          className="font-color product-card-price mb-1"
+                        >
+                          Confirm Password
                         </label>
                         <input
                           type="password"
@@ -420,7 +416,7 @@ const Bag = () => {
                           name="confirmPassword"
                           onChange={(e) => onChangeHandler(e)}
                           placeholder=""
-                          required={!isAuthenticated}
+                          autoComplete="new-password"
                         />
                       </div>
                     </div>
@@ -434,9 +430,14 @@ const Bag = () => {
               <div className="card-body p-3">
                 <div className="row">
                   <div className="col">
-                    <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Shipping Address</h2>
+                    <h2 className="card-heading text-uppercase fs-4 font-color mb-4">
+                      Shipping Address
+                    </h2>
 
-                    <label htmlFor="street" className="font-color product-card-price mb-1">
+                    <label
+                      htmlFor="street"
+                      className="font-color product-card-price mb-1"
+                    >
                       Street Address *
                     </label>
                     <input
@@ -444,7 +445,7 @@ const Bag = () => {
                       className="login-input font-color d-block w-100 mb-2"
                       id="street"
                       name="street"
-                      value={street}
+                      value={street || ""}
                       onChange={(e) => setStreet(e.target.value)}
                       placeholder=""
                       required
@@ -452,7 +453,10 @@ const Bag = () => {
 
                     <div className="row gap-3 px-2">
                       <div className="col-md p-0">
-                        <label htmlFor="city" className="font-color product-card-price mb-1">
+                        <label
+                          htmlFor="city"
+                          className="font-color product-card-price mb-1"
+                        >
                           City *
                         </label>
                         <input
@@ -463,11 +467,14 @@ const Bag = () => {
                           onChange={(e) => setCity(e.target.value)}
                           placeholder=""
                           required
-                          value={city}
+                          value={city || ""}
                         />
                       </div>
                       <div className="col-md p-0">
-                        <label htmlFor="state" className="font-color product-card-price mb-1">
+                        <label
+                          htmlFor="state"
+                          className="font-color product-card-price mb-1"
+                        >
                           State *
                         </label>
                         <input
@@ -478,13 +485,16 @@ const Bag = () => {
                           onChange={(e) => setState(e.target.value)}
                           placeholder=""
                           required
-                          value={state}
+                          value={state || ""}
                         />
                       </div>
                     </div>
                     <div className="row gap-3 px-2">
                       <div className="col-md p-0">
-                        <label htmlFor="pincode" className="font-color product-card-price mb-1">
+                        <label
+                          htmlFor="pincode"
+                          className="font-color product-card-price mb-1"
+                        >
                           Pincode *
                         </label>
                         <input
@@ -495,11 +505,14 @@ const Bag = () => {
                           onChange={(e) => setPincode(e.target.value)}
                           placeholder=""
                           required
-                          value={pincode}
+                          value={pincode || ""}
                         />
                       </div>
                       <div className="col-md p-0">
-                        <label htmlFor="country" className="font-color product-card-price mb-1">
+                        <label
+                          htmlFor="country"
+                          className="font-color product-card-price mb-1"
+                        >
                           Country *
                         </label>
                         <input
@@ -510,7 +523,7 @@ const Bag = () => {
                           onChange={(e) => setCountry(e.target.value)}
                           placeholder=""
                           required
-                          value={country}
+                          value={country || ""}
                         />
                       </div>
                     </div>
@@ -519,118 +532,65 @@ const Bag = () => {
               </div>
             </div>
 
-            {/* Payment */}
+            {/* Payment — Paystack hosted checkout. No card data is collected here. */}
             <div className="card container-fluid p-3 mb-3">
               <div className="card-body p-3">
                 <div className="row">
                   <div className="col">
-                    <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Payment Info</h2>
-
-                    {/* Payment Method Selection */}
-                    <div className="mb-3">
-                      <label className="font-color product-card-price mb-1">Payment Method *</label>
-                      <select
-                        name="paymentMethod"
-                        value={paymentMethod}
-                        onChange={handlePaymentMethodChange}
-                        className="login-input font-color d-block w-100 mb-2"
+                    <h2 className="card-heading text-uppercase fs-4 font-color mb-3">
+                      Payment
+                    </h2>
+                    <p className="product-card-price font-color mb-2">
+                      You&apos;ll be redirected to Paystack&apos;s secure
+                      checkout to complete your payment. We never see or store
+                      your card details.
+                    </p>
+                    <div className="d-flex align-items-center gap-2 flex-wrap">
+                      <span
+                        className="badge"
+                        style={{
+                          backgroundColor: "var(--primary-color)",
+                          color: "white",
+                        }}
                       >
-                        <option
-                          style={{ backgroundColor: "var(--primary-color)", color: "white" }}
-                          className=""
-                          value="Card"
-                        >
-                          Card
-                        </option>
-                        <option style={{ backgroundColor: "var(--primary-color)", color: "white" }} value="Mpesa">
-                          Mpesa
-                        </option>
-                      </select>
+                        Card
+                      </span>
+                      <span
+                        className="badge"
+                        style={{
+                          backgroundColor: "var(--primary-color)",
+                          color: "white",
+                        }}
+                      >
+                        M-Pesa
+                      </span>
+                      <span
+                        className="badge"
+                        style={{
+                          backgroundColor: "var(--primary-color)",
+                          color: "white",
+                        }}
+                      >
+                        Bank
+                      </span>
+                      <span
+                        className="badge"
+                        style={{
+                          backgroundColor: "var(--primary-color)",
+                          color: "white",
+                        }}
+                      >
+                        USSD
+                      </span>
                     </div>
-
-                    {/* Conditional Input Fields for Card */}
-                    {paymentMethod === "Card" && (
-                      <div>
-                        <label htmlFor="cardNumber" className="font-color product-card-price mb-1">
-                          Card Number *
-                        </label>
-                        <input
-                          type="text"
-                          className="login-input font-color d-block w-100 mb-2"
-                          id="cardNumber"
-                          name="cardNumber"
-                          placeholder="Enter card number"
-                          value={formatCardNumber(cardDetails.cardNumber)}
-                          onChange={handleCardDetailChange}
-                          required
-                        />
-
-                        <label htmlFor="cardHolderName" className="font-color product-card-price mb-1">
-                          Card Holder Name *
-                        </label>
-                        <input
-                          type="text"
-                          className="login-input font-color d-block w-100 mb-2"
-                          id="cardHolderName"
-                          name="cardHolderName"
-                          placeholder="Enter card holder name"
-                          value={cardDetails.cardHolderName}
-                          onChange={handleCardDetailChange}
-                          required
-                        />
-
-                        <div className="row gap-3 px-2">
-                          <div className="col-md p-0">
-                            <label htmlFor="expiryDate" className="font-color product-card-price mb-1">
-                              Expiry Date *
-                            </label>
-                            <input
-                              type="date"
-                              className="login-input font-color d-block w-100"
-                              id="expiryDate"
-                              name="expiryDate"
-                              value={cardDetails.expiryDate}
-                              onChange={handleCardDetailChange}
-                              required
-                            />
-                          </div>
-                          <div className="col-md p-0">
-                            <label htmlFor="securityCode" className="font-color product-card-price mb-1">
-                              Security Code *
-                            </label>
-                            <input
-                              type="number"
-                              className="login-input font-color d-block w-100"
-                              id="securityCode"
-                              name="securityCode"
-                              placeholder="Enter security code"
-                              value={cardDetails.securityCode}
-                              onChange={handleCardDetailChange}
-                              required
-                              maxLength={4}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Conditional Input Fields for Mpesa */}
-                    {paymentMethod === "Mpesa" && (
-                      <div>
-                        <label htmlFor="mpesaPhoneNumber" className="font-color product-card-price mb-1">
-                          Mpesa Phone Number *
-                        </label>
-                        <input
-                          type="text"
-                          className="login-input font-color d-block w-100 mb-2"
-                          id="mpesaPhoneNumber"
-                          name="mpesaPhoneNumber"
-                          placeholder="Enter Mpesa phone number"
-                          value={mpesaPhoneNumber}
-                          onChange={handleMpesaPhoneNumberChange}
-                          required
-                        />
-                      </div>
+                    {!VITE_PAYSTACK_PUBLIC_KEY && (
+                      <p
+                        className="product-card-price font-color mt-2"
+                        style={{ color: "#b00" }}
+                      >
+                        Paystack is not configured on this environment. Set
+                        VITE_PAYSTACK_PUBLIC_KEY to enable checkout.
+                      </p>
                     )}
                   </div>
                 </div>
@@ -645,35 +605,59 @@ const Bag = () => {
               <div className="card-body p-3">
                 <div className="row">
                   <div className="col contact-form">
-                    <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Order Summary</h2>
+                    <h2 className="card-heading text-uppercase fs-4 font-color mb-4">
+                      Order Summary
+                    </h2>
                     <div className="d-flex justify-content-between">
-                      <span className="product-card-price font-color mb-0">Subtotal:</span>
-                      <span className="product-card-price font-color mb-0">KES {subTotal}.00 </span>
+                      <span className="product-card-price font-color mb-0">
+                        Subtotal:
+                      </span>
+                      <span className="product-card-price font-color mb-0">
+                        KES {subTotal}.00{" "}
+                      </span>
                     </div>
                     <div className="d-flex justify-content-between">
-                      <span className="product-card-price font-color mb-0">Shipping fee:</span>
-                      <span className="product-card-price font-color mb-0">KES {shippingFees}.00 </span>
+                      <span className="product-card-price font-color mb-0">
+                        Shipping fee:
+                      </span>
+                      <span className="product-card-price font-color mb-0">
+                        KES {shippingFees}.00{" "}
+                      </span>
                     </div>
                     <hr className="font-color" />
                     <div className="d-flex justify-content-between">
-                      <span className="product-card-price font-color mb-0">Total:</span>
-                      <span className="product-card-price font-color mb-0">KES {total}.00 </span>
+                      <span className="product-card-price font-color mb-0">
+                        Total:
+                      </span>
+                      <span className="product-card-price font-color mb-0">
+                        KES {total}.00{" "}
+                      </span>
                     </div>
                     <button
                       type="submit"
                       className="btn text-uppercase d-block my-2 py-3 w-100 fw-bold"
                       style={{ fontSize: 0.88 + "rem" }}
-                      disabled={loading || bagItems.length == 0}
+                      disabled={loading || bagItems.length === 0}
                     >
                       {loading ? (
                         <>
-                          <span className="spinner-grow spinner-grow-sm text-dark me-2" aria-hidden="true"></span>
-                          <span role="status">Placing...</span>
+                          <span
+                            className="spinner-grow spinner-grow-sm text-dark me-2"
+                            aria-hidden="true"
+                          ></span>
+                          <span role="status">Redirecting to Paystack…</span>
                         </>
                       ) : (
-                        "Place Oder"
+                        "Pay Now"
                       )}
                     </button>
+                    <p
+                      className="product-card-price font-color mt-2"
+                      style={{ fontSize: "0.75rem" }}
+                    >
+                      By placing your order you agree to our terms. Payment is
+                      handled securely by Paystack.
+                    </p>
                   </div>
                 </div>
               </div>
