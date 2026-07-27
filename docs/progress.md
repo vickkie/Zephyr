@@ -1,116 +1,112 @@
-# Zephyr (Frontend) — Progress Log
+# UziPay Integration Progress — Zephyr
 
-> Source of truth for session continuity. Read this FIRST when resuming.
-> Branch: `fix/enhancement` (to be created). Do not push to `main`.
+> **Read this file first** if resuming after an interruption. Resume from the
+> first unchecked item. Commit progress updates on their own
+> (`docs: update progress log`) so state is recoverable mid-phase.
 
-## Mission priority (per brief)
+Branch: `fix/uzipay-integration` (both Zephyr repos)
+Logical group: **Zephyr** (do this AFTER Meru Chess is done)
 
-1. Paystack payment flow (checkout UI: loading/pending/success/failure/retry + receipt)
-2. Google One Tap (alongside existing login)
-3. Fixes for audit findings that block/endanger #1 and #2
-4. UX/design enhancements only on touched areas (checkout, admin transactions, login)
-5. Everything else — secondary
+## Repos in this group
+- `Zephyr` — React + Vite frontend, has full Paystack checkout + callback
+- `Zephyr-Backend` — Express + Mongoose, has full Paystack integration
+
+## Current state (pre-integration)
+- Backend has `controllers/paymentController.js` (599 lines) with
+  initialize/verify/webhook, `services/paystackService.js`,
+  `utils/paystackWebhook.js`, `models/Transaction.js`.
+- Frontend `Bag.jsx` calls `POST /api/payments/initialize` and redirects to
+  `authorization_url`. `PaystackCallback.jsx` polls
+  `GET /api/payments/verify/:reference`.
+- Admin transaction pages exist (`Transactions.jsx`, `TransactionDetails.jsx`).
+- No donations, memberships, or subscriptions.
+- **Security note**: `models/Payment.js` and `models/CreditCard.js` store
+  plaintext card data — DEPRECATED, out of scope for this integration but
+  flagged in audit.
+
+## Integration approach
+**Replace direct Paystack calls with UziPay gateway calls.** Same surface area,
+different upstream. The existing Paystack controller becomes a UziPay client.
+Frontend changes are minimal — it already redirects to `authorization_url`.
 
 ## Phase checklist
 
-### Phase -1 — Session continuity
+### Phase 0 — Setup & contracts
+- [x] Create `docs/uzipay-api-contract.md` in both repos
+- [x] Create `docs/progress.md` in both repos
+- [x] Branch `fix/uzipay-integration` created in both repos
+- [ ] Register Zephyr app in UziPay dashboard (slug: `zephyr`)
+      — record `apiKey` and `webhookUrl`
+- [ ] Confirm `GATEWAY_SIGNATURE_SECRET` is shared with this app's
+      `UZIPAY_GATEWAY_SECRET`
 
-- [x] Create `docs/progress.md` (this file)
-- [ ] Commit progress.md
+### Phase 1 — Backend: UziPay service + env
+- [ ] Add UziPay env vars to `.env.example` (`UZIPAY_BASE_URL`,
+      `UZIPAY_API_KEY`, `UZIPAY_GATEWAY_SECRET`, `UZIPAY_WEBHOOK_URL`)
+- [ ] Create `services/uzipayService.js` (initialize + verify, mirrors
+      `paystackService.js` shape)
+- [ ] Add env validation for UziPay vars
 
-### Phase 0 — Baseline
+### Phase 2 — Backend: webhook receiver with idempotency
+- [ ] Create `utils/uzipayWebhook.js` — signature verification helper
+      (HMAC-SHA256, raw body, timing-safe compare)
+- [ ] Add `uzipayWebhook` handler in `paymentController.js` exposing
+      `POST /api/internal/payments`
+- [ ] Idempotency: look up Transaction by `reference`; if terminal status,
+      ack 200 without re-applying
+- [ ] On `charge.success`: update Transaction, update Order paymentStatus,
+      send confirmation (reuse existing flow)
+- [ ] Mount route BEFORE `express.json()` with `express.raw`
+- [ ] Add `X-Gateway-*` headers to CORS allowed headers
+- [ ] Add UziPay webhook route to `routes/paymentRoute.js`
 
-- [ ] Install dependencies
-- [ ] Build / run successfully
-- [ ] Run existing test suite (lint, build) — record results
-- [ ] Record Node, framework, dependency versions
-- [ ] Log baseline in progress.md
+### Phase 3 — Backend: swap Paystack calls for UziPay
+- [ ] In `paymentController.js` `initializePayment`: replace direct Paystack
+      call with `uzipayService.initializePayment`
+- [ ] In `verifyPayment`: replace direct Paystack verify with
+      `uzipayService.verifyPayment`
+- [ ] Disable/remove old `/api/payments/webhook` route (Paystack no longer
+      sends to it directly)
+- [ ] Keep Transaction model fields — they still apply, populated from
+      forwarded events
 
-### Phase 1 — Audit
+### Phase 4 — Backend: tests
+- [ ] Add `tests/uzipayWebhook.test.js` covering: invalid signature 401,
+      duplicate delivery idempotency, charge.success happy path, unknown
+      reference ack
+- [ ] Run `npm test` — all green
 
-- [ ] Create `docs/audit-frontend.md` with file/line-cited findings
-- [ ] Architecture, Correctness, Frontend (a11y, responsive, states), Security, API, DevOps, Code quality, Performance
+### Phase 5 — Frontend: minimal changes
+- [ ] `PaystackCallback.jsx`: rename to `PaymentCallback.jsx` (or keep name
+      for backward compat — decision pending). It already polls
+      `GET /api/payments/verify/:reference` which the backend now proxies to
+      UziPay. Likely NO change needed.
+- [ ] `Bag.jsx`: already redirects to `authorization_url` — likely NO change
+      needed.
+- [ ] Verify `callback_url` in `Bag.jsx` points to
+      `${window.location.origin}/paystack/callback` (keep path for compat)
+- [ ] Add `.env.example` to frontend repo (currently missing) with
+      `VITE_SERVER`, `VITE_PAYSTACK_PUBLIC_KEY`, `VITE_GOOGLE_CLIENT_ID`
 
-### Phase 2 — Branching
+### Phase 6 — Review & PRs
+- [ ] Independent review (subagent) — security, idempotency, regressions,
+      deprecated Payment/CreditCard models, code style
+- [ ] Fix review findings
+- [ ] Open PR in `Zephyr-Backend` with full PR description template
+- [ ] Open PR in `Zephyr` with full PR description template
+- [ ] Cross-link both PRs to each other
+- [ ] Do NOT merge
 
-- [ ] Create `fix/enhancement`
-- [ ] Consume shared API contracts from backend `docs/`
-
-### Phase 3 — Resolve audit findings (priority: blocking payments/auth)
-
-- [ ] Fix blocking findings
-- [ ] Secondary findings deferred with reason
-
-### Phase 4 — Paystack checkout (frontend)
-
-- [ ] Checkout flow: loading, pending, success, failure, retry states
-- [ ] Receipt/confirmation view
-- [ ] Match existing design language
-- [ ] Frontend redirect never finalizes payment (server confirms)
-
-### Phase 5 — Google One Tap (frontend)
-
-- [ ] Add One Tap alongside existing login (do not replace)
-- [ ] Send ID token to backend for verification
-
-### Phase 6 — UX & design enhancements
-
-- [ ] Apply to touched areas only (checkout, admin transactions, login)
-- [ ] Maintain existing component hierarchy, spacing, typography, color
-
-### Phase 7 — API standards
-
-- [ ] Frontend consumes standardized response shapes
-
-### Phase 8 — Testing
-
-- [ ] lint, type check, build, unit/integration tests
-- [ ] UX checklist: loading/success/error/empty/retry/validation/no layout shift
-
-### Phase 9 — Code quality gates
-
-- [ ] No TODO/console.log/dead code/debug statements
-
-### Phase 10 — Independent review
-
-- [ ] Reviewer sub-agent; address findings; document
-
-### Phase 11 — Final self-review
-
-- [ ] Challenge every implementation; update progress.md
-
-### Phase 12 — PR
-
-- [ ] Push `fix/enhancement`
-- [ ] Open PR (unmerged), cross-link to backend PR
-- [ ] PR includes screenshots, test cards, env vars, setup steps
-
-## Decision log
-
-- (to be filled)
+## Decisions log
+- 2026-07-27: Chose **replace Paystack with UziPay** (not multi-gateway).
+  Zephyr has no other payment gateway to preserve except the deprecated
+  plaintext-card models which are out of scope.
+- 2026-07-27: Webhook endpoint path is `/api/internal/payments` to match
+  AIKC and Meru Chess integrations.
+- 2026-07-27: Keep Transaction model unchanged — `reference`,
+  `gatewayReference`, `authorizationUrl`, `method` fields still apply.
+- 2026-07-27: Frontend likely needs NO code changes — it already uses
+  `authorization_url` redirect + verify polling. Only add `.env.example`.
 
 ## Blockers
-
-- **Credentials precheck:** Google OAuth client ID (`VITE_GOOGLE_CLIENT_ID`) and Paystack public key (`VITE_PAYSTACK_PUBLIC_KEY`) are NOT available in this environment. Code reads them from env vars. User must supply real values for live testing.
-
-## Baseline (Phase 0)
-
-- Node: v22.23.1, npm: 10.9.8
-- Framework: React 18.2, Vite 5.1, React Router 6.22, Bootstrap 5.3, Formik + Yup, GSAP, Swiper, axios, react-toastify, sweetalert2
-- Package manager: npm (package-lock.json present)
-- `npm install`: OK (684 packages, 39 vulnerabilities: 4 low, 14 moderate, 19 high, 2 critical — pre-existing)
-- `npm run build`: SUCCESS (dist produced; main chunk 556 kB / 176 kB gzip — over 500 kB warning, pre-existing)
-- `npm run lint`: FAILS — 110 problems (87 errors, 23 warnings). Pre-existing baseline. Mostly `no-unused-vars` (unused `React` imports), `react-hooks/exhaustive-deps`, `react/prop-types`. These are pre-existing and NOT introduced by this work; I will not fold them into enhancement commits.
-- Test suite: NONE. No test runner configured (no vitest/jest). Baseline = 0 tests.
-- Notable pre-existing issues (detailed in audit-frontend.md): Bag.jsx collects card numbers/CVV in plaintext and posts to backend; Login.jsx has `console.log` of response data; AuthContext reads `localStorage.getItem("authData")` then `JSON.parse(storedAuthData)` in both branches of ternary (crashes when null).
-
-## Phase 11 — Independent review findings (frontend-side)
-
-- **#5 Guest authProvider localStorage crash** — `contexts/AuthContext.jsx` now wraps `JSON.parse(storedAuthData)` in try/catch; corrupted storage is removed and falls back to null instead of crashing the app on load.
-- **#8 Frontend currency hardcode** — `utils/api.js` exports `fromSmallestUnit(amount, currency)`; admin `Transactions.jsx` and `TransactionDetails.jsx` use it instead of the hardcoded `/100` division. All Paystack-supported currencies (KES, NGN, USD, ZAR, GHS) use 2-decimal smallest units.
-
-## Phase 12 — Final self-review
-
-- `npm run build` succeeds (all lazy-loaded routes present).
-- `eslint` clean on all changed files (`AuthContext.jsx`, `utils/api.js`, `Transactions.jsx`, `TransactionDetails.jsx`).
-- No new dependencies introduced.
+- (none yet)
