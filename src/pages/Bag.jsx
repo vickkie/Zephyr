@@ -262,6 +262,49 @@ const Bag = () => {
         setLoading(false);
       }
     } catch (error) {
+      // 409: guest entered a password but the email is already registered.
+      // Drop the password fields and retry as a pure guest so checkout can
+      // proceed — the user can log in later to track the order.
+      if (error?.payload?.status === 409 || error?.response?.status === 409) {
+        toast.info(
+          "That email is already registered. Continuing as guest — log in later to track your order.",
+          { className: "toastify" },
+        );
+        setFormData((prev) => ({
+          ...prev,
+          password: "",
+          confirmPassword: "",
+        }));
+        const guestPayload = {
+          ...payload,
+          password: undefined,
+          confirmPassword: undefined,
+        };
+        try {
+          const retry = await api.post(
+            "/api/payments/initialize",
+            guestPayload,
+          );
+          const retryData = unwrap(retry);
+          if (retryData.authorization_url) {
+            window.location.href = retryData.authorization_url;
+          } else {
+            toast.error("No payment URL returned. Please try again.", {
+              className: "toastify",
+            });
+          }
+        } catch (retryErr) {
+          const retryMsg =
+            retryErr?.payload?.message ||
+            retryErr?.message ||
+            "Couldn't start checkout due to an error";
+          toast.error(retryMsg, { className: "toastify" });
+        } finally {
+          setLoading(false);
+        }
+        return;
+      }
+
       const msg =
         error?.payload?.message ||
         error?.message ||
