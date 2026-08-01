@@ -25,6 +25,7 @@ const Profile = () => {
    * handles errors, and updates the customer state or navigates to a 404 page based on the response.
    */
   const fetchCustomer = async () => {
+    if (!user?._id) return;
     try {
       const response = await axios.get(`${VITE_SERVER}/api/customer/${user._id}`, {
         withCredentials: true,
@@ -34,7 +35,7 @@ const Profile = () => {
     } catch (error) {
       console.error(error);
       error.message ? toast.error(error.message, { className: "toastify" }) : null;
-      if (error.response.status === 500) {
+      if (error?.response?.status === 500) {
         navigate("/404");
       }
     }
@@ -45,6 +46,7 @@ const Profile = () => {
    * occur during the process.
    */
   const fetchMyOrders = async () => {
+    if (!user?._id) return;
     try {
       const response = await axios.get(`${VITE_SERVER}/api/orders/${user._id}`, {
         withCredentials: true,
@@ -54,7 +56,7 @@ const Profile = () => {
     } catch (error) {
       console.error(error);
       error.message ? toast.error(error.message, { className: "toastify" }) : null;
-      if (error.response.status === 500) {
+      if (error?.response?.status === 500) {
         navigate("/404");
       }
     }
