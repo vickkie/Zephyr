@@ -67,8 +67,8 @@ const ProfileSettings = () => {
       if (imageUrl) {
         const updatedara = {
           profilePicture: imageUrl.flat()[0],
-          id: user._id,
-          token: user.token,
+          id: user?._id,
+          token: user?.token,
         };
 
         // console.log(updatedara);
