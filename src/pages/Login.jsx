@@ -1,11 +1,13 @@
-import { Footer, Header } from "../components";
 import { useContext, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Eye, EyeOff } from "lucide-react";
 import { toast } from "react-toastify";
 import IsAuthenticatedContext from "../contexts/IsAuthenticatedContext";
 import { AuthContext } from "../contexts/AuthContext";
-import { Link } from "react-router-dom";
 import { api, unwrap } from "../utils/api";
+import styles from "./css/Login.module.css";
 
 const { VITE_GOOGLE_CLIENT_ID } = import.meta.env;
 
@@ -14,46 +16,51 @@ const Login = () => {
   const { login } = useContext(IsAuthenticatedContext);
   const { setAuthData } = useContext(AuthContext);
 
-  const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [googleReady, setGoogleReady] = useState(false);
   const googleButtonRef = useRef(null);
-
-  const onChangeHandler = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const googleCredentialHandler = useRef(null);
 
   /**
-   * Password login. Sends credentials to the backend; on success stores the
-   * customer in auth context and redirects by role.
+   * Redirect an authenticated customer by role. Shared by the password
+   * and Google flows so both behave identically.
    */
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const response = await api.post("/auth/login", formData);
-      const data = unwrap(response);
-      const customer = data.customer;
-      if (customer) {
-        login({ _id: customer._id, role: customer.role });
-        setAuthData(customer);
-        toast.success("Logged in successfully!", { className: "toastify" });
-        navigate(customer.role === "admin" ? "/admin" : "/profile");
-      }
-    } catch (error) {
-      if (error?.payload?.message) {
-        toast.error(error.payload.message, { className: "toastify" });
-      } else if (error?.code === "ERR_NETWORK") {
-        toast.error("Server Down!", { className: "toastify" });
-      } else {
-        toast.error("Server Error", { className: "toastify" });
-      }
-    } finally {
-      setLoading(false);
-    }
+  const finishLogin = (customer) => {
+    login({ _id: customer._id, role: customer.role });
+    setAuthData(customer);
+    toast.success("Logged in successfully!", { className: "toastify" });
+    navigate(customer.role === "admin" ? "/admin" : "/profile");
   };
+
+  const formik = useFormik({
+    initialValues: { email: "", password: "" },
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email("Enter a valid email address")
+        .required("Email is required"),
+      password: Yup.string().required("Password is required"),
+    }),
+    onSubmit: async (values) => {
+      setLoading(true);
+      try {
+        const response = await api.post("/auth/login", values);
+        const data = unwrap(response);
+        if (data.customer) finishLogin(data.customer);
+      } catch (error) {
+        if (error?.payload?.message) {
+          toast.error(error.payload.message, { className: "toastify" });
+        } else if (error?.code === "ERR_NETWORK") {
+          toast.error("Server Down!", { className: "toastify" });
+        } else {
+          toast.error("Server Error", { className: "toastify" });
+        }
+      } finally {
+        setLoading(false);
+      }
+    },
+  });
 
   /**
    * Google One Tap credential callback. The credential (a Google ID token)
@@ -67,13 +74,7 @@ const Login = () => {
         credential: response.credential,
       });
       const data = unwrap(res);
-      const customer = data.customer;
-      if (customer) {
-        login({ _id: customer._id, role: customer.role });
-        setAuthData(customer);
-        toast.success("Logged in with Google!", { className: "toastify" });
-        navigate(customer.role === "admin" ? "/admin" : "/profile");
-      }
+      if (data.customer) finishLogin(data.customer);
     } catch (error) {
       toast.error(error?.payload?.message || "Google sign-in failed", {
         className: "toastify",
@@ -82,38 +83,7 @@ const Login = () => {
       setGoogleLoading(false);
     }
   };
-
-  // Render the Google One Tap prompt + button alongside the existing form.
-  // This is additive — the password form below is unchanged in function.
-  useEffect(() => {
-    if (!VITE_GOOGLE_CLIENT_ID || typeof window === "undefined") return;
-    if (!window.google || !window.google.accounts) return;
-
-    try {
-      window.google.accounts.id.initialize({
-        client_id: VITE_GOOGLE_CLIENT_ID,
-        callback: handleGoogleCredential,
-        auto_select: false,
-        cancel_on_tap_outside: false,
-      });
-
-      // Render the explicit button (always visible alongside the form).
-      if (googleButtonRef.current) {
-        window.google.accounts.id.renderButton(googleButtonRef.current, {
-          theme: "outline",
-          size: "large",
-          width: "100%",
-          text: "continue_with",
-        });
-      }
-
-      // Show the One Tap prompt too (dismissable).
-      window.google.accounts.id.prompt();
-    } catch {
-      // GIS may not be ready yet; safe to ignore — the button still renders.
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  googleCredentialHandler.current = handleGoogleCredential;
 
   // Inject the Google Identity Services script once.
   useEffect(() => {
@@ -125,98 +95,204 @@ const Login = () => {
     script.async = true;
     script.defer = true;
     document.head.appendChild(script);
+  }, []);
+
+  // Initialize GIS + render the explicit button once the script is available.
+  useEffect(() => {
+    if (!VITE_GOOGLE_CLIENT_ID) return;
+    let cancelled = false;
+
+    const initGoogle = () => {
+      if (cancelled) return;
+      if (!window.google || !window.google.accounts) return false;
+      try {
+        window.google.accounts.id.initialize({
+          client_id: VITE_GOOGLE_CLIENT_ID,
+          callback: (resp) => googleCredentialHandler.current(resp),
+          auto_select: false,
+          cancel_on_tap_outside: false,
+        });
+        if (googleButtonRef.current) {
+          window.google.accounts.id.renderButton(googleButtonRef.current, {
+            theme: "outline",
+            size: "large",
+            shape: "rectangular",
+            width: 400,
+            text: "continue_with",
+            locale: "en",
+          });
+        }
+        window.google.accounts.id.prompt();
+        setGoogleReady(true);
+        return true;
+      } catch {
+        return false;
+      }
+    };
+
+    if (initGoogle()) return;
+
+    // GIS may load after this effect runs; poll until it's ready.
+    const interval = setInterval(() => {
+      if (initGoogle()) clearInterval(interval);
+    }, 300);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const emailErr =
+    formik.touched.email && formik.errors.email ? styles.inputError : "";
+  const pwdErr =
+    formik.touched.password && formik.errors.password ? styles.inputError : "";
+
   return (
-    <>
-      <Header />
-      <main className="container-fluid position-relative h-500px p-0">
-        <div className="login-card h-50 w-50 font-color">
-          {/* Login form  */}
-          <form
-            onSubmit={handleLogin}
-            className="login-form align-item-center mb-0 d-flex position-static"
-          >
-            <h1 className="login-heading fs-5 lh-lg text-uppercase">Login</h1>
-            <input
-              type="email"
-              className="login-input font-color d-block my-2"
-              id="email"
-              name="email"
-              placeholder="Enter your email"
-              onChange={(e) => onChangeHandler(e)}
-              required
-              autoComplete="email"
-            />
+    <div className={styles.split}>
+      {/* Left column — hero image */}
+      <aside className={styles.hero} aria-hidden="true">
+        <div className={styles.heroOverlay}>
+          <span className={styles.heroBrand}>
+            ZEPHIR <i className="ai ai-crown-fill" />
+          </span>
+          <div className={styles.heroTagline}>
+            <h2>Wear the quiet luxury.</h2>
+            <p>Curated pieces for the modern wardrobe.</p>
+          </div>
+        </div>
+      </aside>
 
-            <input
-              type="password"
-              name="password"
-              id="password"
-              className="login-input font-color d-block my-2"
-              placeholder="Enter your password"
-              onChange={(e) => onChangeHandler(e)}
-              required
-              autoComplete="current-password"
-            />
+      {/* Right column — login form */}
+      <main className={styles.panel}>
+        <div className={styles.form}>
+          <Link to="/" className={styles.logo}>
+            ZEPHIR <i className="ai ai-crown-fill" />
+          </Link>
 
-            <Link to="/forgot-password" className="forgot-password-link">
-              Forgot Password?
-            </Link>
+          <h1 className={styles.heading}>Welcome back</h1>
+          <p className={styles.subheading}>Log in to continue</p>
 
-            <button
-              type="submit"
-              className="btn text-uppercase d-block my-2 py-3"
-              style={{ fontSize: 0.88 + "rem" }}
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <span
-                    className="spinner-grow spinner-grow-sm text-dark me-2"
-                    aria-hidden="true"
-                  ></span>
-                  <span role="status">Logging in…</span>
-                </>
-              ) : (
-                "Submit"
-              )}
+          {/* Google login */}
+          {VITE_GOOGLE_CLIENT_ID ? (
+            googleLoading ? (
+              <div className={styles.googleLoading}>
+                <span className={styles.spinner} />
+                Signing in with Google…
+              </div>
+            ) : (
+              <div className={styles.googleBtn} ref={googleButtonRef}>
+                {!googleReady && (
+                  <div className={styles.googleFallback}>
+                    Continue with Google
+                  </div>
+                )}
+              </div>
+            )
+          ) : (
+            <div className={styles.googleFallback}>Continue with Google</div>
+          )}
+
+          <div className={styles.divider} role="separator">
+            or
+          </div>
+
+          <form onSubmit={formik.handleSubmit} noValidate>
+            {/* Email */}
+            <div className={styles.field}>
+              <label htmlFor="email" className={styles.label}>
+                Email
+              </label>
+              <div className={styles.inputWrap}>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  inputMode="email"
+                  autoComplete="email"
+                  placeholder="you@example.com"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.email}
+                  className={`${styles.input} ${emailErr}`}
+                  aria-invalid={Boolean(emailErr)}
+                  aria-describedby="email-err"
+                />
+              </div>
+              <span
+                className={styles.errorText}
+                id="email-err"
+                aria-live="polite"
+              >
+                {formik.touched.email && formik.errors.email
+                  ? formik.errors.email
+                  : ""}
+              </span>
+            </div>
+
+            {/* Password */}
+            <div className={styles.field}>
+              <label htmlFor="password" className={styles.label}>
+                Password
+              </label>
+              <div className={styles.inputWrap}>
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete="current-password"
+                  placeholder="••••••••"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.password}
+                  className={`${styles.input} ${pwdErr}`}
+                  aria-invalid={Boolean(pwdErr)}
+                  aria-describedby="password-err"
+                />
+                <button
+                  type="button"
+                  className={styles.pwdToggle}
+                  onClick={() => setShowPassword((s) => !s)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  tabIndex={0}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+              <span
+                className={styles.errorText}
+                id="password-err"
+                aria-live="polite"
+              >
+                {formik.touched.password && formik.errors.password
+                  ? formik.errors.password
+                  : ""}
+              </span>
+            </div>
+
+            <div className={styles.forgotRow}>
+              <Link to="/forgot-password" className={styles.forgotLink}>
+                Forgot password?
+              </Link>
+            </div>
+
+            <button type="submit" className={styles.submit} disabled={loading}>
+              {loading && <span className={styles.spinner} />}
+              {loading ? "Logging in…" : "Log in"}
             </button>
           </form>
 
-          {/* Google One Tap — alongside the existing login, not replacing it. */}
-          {VITE_GOOGLE_CLIENT_ID && (
-            <div className="mt-3 d-flex flex-column align-items-center gap-2">
-              <div
-                className="product-card-price font-color"
-                style={{ fontSize: "0.8rem" }}
-              >
-                or
-              </div>
-              <div ref={googleButtonRef} aria-label="Continue with Google" />
-              {googleLoading && (
-                <span
-                  className="product-card-price font-color"
-                  style={{ fontSize: "0.8rem" }}
-                >
-                  Signing in with Google…
-                </span>
-              )}
-            </div>
-          )}
-          {!VITE_GOOGLE_CLIENT_ID && (
-            <p
-              className="product-card-price font-color mt-3"
-              style={{ fontSize: "0.75rem" }}
-            >
-              Google sign-in is not configured on this environment.
-            </p>
-          )}
+          <p className={styles.footerLink}>
+            Don&apos;t have an account?
+            <Link to="/register">Sign up</Link>
+          </p>
+
+          <Link to="/" className={styles.backHome}>
+            ← Back to home
+          </Link>
         </div>
       </main>
-      <Footer />
-    </>
+    </div>
   );
 };
 
