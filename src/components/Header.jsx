@@ -46,21 +46,35 @@ const Header = () => {
       <nav className="navbars navbar-expand-md">
         <div className="container-fluidZ grid-header px-0 py-2">
           {/* <Link className="navbar-brand font-color" to="/">ÜXORA</Link> */}
-          <NavLink className="navbar-brand font-color position-relative header justify-content-start" to="/">
+          <NavLink
+            className="navbar-brand font-color position-relative header justify-content-start"
+            to="/"
+          >
             ZEPHIR
             <span className="position-absolute top-0 start-50 translate-middle fs-6">
               <i className="ai ai-crown-fill bag"></i>
             </span>
           </NavLink>
-          <div className="collapse navbar-collapse row m-0 navbarNav menus " id="navbarNav">
+          <div
+            className="collapse navbar-collapse row m-0 navbarNav menus "
+            id="navbarNav"
+          >
             <ul className="navbar-nav col-sm-12 justify-content-center">
               <li className="nav-item">
-                <NavLink className="nav-link font-color bg-color px-2 py-0 mx-1 text-center" id="index" to="/">
+                <NavLink
+                  className="nav-link font-color bg-color px-2 py-0 mx-1 text-center"
+                  id="index"
+                  to="/"
+                >
                   Home
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link font-color bg-color px-2 py-0 mx-1 text-center" id="shop" to="/shop">
+                <NavLink
+                  className="nav-link font-color bg-color px-2 py-0 mx-1 text-center"
+                  id="shop"
+                  to="/shop"
+                >
                   Shop
                 </NavLink>
               </li>
@@ -77,22 +91,38 @@ const Header = () => {
                 </NavLink>
                 <ul className="dropdown-menu">
                   <li>
-                    <NavLink className="dropdown-item" id="women" to="/women/all">
+                    <NavLink
+                      className="dropdown-item"
+                      id="women"
+                      to="/women/all"
+                    >
                       All Products
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink className="dropdown-item" id="dresses" to="/women/dresses">
+                    <NavLink
+                      className="dropdown-item"
+                      id="dresses"
+                      to="/women/dresses"
+                    >
                       Dresses
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink className="dropdown-item" id="wpants" to="/women/pants">
+                    <NavLink
+                      className="dropdown-item"
+                      id="wpants"
+                      to="/women/pants"
+                    >
                       Pants
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink className="dropdown-item" id="skirts" to="/women/skirts">
+                    <NavLink
+                      className="dropdown-item"
+                      id="skirts"
+                      to="/women/skirts"
+                    >
                       Skirts
                     </NavLink>
                   </li>
@@ -115,29 +145,49 @@ const Header = () => {
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink className="dropdown-item" id="shirts" to="/men/shirts">
+                    <NavLink
+                      className="dropdown-item"
+                      id="shirts"
+                      to="/men/shirts"
+                    >
                       Shirts
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink className="dropdown-item" id="pants" to="/men/pants">
+                    <NavLink
+                      className="dropdown-item"
+                      id="pants"
+                      to="/men/pants"
+                    >
                       Pants
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink className="dropdown-item" id="hoodies" to="/men/hoodies">
+                    <NavLink
+                      className="dropdown-item"
+                      id="hoodies"
+                      to="/men/hoodies"
+                    >
                       Hoodies
                     </NavLink>
                   </li>
                 </ul>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link font-color bg-color px-2 py-0 mx-1  text-center" id="kids" to="/kids">
+                <NavLink
+                  className="nav-link font-color bg-color px-2 py-0 mx-1  text-center"
+                  id="kids"
+                  to="/kids"
+                >
                   Kids
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link font-color bg-color px-2 py-0 mx-1 text-center" id="contact" to="/contact">
+                <NavLink
+                  className="nav-link font-color bg-color px-2 py-0 mx-1 text-center"
+                  id="contact"
+                  to="/contact"
+                >
                   Contact
                 </NavLink>
               </li>
@@ -150,10 +200,20 @@ const Header = () => {
                 // onClick={toggleSearch}
                 onClick={toggleSearch}
               >
-                <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="28px"
+                  height="28px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
-                  <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" />
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
 
                   <g id="SVGRepo_iconCarrier">
                     {" "}
@@ -187,7 +247,13 @@ const Header = () => {
                     className="btn nav-link font-color  px-0 py-2 mx-2 text-uppercase"
                     style={{ fontSize: 0.88 + "rem" }}
                   >
-                    <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg
+                      width="25px"
+                      height="25px"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
                       <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
                       <g
@@ -217,17 +283,27 @@ const Header = () => {
                       </g>
                     </svg>
                   </Link>
-                ) : user.role === "admin" ? (
+                ) : user?.role === "admin" ? (
                   <Link
                     to="/admin"
                     id="profile"
                     className="btn nav-link font-color  px-0 py-2 mx-1 text-uppercase"
                     style={{ fontSize: 0.88 + "rem" }}
                   >
-                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg
+                      width="24px"
+                      height="24px"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
                       <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
-                      <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" />
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
 
                       <g id="SVGRepo_iconCarrier">
                         {" "}
@@ -265,10 +341,20 @@ const Header = () => {
                     className="btn nav-link font-color px-2 py-2 mx-1 text-uppercase"
                     style={{ fontSize: 0.88 + "rem" }}
                   >
-                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg
+                      width="24px"
+                      height="24px"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
                       <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
-                      <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" />
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
 
                       <g id="SVGRepo_iconCarrier">
                         {" "}
@@ -278,7 +364,13 @@ const Header = () => {
                           strokeWidth="1.5"
                           strokeLinecap="round"
                         />{" "}
-                        <circle cx="12" cy="6" r="4" stroke="var(--font-color)" strokeWidth="1.5" />{" "}
+                        <circle
+                          cx="12"
+                          cy="6"
+                          r="4"
+                          stroke="var(--font-color)"
+                          strokeWidth="1.5"
+                        />{" "}
                       </g>
                     </svg>
                   </Link>
@@ -286,7 +378,13 @@ const Header = () => {
               }
               <Link to="/bag" className="py-2 text-center text-decoration-none">
                 <span className="fas mx-2 fs-4 bag position-relative">
-                  <svg height={28} width={28} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    height={28}
+                    width={28}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       fillRule="evenodd"
                       clipRule="evenodd"
@@ -310,8 +408,19 @@ const Header = () => {
                 aria-expanded="false"
                 aria-label="Toggle navigation"
               >
-                <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3 7H21" stroke="var(--font-color)" strokeWidth="1.5" strokeLinecap="round" />
+                <svg
+                  width="30px"
+                  height="30px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 7H21"
+                    stroke="var(--font-color)"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
                   {/* <path
                     opacity="0.34"
                     d="M3 12H21"
@@ -319,7 +428,12 @@ const Header = () => {
                     strokeWidth="1.5"
                     strokeLinecap="round"
                   /> */}
-                  <path d="M3 17H21" stroke="var(--font-color)" strokeWidth="1.5" strokeLinecap="round" />
+                  <path
+                    d="M3 17H21"
+                    stroke="var(--font-color)"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
                 </svg>
               </button>
             </ul>
@@ -331,9 +445,16 @@ const Header = () => {
 
       {isMobile && (
         <nav className="navbar navbar-expand-md container-fluid p-0">
-          <div className="collapse navbar-collapse row navbarNav" id="navbarNav">
+          <div
+            className="collapse navbar-collapse row navbarNav"
+            id="navbarNav"
+          >
             <ul className="navbar-nav col-sm-12 justify-content-end">
-              <form onSubmit={handleSearch} className="search d-flex w-100 m-1" role="search">
+              <form
+                onSubmit={handleSearch}
+                className="search d-flex w-100 m-1"
+                role="search"
+              >
                 <input
                   // onChange={(e) => handleSearchDebounce(e.target.value)}
                   onChange={(e) => SetSearchQuery(e.target.value)}
@@ -343,12 +464,25 @@ const Header = () => {
                   aria-label="Search"
                 />
 
-                <button className="btn font-color visually-hidden" type="submit">
+                <button
+                  className="btn font-color visually-hidden"
+                  type="submit"
+                >
                   search
-                  <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="18px"
+                    height="18px"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
-                    <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" />
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
 
                     <g id="SVGRepo_iconCarrier">
                       {" "}
