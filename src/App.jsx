@@ -46,6 +46,7 @@ const Announcements = lazy(() => import("./pages/admin/Announcements"));
 const UpdateAnnouncement = lazy(() => import("./pages/admin/UpdateAnnouncement"));
 const Settings = lazy(() => import("./pages/admin/Settings"));
 const HeroControl = lazy(() => import("./pages/admin/HeroControl"));
+const Register = lazy(() => import("./pages/Register"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPasword"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 
@@ -107,6 +108,7 @@ function App() {
               <Route path="/product/:id" element={<SingleProduct />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
 
