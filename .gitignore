@@ -13,6 +13,9 @@ dist-ssr
 *.local
 .env
 
+# Vercel local build state
+.vercel/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
