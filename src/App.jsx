@@ -78,7 +78,14 @@ function App() {
         console.error("Login check failed:", response.data.message);
       }
     } catch (error) {
-      console.error("Error checking login:", error.response?.data || error.message);
+      // 403 just means no active session — not an error, the user is simply
+      // not logged in yet. Only log unexpected failures.
+      if (error?.response?.status !== 403) {
+        console.error(
+          "Error checking login:",
+          error.response?.data || error.message,
+        );
+      }
     }
   };
 
