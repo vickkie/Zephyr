@@ -123,10 +123,14 @@
 /* ----- Google button ----- */
 .googleBtn {
   width: 100%;
-  min-height: 3.2rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  line-height: 0;
+}
+
+.googleBtn:empty {
+  display: none;
 }
 
 .googleFallback {

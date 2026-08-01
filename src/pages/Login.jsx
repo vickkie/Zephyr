@@ -9,7 +9,14 @@ import { AuthContext } from "../contexts/AuthContext";
 import { api, unwrap } from "../utils/api";
 import styles from "./css/Login.module.css";
 
-const { VITE_GOOGLE_CLIENT_ID } = import.meta.env;
+// Sanitize the env value: the Vercel env var may contain trailing newlines
+// or be pasted multiple times, which produces a malformed client_id and
+// breaks Google Identity Services ("The given client ID is not found").
+const rawClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
+const GOOGLE_CLIENT_ID = rawClientId
+  .split(/[\n\r]+/)
+  .map((s) => s.trim())
+  .find((s) => s.length > 0 && !s.startsWith("#"));
 
 const Login = () => {
   const navigate = useNavigate();
@@ -87,7 +94,7 @@ const Login = () => {
 
   // Inject the Google Identity Services script once.
   useEffect(() => {
-    if (!VITE_GOOGLE_CLIENT_ID) return;
+    if (!GOOGLE_CLIENT_ID) return;
     if (document.getElementById("google-gis-script")) return;
     const script = document.createElement("script");
     script.id = "google-gis-script";
@@ -99,7 +106,7 @@ const Login = () => {
 
   // Initialize GIS + render the explicit button once the script is available.
   useEffect(() => {
-    if (!VITE_GOOGLE_CLIENT_ID) return;
+    if (!GOOGLE_CLIENT_ID) return;
     let cancelled = false;
 
     const initGoogle = () => {
@@ -107,7 +114,7 @@ const Login = () => {
       if (!window.google || !window.google.accounts) return false;
       try {
         window.google.accounts.id.initialize({
-          client_id: VITE_GOOGLE_CLIENT_ID,
+          client_id: GOOGLE_CLIENT_ID,
           callback: (resp) => googleCredentialHandler.current(resp),
           auto_select: false,
           cancel_on_tap_outside: false,
@@ -174,20 +181,21 @@ const Login = () => {
           <p className={styles.subheading}>Log in to continue</p>
 
           {/* Google login */}
-          {VITE_GOOGLE_CLIENT_ID ? (
+          {GOOGLE_CLIENT_ID ? (
             googleLoading ? (
               <div className={styles.googleLoading}>
                 <span className={styles.spinner} />
                 Signing in with Google…
               </div>
             ) : (
-              <div className={styles.googleBtn} ref={googleButtonRef}>
+              <>
                 {!googleReady && (
                   <div className={styles.googleFallback}>
                     Continue with Google
                   </div>
                 )}
-              </div>
+                <div className={styles.googleBtn} ref={googleButtonRef} />
+              </>
             )
           ) : (
             <div className={styles.googleFallback}>Continue with Google</div>
