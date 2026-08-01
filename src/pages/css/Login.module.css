@@ -1,0 +1,413 @@
+/* ===== Split-screen login ===== */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100svh;
+  width: 100%;
+}
+
+/* ----- Left hero column ----- */
+.hero {
+  position: relative;
+  background-image: url("/images/fashionable-woman-in-fur-coat-and-glasses-enjoying-the-day.pngfree.ai2.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 18, 18, 0.35) 0%,
+    rgba(18, 18, 18, 0.15) 40%,
+    rgba(18, 18, 18, 0.65) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(1.5rem, 4vi, 3.5rem);
+}
+
+.heroBrand {
+  font-family: var(--heading-font);
+  font-size: var(--zy-lg);
+  letter-spacing: 2px;
+  color: #f4f2ed;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.heroBrand i {
+  color: var(--primary-color);
+  font-size: 0.7em;
+}
+
+.heroTagline {
+  color: #f4f2ed;
+  max-width: 26ch;
+}
+
+.heroTagline h2 {
+  font-family: var(--font-4);
+  font-style: italic;
+  font-size: var(--zy-xl);
+  line-height: 1.15;
+  margin: 0 0 0.5rem;
+  letter-spacing: 0.5px;
+}
+
+.heroTagline p {
+  font-family: var(--paragraph-font);
+  font-size: var(--zy-sm);
+  opacity: 0.85;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+/* ----- Right form column ----- */
+.panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.5rem, 5vi, 3rem) clamp(1.25rem, 4vi, 2rem);
+  background-color: var(--secondary-color);
+}
+
+.form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* small logo at top of form */
+.logo {
+  font-family: var(--heading-font);
+  font-size: var(--zy-md);
+  letter-spacing: 2px;
+  color: var(--font-color);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.75rem;
+  text-decoration: none;
+}
+
+.logo i {
+  color: var(--primary-color);
+  font-size: 0.7em;
+}
+
+.heading {
+  font-family: var(--heading-font);
+  font-size: var(--zy-xl);
+  font-weight: 400;
+  margin: 0 0 0.35rem;
+  color: var(--font-color);
+  letter-spacing: 0.5px;
+}
+
+.subheading {
+  font-family: var(--paragraph-font);
+  font-size: var(--zy-sm);
+  color: var(--font-color);
+  opacity: 0.7;
+  margin: 0 0 1.75rem;
+}
+
+/* ----- Google button ----- */
+.googleBtn {
+  width: 100%;
+  min-height: 3.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.googleFallback {
+  width: 100%;
+  min-height: 3.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background-color: transparent;
+  border: 1px solid rgba(128, 128, 128, 0.4);
+  border-radius: 8px;
+  color: var(--font-color);
+  font-family: var(--paragraph-font);
+  font-size: 0.95rem;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.googleLoading {
+  width: 100%;
+  min-height: 3.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  border: 1px solid rgba(128, 128, 128, 0.4);
+  border-radius: 8px;
+  color: var(--font-color);
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* ----- Divider ----- */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  color: var(--font-color);
+  opacity: 0.6;
+  font-size: var(--zy-sm);
+  font-family: var(--paragraph-font);
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: currentColor;
+  opacity: 0.4;
+}
+
+/* ----- Fields ----- */
+.field {
+  margin-bottom: 1.1rem;
+}
+
+.label {
+  display: block;
+  font-family: var(--paragraph-font);
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+  color: var(--font-color);
+  opacity: 0.85;
+}
+
+.inputWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  min-height: 3.2rem;
+  padding: 0 1rem;
+  background-color: var(--light);
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  border-radius: 8px;
+  color: var(--font-color);
+  font-family: var(--paragraph-font);
+  font-size: 1rem;
+  line-height: 140%;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.input::placeholder {
+  color: var(--font-color);
+  opacity: 0.4;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(206, 189, 99, 0.18);
+  background-color: var(--light-hover);
+}
+
+.inputError {
+  border-color: #d9534f !important;
+}
+
+.inputError:focus {
+  box-shadow: 0 0 0 3px rgba(217, 83, 79, 0.18);
+}
+
+.pwdToggle {
+  position: absolute;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  color: var(--font-color);
+  opacity: 0.6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.pwdToggle:hover {
+  opacity: 1;
+}
+
+.pwdToggle:focus-visible {
+  outline: none;
+  opacity: 1;
+  color: var(--primary-color);
+}
+
+.errorText {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  color: #d9534f;
+  font-family: var(--paragraph-font);
+  min-height: 1rem;
+}
+
+/* ----- Forgot password row ----- */
+.forgotRow {
+  display: flex;
+  justify-content: flex-end;
+  margin: -0.25rem 0 1.25rem;
+}
+
+.forgotLink {
+  font-family: var(--paragraph-font);
+  font-size: 0.82rem;
+  color: var(--font-color);
+  opacity: 0.75;
+  text-decoration: none;
+  transition: color 0.2s, opacity 0.2s;
+}
+
+.forgotLink:hover {
+  color: var(--primary-color);
+  opacity: 1;
+}
+
+/* ----- Submit button ----- */
+.submit {
+  width: 100%;
+  min-height: 3.2rem;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--primary-color);
+  color: #121212;
+  font-family: var(--paragraph-font);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  transition: filter 0.2s, transform 0.05s;
+}
+
+.submit:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.submit:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(18, 18, 18, 0.3);
+  border-top-color: #121212;
+  border-radius: 50%;
+  animation: zySpin 0.7s linear infinite;
+}
+
+@keyframes zySpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ----- Footer link ----- */
+.footerLink {
+  margin-top: 1.75rem;
+  text-align: center;
+  font-family: var(--paragraph-font);
+  font-size: 0.9rem;
+  color: var(--font-color);
+  opacity: 0.8;
+}
+
+.footerLink a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 0.25rem;
+}
+
+.footerLink a:hover {
+  text-decoration: underline;
+}
+
+.backHome {
+  margin-top: 1.25rem;
+  text-align: center;
+  font-family: var(--paragraph-font);
+  font-size: 0.8rem;
+  color: var(--font-color);
+  opacity: 0.55;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.backHome:hover {
+  opacity: 1;
+}
+
+/* ===== Responsive ===== */
+
+/* Tablet: image becomes a top banner, form below */
+@media screen and (max-width: 1023px) {
+  .split {
+    grid-template-columns: 1fr;
+    grid-template-rows: 240px 1fr;
+  }
+
+  .heroOverlay {
+    padding: 1.25rem 1.5rem;
+    justify-content: flex-end;
+  }
+
+  .heroBrand {
+    font-size: var(--zy-md);
+  }
+
+  .heroTagline h2 {
+    font-size: var(--zy-lg);
+  }
+}
+
+/* Mobile: image removed, form takes full width */
+@media screen and (max-width: 767px) {
+  .split {
+    grid-template-rows: 1fr;
+  }
+
+  .hero {
+    display: none;
+  }
+
+  .panel {
+    padding: 1.5rem 1.25rem;
+  }
+}
