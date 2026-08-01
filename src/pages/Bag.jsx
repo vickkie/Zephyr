@@ -247,7 +247,7 @@ const Bag = () => {
       const data = unwrap(response);
 
       // If the server created a customer (guest checkout), log them in locally.
-      if (data.customer && !isAuthenticated) {
+      if (data.customer && data.customer.role && !isAuthenticated) {
         login({ _id: data.customer._id, role: data.customer.role });
         setAuthData(data.customer);
       }

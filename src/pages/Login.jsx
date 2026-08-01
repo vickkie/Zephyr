@@ -35,6 +35,12 @@ const Login = () => {
    * and Google flows so both behave identically.
    */
   const finishLogin = (customer) => {
+    if (!customer || !customer.role) {
+      toast.error("Login succeeded but user data is incomplete.", {
+        className: "toastify",
+      });
+      return;
+    }
     login({ _id: customer._id, role: customer.role });
     setAuthData(customer);
     toast.success("Logged in successfully!", { className: "toastify" });
