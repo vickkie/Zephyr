@@ -9,7 +9,7 @@ const { VITE_SERVER } = import.meta.env;
 
 const OrderDetails = () => {
   const navigate = useNavigate();
-  let { id } = useParams();
+  const { id } = useParams();
 
   const [loading, setLoading] = useState();
   const [order, setOrder] = useState({});
@@ -17,9 +17,6 @@ const OrderDetails = () => {
   const [selectedStatus, setSelectedStatus] = useState();
 
   const { responseData, isLoading, errorMessage, patchData } = usePatch(`admin/order/${order.orderId}`);
-  // console.log(responseData);
-  // console.log(order.orderId);
-
   const [isEditMode, setIsEditMode] = useState(false); // State to control edit mode
   const [formData, setFormData] = useState({
     subTotal: order?.subTotal || 0,
@@ -36,7 +33,6 @@ const OrderDetails = () => {
   const handleSave = () => {
     patchData(formData);
     setIsEditMode(false); // Switch back to view mode after saving
-    // console.log("Updated Order:", formData);
   };
 
   const handleCancel = () => {
@@ -56,7 +52,6 @@ const OrderDetails = () => {
       const response = await axios.get(`${VITE_SERVER}/api/admin/order/${id}`, {
         withCredentials: true,
       });
-      console.log(response.data.order);
       if (response.data.success) {
         setOrder(response.data.order);
         setFormData({
@@ -94,8 +89,6 @@ const OrderDetails = () => {
         const response = await axios.delete(`${VITE_SERVER}/api/admin/order/${id}`, {
           withCredentials: true,
         });
-        // console.log("deleteHandler", response.data);
-
         response.data.success ? toast.success("Order has been deleted", { className: "toastify" }) : null;
 
         setLoading(false);
@@ -112,7 +105,6 @@ const OrderDetails = () => {
   };
 
   const updateOrder = async () => {
-    // console.log(order.orderId);
     let patch = {
       status: selectedStatus,
       orderId: order.orderId,
@@ -123,7 +115,6 @@ const OrderDetails = () => {
         withCredentials: true,
       });
 
-      // console.log(response.data);
       if (response.data.success) {
         setSelectedStatus(response.data.updatedOrder.orderStatus);
         toast.success("Order has been Updated", { className: "toastify" });
@@ -144,7 +135,6 @@ const OrderDetails = () => {
 
   useEffect(() => {
     if (responseData && responseData.updatedOrder && !isLoading) {
-      // console.log(responseData);
       setOrder(responseData.updatedOrder);
       toast.dismiss();
       toast.success("Order has been Updated", { className: "toastify" });
@@ -154,14 +144,14 @@ const OrderDetails = () => {
   }, [responseData, isLoading, errorMessage]);
 
   return (
-    <main className=" py-3">
+    <main className="admin-page admin-order-details-page py-3">
       {/* <!-- Title  --> */}
       <h1 className="title text-uppercase text-center mt-5">Order #{order?.orderId}</h1>
       <h5 className="text-uppercase text-center mb-5">{/* Checkout */}</h5>
-      <div className="row g-3">
-        <div className="col-sm-7">
+      <div className="row g-3 admin-order-details-grid">
+        <div className="col-sm-7 admin-order-details-left">
           {/* <!-- Bag Items section  --> */}
-          <div className="card container-fluid p-3 mb-3">
+          <div className="card container-fluid p-3 mb-3 admin-order-panel">
             <div className="card-body p-3">
               <div className="row">
                 <div className="col">
@@ -177,7 +167,7 @@ const OrderDetails = () => {
           </div>
 
           {/* Customer Info for sign up */}
-          <div className="card container-fluid p-3 mb-3">
+          <div className="card container-fluid p-3 mb-3 admin-order-panel">
             <div className="card-body p-3">
               <div className="row">
                 <div className="col">
@@ -229,7 +219,7 @@ const OrderDetails = () => {
           </div>
 
           {/* Shipping address */}
-          <div className="card container-fluid p-3 mb-3">
+          <div className="card container-fluid p-3 mb-3 admin-order-panel">
             <div className="card-body p-3">
               <div className="row">
                 <div className="col">
@@ -309,7 +299,7 @@ const OrderDetails = () => {
           </div>
           {/* Payment */}
           {order.paymentInfo && (
-            <div className="card container-fluid p-3 mb-3">
+            <div className="card container-fluid p-3 mb-3 admin-order-panel">
               <div className="card-body p-3">
                 <div className="row">
                   <div className="col">
@@ -366,19 +356,6 @@ const OrderDetails = () => {
                               readOnly
                             />
                           </div>
-                          {/* <div className="col-md p-0">
-                          <label htmlFor="securityCode" className="font-color product-card-price mb-1">
-                            Security Code *
-                          </label>
-                          <input
-                            type="number"
-                            className="login-input font-color d-block w-100"
-                            id="securityCode"
-                            name="securityCode"
-                            placeholder="Enter security code"
-                            value={order.paymentInfo.cardDetails.securityCode}
-                          />
-                        </div> */}
                         </div>
                       </div>
                     )}
@@ -409,8 +386,8 @@ const OrderDetails = () => {
 
         {/* <!-- Order Summery Section  --> */}
 
-        <div className="col-sm-5">
-          <div className="card container-fluid p-3 position-sticky top-0">
+        <div className="col-sm-5 admin-order-details-summary">
+          <div className="card container-fluid p-3 position-sticky top-0 admin-order-summary-card">
             <div className="card-body p-3">
               <div className="row">
                 <div className="col">
@@ -512,7 +489,10 @@ const OrderDetails = () => {
                     )}
                   </div>
 
-                  <div className="d-flex justify-content-center w-100 gap-3">
+                  <div
+                    aria-label="Fulfilment status"
+                    className="d-flex justify-content-center w-100 gap-3 admin-order-status-grid"
+                  >
                     <div className="d-flex flex-column flex-wrap gap-3 my-5">
                       <input
                         type="radio"
@@ -604,7 +584,7 @@ const OrderDetails = () => {
                   <div className="contact-form">
                     <button
                       className="btn text-uppercase d-block my-2 py-3 w-100 fw-bold"
-                      style={{ fontSize: 0.88 + "rem" }}
+                      style={{ fontSize: "0.88rem" }}
                       onClick={() => updateOrder(id)}
                       disabled={loading}
                     >
@@ -620,7 +600,7 @@ const OrderDetails = () => {
                   </div>
                   <button
                     className="btn text-uppercase d-block my-2 py-3 w-100 fw-bold bg-color border bag hover-text-primary"
-                    style={{ fontSize: 0.88 + "rem" }}
+                    style={{ fontSize: "0.88rem" }}
                     onClick={() => deleteHandler(id)}
                     disabled={loading}
                   >
@@ -645,9 +625,6 @@ const OrderDetails = () => {
 
 // eslint-disable-next-line react/prop-types
 const BagItem = ({ images, productCode, productName, quantity, salePrice }) => {
-  // const { increaseQuantity, decreaseQuantity, removeFromBag } = useContext(BagContext);
-  console.log(images);
-
   return (
     <div className="row mt-4 g-3">
       <div className="col-sm-2">
@@ -663,28 +640,7 @@ const BagItem = ({ images, productCode, productName, quantity, salePrice }) => {
         </p>
         <p className="product-card-price font-color mb-0">ID : {productCode}</p>
 
-        {/* <Link onClick={() => { removeFromBag(id) }} className="bag text-decoration-none text-center">
-                    <i className="ai ai-trash-fill fs-5"></i>
-                </Link> */}
       </div>
-      {/* <div className="col-sm-3 col-md-4 d-flex align-items-center">
-                <div className="d-flex align-items-center justify-content-center w-100">
-                    <Link onClick={() => { decreaseQuantity(id) }} className="bag text-decoration-none mx-2">
-                        <i className="ai ai-minus-fill fs-4"></i>
-                    </Link>
-                    <input className="login-input w-50 text-center font-color "
-                        style={{ minHeight: 2.2 + 'rem', padding: 0.3 + 'rem' }}
-                        type="number"
-                        name="quantity"
-                        id={useId()}
-                        value={quantity}
-                        min={1}
-                        readOnly />
-                    <Link onClick={() => { increaseQuantity(id) }} className="bag text-decoration-none mx-2">
-                        <i className="ai ai-plus-fill fs-4"></i>
-                    </Link>
-                </div>
-            </div> */}
     </div>
   );
 };

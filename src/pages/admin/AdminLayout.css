@@ -640,3 +640,180 @@ body:has(.zephir-admin-shell) .theme-toggler {
     transition-duration: 0.01ms !important;
   }
 }
+
+.zephir-admin-shell .admin-order-details-page > .title {
+  margin: 8px 0 28px;
+  color: var(--ops-ink);
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.zephir-admin-shell .admin-order-details-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(340px, 1fr);
+  align-items: start;
+  gap: 24px;
+  margin: 0;
+}
+
+.zephir-admin-shell .admin-order-details-grid > [class*="col-"] {
+  width: auto;
+  padding: 0;
+}
+
+.zephir-admin-shell .admin-order-panel {
+  margin-bottom: 20px !important;
+}
+
+.zephir-admin-shell .admin-order-summary-card {
+  top: 96px !important;
+}
+
+.zephir-admin-shell .admin-order-details-page .btn-check:checked + .filter-btn {
+  border-color: var(--ops-accent);
+  background: var(--ops-accent);
+  color: var(--ops-ink);
+}
+
+.zephir-admin-shell .admin-order-status-grid > div {
+  flex: 1;
+}
+
+.zephir-admin-shell .admin-order-status-grid .filter-btn {
+  width: 100%;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+.zephir-admin-shell .admin-order-details-page .contact-form .btn,
+.zephir-admin-shell .admin-order-details-page .btn-primary,
+.zephir-admin-shell .admin-order-details-page .btn-success {
+  border-color: var(--ops-accent);
+  background: var(--ops-accent);
+  color: var(--ops-ink);
+  font-weight: 600;
+}
+
+.zephir-admin-shell .admin-order-details-page .btn-secondary,
+.zephir-admin-shell .admin-order-details-page .bg-color {
+  border-color: var(--ops-border);
+  background: var(--ops-raised);
+  color: var(--ops-ink);
+}
+
+.zephir-admin-shell .admin-transaction-card .card-body {
+  padding: 24px;
+}
+
+.zephir-admin-shell .admin-transaction-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin: 0;
+}
+
+.zephir-admin-shell .admin-transaction-details-grid > [class*="col-"] {
+  width: auto;
+  padding: 0;
+}
+
+.zephir-admin-shell .admin-detail-list {
+  margin: 0;
+}
+
+.zephir-admin-shell .admin-detail-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--ops-border);
+  overflow-wrap: anywhere;
+}
+
+.zephir-admin-shell .admin-detail-list li:last-child {
+  border-bottom: 0;
+}
+
+.zephir-admin-shell .admin-transaction-actions {
+  padding-top: 20px;
+  border-top: 1px solid var(--ops-border);
+}
+
+.zephir-admin-shell .admin-transaction-actions .btn-success {
+  border-color: #14b8a6;
+  background: #14b8a6;
+  color: #ffffff;
+}
+
+.zephir-admin-shell .admin-transaction-actions .btn-danger {
+  border-color: #dc2626;
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.zephir-admin-shell .admin-transaction-actions .btn-secondary {
+  border-color: var(--ops-border);
+  background: var(--ops-raised);
+  color: var(--ops-ink);
+}
+
+.zephir-admin-shell .admin-customer-actions .btn {
+  min-height: 44px;
+  border-color: #dc2626;
+  color: #dc2626;
+}
+
+.zephir-admin-shell .admin-customer-actions .btn:hover {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.zephir-admin-shell .admin-customer-profile-grid {
+  display: grid;
+  grid-template-columns: minmax(160px, 0.45fr) minmax(0, 1.55fr);
+  align-items: stretch;
+  gap: 20px;
+}
+
+.zephir-admin-shell .admin-customer-avatar-card .card-body {
+  display: grid;
+  min-height: 200px;
+  place-items: center;
+}
+
+.zephir-admin-shell .admin-customer-avatar {
+  width: 136px;
+  height: 136px;
+}
+
+.zephir-admin-shell .admin-customer-info-card {
+  min-width: 0;
+}
+
+.zephir-admin-shell .admin-customer-info-card .card-headin {
+  color: var(--ops-ink);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.zephir-admin-shell .admin-customer-info-card .card-text {
+  overflow-wrap: anywhere;
+}
+
+.zephir-admin-shell .admin-customer-orders {
+  margin-top: 24px;
+}
+
+@media (max-width: 767.98px) {
+  .zephir-admin-shell .admin-order-details-grid,
+  .zephir-admin-shell .admin-transaction-details-grid,
+  .zephir-admin-shell .admin-customer-profile-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .zephir-admin-shell .admin-order-summary-card {
+    position: static !important;
+  }
+
+  .zephir-admin-shell .admin-customer-actions .col-2 {
+    width: auto;
+  }
+}
