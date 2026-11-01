@@ -432,6 +432,142 @@ body.darkmode .zephir-admin-shell {
   opacity: 0.45;
 }
 
+.zephir-admin-shell .admin-list-card {
+  min-height: 540px;
+}
+
+.zephir-admin-shell .admin-list-card .card-body > .row {
+  display: block;
+}
+
+.zephir-admin-shell .admin-list-header {
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.zephir-admin-shell .admin-list-heading {
+  margin: 0;
+  font-size: 22px !important;
+  font-weight: 600;
+}
+
+.zephir-admin-shell .admin-list-helper {
+  margin: 8px 0 24px;
+  color: var(--ops-muted);
+  line-height: 1.5;
+}
+
+.zephir-admin-shell .admin-add-action {
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--ops-border);
+  border-radius: 50%;
+  background: var(--ops-raised);
+  color: var(--ops-ink);
+  text-decoration: none;
+  transition: background-color 140ms ease, transform 140ms ease;
+}
+
+.zephir-admin-shell .admin-add-action:hover {
+  background: var(--ops-accent);
+  color: var(--ops-ink);
+  transform: translateY(-1px);
+}
+
+.zephir-admin-shell .admin-add-action:focus-visible {
+  outline: 2px solid var(--ops-accent);
+  outline-offset: 3px;
+}
+
+.zephir-admin-shell .admin-add-action svg {
+  width: 22px;
+  height: 22px;
+}
+
+.zephir-admin-shell .admin-list-table {
+  min-width: 720px;
+  border-collapse: collapse;
+}
+
+.zephir-admin-shell .admin-list-table th {
+  padding: 14px;
+  border-bottom: 1px solid var(--ops-border);
+  color: var(--ops-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.zephir-admin-shell .admin-list-table td {
+  padding: 14px;
+  border-bottom: 1px solid var(--ops-border);
+  color: var(--ops-ink);
+  vertical-align: middle;
+}
+
+.zephir-admin-shell .admin-products-page .admin-list-table th:first-child,
+.zephir-admin-shell .admin-customers-page .admin-list-table th:first-child,
+.zephir-admin-shell .admin-categories-page .admin-list-table th:first-child {
+  width: 56px;
+}
+
+.zephir-admin-shell .admin-products-page .admin-list-table th:nth-child(2),
+.zephir-admin-shell .admin-customers-page .admin-list-table th:nth-child(2) {
+  width: 76px;
+}
+
+.zephir-admin-shell .admin-list-table .table-image img {
+  width: 48px;
+  height: 48px;
+  padding: 0 !important;
+  border-radius: 12px !important;
+  object-fit: cover;
+}
+
+.zephir-admin-shell .admin-list-empty {
+  padding: 56px 16px !important;
+  color: var(--ops-muted) !important;
+  text-align: center;
+}
+
+.zephir-admin-shell .admin-empty-content {
+  display: flex;
+  min-height: 140px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  color: var(--ops-muted);
+}
+
+.zephir-admin-shell .admin-empty-content svg {
+  width: 52px;
+  height: 52px;
+  padding: 12px;
+  border-radius: 50%;
+  background: var(--ops-raised);
+}
+
+.zephir-admin-shell .admin-list-page .pagination {
+  align-items: center;
+  gap: 16px;
+  margin: 24px 0 0;
+}
+
+.zephir-admin-shell .admin-list-page .pagination .btn {
+  min-height: 40px;
+  border: 1px solid var(--ops-border);
+  background: var(--ops-surface);
+  color: var(--ops-ink);
+}
+
 body:has(.zephir-admin-shell) .theme-toggler {
   bottom: 16px !important;
   right: 16px !important;
@@ -474,6 +610,10 @@ body:has(.zephir-admin-shell) .theme-toggler {
   .zephir-admin-shell .admin-orders-layout,
   .zephir-admin-shell .admin-transactions-layout {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .zephir-admin-shell .admin-list-card {
+    min-height: 0;
   }
 }
 
