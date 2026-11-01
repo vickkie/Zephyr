@@ -1029,3 +1029,33 @@ body:has(.zephir-admin-shell) .theme-toggler {
   width: 100%;
   margin-top: auto;
 }
+
+.zephir-admin-shell .admin-create-announcement-page .row.gap-3 {
+  margin: 0;
+}
+
+.zephir-admin-shell .admin-create-announcement-page .row.gap-3 > .col {
+  padding: 0;
+}
+
+.zephir-admin-shell .admin-create-announcement-page .admin-announcement-card {
+  min-height: 360px;
+}
+
+.zephir-admin-shell .admin-create-announcement-page textarea.login-input {
+  min-height: 140px;
+}
+
+.zephir-admin-shell .admin-create-announcement-page .form-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 0;
+}
+
+.zephir-admin-shell .admin-create-announcement-page .form-check-input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--ops-accent);
+}
