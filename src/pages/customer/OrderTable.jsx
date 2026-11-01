@@ -1,20 +1,20 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 
-const OrdersTable = ({ orders, action, deleteHandler }) => {
+const OrdersTable = ({ orders, action }) => {
   // console.log(orders.length);
   // console.log(orders[0]);
   return (
-    <div className="card container-fluid bg-colo h-100">
+    <div className="card container-fluid bg-colo h-100 customer-orders-card">
       <div className="card-body p-4">
         <div className="row h-100 ">
           <h3 className="card-heading font-color fs-4 text-uppercase">Orders</h3>
           <p className="card-text font-color fs-6">Find all your oders and their status below.</p>
           <div className="table-responsive">
-            <table className="order-table w-100">
+            <table className="order-table w-100 customer-orders-table">
               <thead className="card-heading text-uppercase font-color fs-6 bag">
-                <tr className="border-bottom border-warning border-opacity-10">
-                  <th className="p-1">#Order</th>
+                <tr>
+                  <th>#Order</th>
                   <th>Fulfilment</th>
                   <th>Payment</th>
                   <th>Total</th>
@@ -26,19 +26,18 @@ const OrdersTable = ({ orders, action, deleteHandler }) => {
                   // check if there are orders present or not
                   orders?.length > 0 ? (
                     orders.map((order) => (
-                      <tr
-                        key={order?.orderId}
-                        className="border-bottom border-warning border-opacity-10
-                     
-                      "
-                      >
-                        <td className="p-4">{order?.orderId}</td>
-                        <td className="p-4">{order?.orderStatus}</td>
-                        <td className="p-4">{order?.paymentStatus}</td>
-                        <td className="p-4">${order?.total}.00</td>
+                      <tr key={order?.orderId}>
+                        <td>{order?.orderId}</td>
+                        <td>{order?.orderStatus}</td>
+                        <td>{order?.paymentStatus}</td>
+                        <td>${order?.total}.00</td>
                         {action ? (
-                          <td className="p-4">
-                            <Link to={`${order?._id}`} className="text-decoration-none me-3">
+                          <td>
+                            <Link
+                              to={`${order?._id}`}
+                              className="customer-order-action text-decoration-none me-3"
+                              aria-label={`View order ${order?.orderId}`}
+                            >
                               <svg
                                 width="30px"
                                 height="30px"
@@ -88,10 +87,9 @@ const OrdersTable = ({ orders, action, deleteHandler }) => {
                     ))
                   ) : (
                     <tr>
-                      <td className="p-2">No</td>
-                      <td>Orders</td>
-                      <td>Found</td>
-                      <td></td>
+                      <td className="customer-orders-empty" colSpan={action ? 5 : 4}>
+                        No Orders Found
+                      </td>
                     </tr>
                   )
                 }

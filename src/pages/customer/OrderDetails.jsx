@@ -1,14 +1,14 @@
+/* eslint-disable react/prop-types */
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import "./CustomerDashboard.css";
 
 const { VITE_SERVER } = import.meta.env;
 
 const OrderDetails = () => {
-  const navigate = useNavigate();
-
   const [loading, setLoading] = useState();
   const [order, setOrder] = useState({});
 
@@ -87,14 +87,14 @@ const OrderDetails = () => {
   }, []);
 
   return (
-    <main className=" py-3">
+    <main className="zephir-customer-shell customer-order-details-page py-3">
       {/* <!-- Title  --> */}
       <h1 className="title text-uppercase text-center mt-5">Order #{order?.orderId}</h1>
       <h5 className="text-uppercase text-center mb-5">{/* Checkout */}</h5>
-      <div className="row g-3">
+      <div className="row g-3 customer-order-grid">
         <div className="col-sm-7">
           {/* <!-- Bag Items section  --> */}
-          <div className="card container-fluid p-3 mb-3">
+          <div className="card container-fluid p-3 mb-3 customer-order-panel">
             <div className="card-body p-3">
               <div className="row">
                 <div className="col">
@@ -110,7 +110,7 @@ const OrderDetails = () => {
           </div>
 
           {/* Customer Info for sign up */}
-          <div className="card container-fluid p-3 mb-3">
+          <div className="card container-fluid p-3 mb-3 customer-order-panel">
             <div className="card-body p-3">
               <div className="row">
                 <div className="col">
@@ -162,7 +162,7 @@ const OrderDetails = () => {
           </div>
 
           {/* Shipping address */}
-          <div className="card container-fluid p-3 mb-3">
+          <div className="card container-fluid p-3 mb-3 customer-order-panel">
             <div className="card-body p-3">
               <div className="row">
                 <div className="col">
@@ -245,7 +245,7 @@ const OrderDetails = () => {
         {/* <!-- Order Summery Section  --> */}
 
         <div className="col-sm-5">
-          <div className="card container-fluid p-3 position-sticky top-0">
+          <div className="card container-fluid p-3 position-sticky top-0 customer-order-summary-card">
             <div className="card-body p-3">
               <div className="row">
                 <div className="col">
@@ -273,7 +273,7 @@ const OrderDetails = () => {
                     <span className="product-card-price font-color mb-0">{order?.paymentStatus}</span>
                   </div>
 
-                  <div className="d-flex justify-content-center w-100 gap-3">
+                  <div className="d-flex justify-content-center w-100 gap-3 customer-order-status-grid">
                     <div className="d-flex flex-column flex-wrap gap-3 my-5">
                       <input
                         type="radio"
@@ -369,7 +369,7 @@ const OrderDetails = () => {
                   </div>
 
                   <button
-                    className="btn text-uppercase d-block my-2 py-3 w-100 fw-bold bg-color border bag hover-text-primary"
+                    className="btn text-uppercase d-block my-2 py-3 w-100 fw-bold customer-cancel-order"
                     style={{ fontSize: 0.88 + "rem" }}
                     onClick={() => updateOrder(id)}
                     disabled={loading}
@@ -398,7 +398,7 @@ const BagItem = ({ images, productCode, productName, quantity, salePrice }) => {
   console.log(images);
 
   return (
-    <div className="row mt-4 g-3">
+    <div className="row mt-4 g-3 customer-bag-item">
       <div className="col-sm-2">
         <div className="bag-image position-relative overflow-hidden h-100">
           <div className="image-backdrop position-absolute top-0 bottom-0 start-0 end-0 opacity-50"></div>

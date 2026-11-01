@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import OrdersTable from "./OrderTable";
+import "./CustomerDashboard.css";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../contexts/AuthContext";
 import Swal from "sweetalert2";
@@ -101,10 +102,10 @@ const Orders = () => {
   }, [selectedStatus]);
 
   return (
-    <main className="container-fluid mt-3">
-      <div className="row gap-3">
+    <main className="zephir-customer-shell customer-orders-page">
+      <div className="row gap-3 customer-orders-layout">
         <div className="col-sm-12 col-md-3 col-lg-3 p-0">
-          <div className="card container-fluid position-sticky top-0">
+          <div className="card container-fluid position-sticky top-0 customer-filter-card">
             <div className="card-body p-4">
               <div className="row h-100 ">
                 <h3 className="card-heading font-color fs-6 text-uppercase">Filters</h3>
