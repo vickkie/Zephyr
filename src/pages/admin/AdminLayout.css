@@ -802,6 +802,160 @@ body:has(.zephir-admin-shell) .theme-toggler {
   margin-top: 24px;
 }
 
+.zephir-admin-shell .admin-form-page > .row.g-3 {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(270px, 1fr);
+  align-items: start;
+  gap: 20px;
+  margin: 0;
+}
+
+.zephir-admin-shell .admin-form-page > .row.g-3 > [class*="col-sm-"] {
+  width: auto;
+  padding: 0;
+}
+
+.zephir-admin-shell .admin-form-page .card {
+  margin-bottom: 16px !important;
+}
+
+.zephir-admin-shell .admin-form-page .card-body {
+  padding: 22px;
+}
+
+.zephir-admin-shell .admin-form-page .card-heading {
+  margin-bottom: 14px;
+  font-size: 12px !important;
+  letter-spacing: 0.06em;
+}
+
+.zephir-admin-shell .admin-form-page .login-input {
+  min-height: 46px;
+  padding: 10px 14px;
+}
+
+.zephir-admin-shell .admin-form-page textarea.login-input {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.zephir-admin-shell .admin-form-page .border-dashed,
+.zephir-admin-shell .admin-form-page .admin-upload-zone {
+  min-height: 150px;
+  border: 1px dashed var(--ops-border) !important;
+  border-radius: 16px !important;
+  background: var(--ops-raised);
+}
+
+.zephir-admin-shell .admin-form-page .admin-upload-zone {
+  cursor: pointer;
+  transition: border-color 140ms ease, background-color 140ms ease;
+}
+
+.zephir-admin-shell .admin-form-page .admin-upload-zone:hover {
+  border-color: var(--ops-accent) !important;
+  background: var(--ops-surface);
+}
+
+.zephir-admin-shell .admin-image-preview-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.zephir-admin-shell .admin-image-preview-tile {
+  width: 120px !important;
+  height: 120px !important;
+  border-color: var(--ops-border) !important;
+  border-radius: 14px !important;
+  background: var(--ops-raised);
+}
+
+.zephir-admin-shell .admin-image-preview-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.zephir-admin-shell .admin-form-page .btn-close {
+  min-width: 32px;
+  min-height: 32px;
+  border-radius: 50%;
+  background-color: var(--ops-surface);
+  opacity: 1;
+}
+
+.zephir-admin-shell .admin-form-page .btn-check:checked + .filter-btn {
+  border-color: var(--ops-accent);
+  background: var(--ops-accent);
+  color: var(--ops-ink);
+}
+
+.zephir-admin-shell .admin-form-page .back-primary,
+.zephir-admin-shell .admin-form-page button[type="submit"] {
+  min-height: 48px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ops-accent);
+  color: var(--ops-ink);
+  font-family: "Space Grotesk", "Schibsted Grotesk", sans-serif;
+  font-weight: 700;
+}
+
+.zephir-admin-shell .admin-form-page .back-primary:hover,
+.zephir-admin-shell .admin-form-page button[type="submit"]:hover {
+  background: var(--ops-accent);
+  filter: brightness(0.95);
+}
+
+.zephir-admin-shell .admin-subcategory-row {
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.zephir-admin-shell .admin-subcategory-remove {
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.zephir-admin-shell .admin-subcategory-remove:hover {
+  background: #fef2f2;
+}
+
+.zephir-admin-shell .admin-reverse-images {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ops-muted);
+  cursor: pointer;
+}
+
+.zephir-admin-shell .admin-reverse-images svg {
+  width: 20px;
+  height: 20px;
+}
+
+.zephir-admin-shell .admin-reverse-images:hover {
+  background: var(--ops-raised);
+  color: var(--ops-ink);
+}
+
 @media (max-width: 767.98px) {
   .zephir-admin-shell .admin-order-details-grid,
   .zephir-admin-shell .admin-transaction-details-grid,
@@ -815,5 +969,11 @@ body:has(.zephir-admin-shell) .theme-toggler {
 
   .zephir-admin-shell .admin-customer-actions .col-2 {
     width: auto;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .zephir-admin-shell .admin-form-page > .row.g-3 {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
