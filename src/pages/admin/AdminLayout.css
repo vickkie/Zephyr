@@ -1030,32 +1030,117 @@ body:has(.zephir-admin-shell) .theme-toggler {
   margin-top: auto;
 }
 
-.zephir-admin-shell .admin-create-announcement-page .row.gap-3 {
+.zephir-admin-shell .admin-create-announcement-page .row.gap-3,
+.zephir-admin-shell .admin-edit-announcement-page .row.gap-3 {
   margin: 0;
 }
 
-.zephir-admin-shell .admin-create-announcement-page .row.gap-3 > .col {
+.zephir-admin-shell .admin-create-announcement-page .row.gap-3 > .col,
+.zephir-admin-shell .admin-edit-announcement-page .row.gap-3 > .col {
   padding: 0;
 }
 
-.zephir-admin-shell .admin-create-announcement-page .admin-announcement-card {
+.zephir-admin-shell .admin-create-announcement-page .admin-announcement-card,
+.zephir-admin-shell .admin-edit-announcement-page .admin-announcement-card {
   min-height: 360px;
 }
 
-.zephir-admin-shell .admin-create-announcement-page textarea.login-input {
+.zephir-admin-shell .admin-create-announcement-page textarea.login-input,
+.zephir-admin-shell .admin-edit-announcement-page textarea.login-input {
   min-height: 140px;
 }
 
-.zephir-admin-shell .admin-create-announcement-page .form-check {
+.zephir-admin-shell .admin-create-announcement-page .form-check,
+.zephir-admin-shell .admin-edit-announcement-page .form-check {
   display: flex;
   align-items: center;
   gap: 10px;
   padding-left: 0;
 }
 
-.zephir-admin-shell .admin-create-announcement-page .form-check-input {
+.zephir-admin-shell .admin-create-announcement-page .form-check-input,
+.zephir-admin-shell .admin-edit-announcement-page .form-check-input {
   width: 18px;
   height: 18px;
   margin: 0;
   accent-color: var(--ops-accent);
+}
+
+.zephir-admin-shell .admin-settings-page .features {
+  margin-top: 0 !important;
+  margin-bottom: 24px;
+}
+
+.zephir-admin-shell .admin-settings-page .features:last-child {
+  margin-bottom: 0;
+}
+
+.zephir-admin-shell .admin-settings-page .row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  margin: 0;
+}
+
+.zephir-admin-shell .admin-settings-page [class*="col-"] {
+  width: auto;
+  padding: 0;
+}
+
+.zephir-admin-shell .admin-settings-page .card {
+  min-height: 150px;
+  background: var(--ops-surface);
+  transition: border-color 140ms ease, transform 140ms ease;
+}
+
+.zephir-admin-shell .admin-settings-page .card-body {
+  display: flex;
+  min-height: 150px;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.zephir-admin-shell .admin-settings-page .card-body > .row {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.zephir-admin-shell .admin-settings-page .card-heading {
+  margin-bottom: 20px;
+  color: var(--ops-muted);
+  font-size: 12px !important;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+}
+
+.zephir-admin-shell .admin-settings-page .display-1,
+.zephir-admin-shell .admin-settings-page .display-3 {
+  margin-top: auto;
+  margin-bottom: 0;
+  color: var(--ops-accent);
+  font-size: clamp(30px, 3vw, 48px);
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.zephir-admin-shell .admin-settings-page .admin-settings-clickable {
+  cursor: pointer;
+}
+
+.zephir-admin-shell .admin-settings-page .admin-settings-clickable:hover {
+  border-color: var(--ops-accent);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 991.98px) {
+  .zephir-admin-shell .admin-settings-page .row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 575.98px) {
+  .zephir-admin-shell .admin-settings-page .row {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
