@@ -1,6 +1,5 @@
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import { PageTitle } from "../../components";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
@@ -9,7 +8,6 @@ import Lazyload from "../../utils/lazyload";
 const { VITE_SERVER } = import.meta.env;
 
 const HeroControl = () => {
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [allHeroVideos, setAllHeroVideos] = useState([]);
 
@@ -22,7 +20,6 @@ const HeroControl = () => {
       const response = await axios.get(`${VITE_SERVER}/api/hero/all-videos`, {
         withCredentials: true,
       });
-      console.log("all-HeroVideos", response.data.videos);
       setAllHeroVideos(response.data.videos);
       setLoading(false);
     } catch (error) {
@@ -52,44 +49,12 @@ const HeroControl = () => {
         const response = await axios.delete(`${VITE_SERVER}/api/hero/video/${id}`, {
           withCredentials: true,
         });
-        // console.log("deleteHandler", response.data);
-
         response.data.success ? toast.success("Video deleted successfully!", { className: "toastify" }) : null;
 
         setLoading(false);
 
         // Remove category from table
         setAllHeroVideos((prev) => prev.filter((item) => item._id !== id));
-      } catch (error) {
-        console.error(error);
-        error.message ? toast.error(error.message, { className: "toastify" }) : null;
-        setLoading(false);
-      }
-    }
-  };
-
-  const activateHandler = async (id) => {
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      text: `Do you want to delete this hero video?`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    });
-
-    if (result.isConfirmed) {
-      setLoading(true);
-      try {
-        const response = await axios.put(`${VITE_SERVER}/api/hero/video/${id}`, {
-          withCredentials: true,
-        });
-        // console.log("deleteHandler", response.data);
-
-        response.data.success ? toast.success("Video activated successfully!", { className: "toastify" }) : null;
-
-        setLoading(false);
       } catch (error) {
         console.error(error);
         error.message ? toast.error(error.message, { className: "toastify" }) : null;
@@ -106,18 +71,18 @@ const HeroControl = () => {
 
   return (
     <>
-      <section className="container-fluid mt-3">
+      <section className="admin-page admin-list-page admin-hero-settings-page container-fluid mt-3">
         <div className="row gap-3">
           <div className="col p-0">
-            <div className="card container-fluid bg-colo h-100">
+            <div className="card container-fluid bg-colo h-100 admin-list-card">
               <div className="card-body p-4">
                 <div className="row h-100">
-                  <div className="d-flex justify-content-between">
+                  <div className="d-flex justify-content-between admin-list-header">
                     <h3 className="card-heading font-color fs-4 text-uppercase">Hero Videos</h3>
-                    <div
-                      onClick={() => {
-                        navigate("/admin/add-hero-video");
-                      }}
+                    <Link
+                      aria-label="Add hero video"
+                      className="admin-add-action"
+                      to="/admin/add-hero-video"
                     >
                       <svg width={32} height={32} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
@@ -137,17 +102,22 @@ const HeroControl = () => {
                           ></path>{" "}
                         </g>
                       </svg>
-                    </div>
+                    </Link>
                   </div>
 
-                  <p className="card-text font-color fs-6">Find all your Hero Videos below. Activate by editing.</p>
+                  <p className="card-text font-color fs-6 admin-list-helper">
+                    Find all your Hero Videos below. Activate by editing.
+                  </p>
                   <div className="table-responsive">
                     {loading ? (
                       <div className="d-flex h-100 justify-content-center align-items-center">
                         <span className="spinner-grow spinner-grow bag" aria-hidden="true"></span>
                       </div>
                     ) : Array.isArray(allHeroVideos) && allHeroVideos.length > 0 ? (
-                      <table className="order-table w-100">
+                      <table
+                        aria-label="Hero Videos"
+                        className="order-table w-100 admin-list-table"
+                      >
                         <thead className="card-heading text-uppercase font-color fs-6 bag">
                           <tr className="border-bottom border-warning border-opacity-10">
                             <th className="p-1">#</th>
@@ -174,8 +144,8 @@ const HeroControl = () => {
                               <td>
                                 {(() => {
                                   const url = video.videoUrl;
-                                  const firstPart = url.match(/^(https:\/\/[^\/]+\/)/)?.[1] || url; // Extract first part
-                                  const lastPart = url.match(/([^\/]+)\.mp4$/)?.[1] || url; // Extract filename (without .mp4)
+                                  const firstPart = url.match(/^(https:\/\/[^/]+\/)/)?.[1] || url; // Extract first part
+                                  const lastPart = url.match(/([^/]+)\.mp4$/)?.[1] || url; // Extract filename (without .mp4)
 
                                   return `${firstPart}...${lastPart.slice(-9)}.mp4`;
                                 })()}
@@ -185,11 +155,13 @@ const HeroControl = () => {
 
                               <td>
                                 <Link
+                                  aria-label={`Edit hero video ${video._id}`}
                                   to={`/admin/edit-hero-video/${video._id}`}
                                   state={{ id: video._id }}
-                                  className="text-decoration-none me-3"
+                                  className="admin-order-action admin-order-view"
                                 >
                                   <svg
+                                    aria-hidden="true"
                                     width="30px"
                                     height="30px"
                                     viewBox="0 -0.5 25 25"
@@ -202,16 +174,22 @@ const HeroControl = () => {
                                     />
                                   </svg>
                                 </Link>
-                                <Link onClick={() => deleteHandler(video._id)} className="text-decoration-none">
-                                  <img src="/images/del.svg" alt="del image" style={{ height: 30, width: 30 }} />
-                                </Link>
+                                <button
+                                  aria-label={`Delete hero video ${video._id}`}
+                                  className="admin-order-action admin-order-delete"
+                                  disabled={loading}
+                                  onClick={() => deleteHandler(video._id)}
+                                  type="button"
+                                >
+                                  <img src="/images/del.svg" alt="" />
+                                </button>
                               </td>
                             </tr>
                           ))}
                         </tbody>
                       </table>
                     ) : (
-                      <div className="text-center">
+                      <div className="admin-list-empty admin-hero-empty">
                         <h3>No Hero Videos found</h3>
                       </div>
                     )}
