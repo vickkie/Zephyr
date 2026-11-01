@@ -95,10 +95,10 @@ const Orders = () => {
   }, [selectedStatus]);
 
   return (
-    <main className="container-fluid mt-3">
-      <div className="row gap-3">
-        <div className="col-md-3 p-0">
-          <div className="card container-fluid position-sticky top-0">
+    <main className="admin-page admin-orders-page">
+      <div className="row gap-3 admin-orders-layout">
+        <div className="col-md-3 p-0 admin-orders-filters">
+          <div className="card container-fluid position-sticky top-0 admin-filter-card">
             <div className="card-body p-4">
               <div className="row h-100 ">
                 <h3 className="card-heading font-color fs-6 text-uppercase">Filters</h3>
@@ -194,7 +194,7 @@ const Orders = () => {
             </div>
           </div>
         </div>
-        <div className="col p-0">
+        <div className="col p-0 admin-orders-table-column">
           {loading ? (
             <div className="d-flex h-100 justify-content-center align-items-center">
               <span className="spinner-grow spinner-grow bag" aria-hidden="true"></span>
