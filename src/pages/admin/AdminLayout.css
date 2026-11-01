@@ -1,0 +1,269 @@
+@import url("https://fonts.googleapis.com/css2?family=Space%20Grotesk:wght@400;500;600;700&display=swap");
+
+.zephir-admin-shell {
+  --ops-canvas: #f5f4f2;
+  --ops-surface: #ffffff;
+  --ops-border: #e7e4df;
+  --ops-ink: #1a1a1a;
+  --ops-muted: #8a857f;
+  --ops-accent: #f59e0b;
+  --ops-raised: #efede9;
+  min-height: 100vh;
+  margin-right: -1rem;
+  margin-left: -1rem;
+  padding-bottom: 2rem;
+  background: var(--ops-canvas);
+  color: var(--ops-ink);
+  font-family: "Space Grotesk", "Schibsted Grotesk", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.5;
+}
+
+body.darkmode .zephir-admin-shell {
+  --ops-canvas: #121212;
+  --ops-surface: #1b1b1b;
+  --ops-border: #343434;
+  --ops-ink: #f4f2ed;
+  --ops-muted: #aaa49d;
+  --ops-raised: #242424;
+}
+
+.zephir-admin-shell *,
+.zephir-admin-shell *::before,
+.zephir-admin-shell *::after {
+  box-sizing: border-box;
+}
+
+.zephir-admin-shell .admin-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid var(--ops-border);
+  background: var(--ops-canvas);
+}
+
+.zephir-admin-shell .admin-topbar-inner {
+  display: flex;
+  width: min(100%, 1680px);
+  min-height: 76px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 0 auto;
+  padding: 12px 32px;
+}
+
+.zephir-admin-shell .admin-brand {
+  flex: 0 0 auto;
+  color: var(--ops-ink);
+  font-family: "Space Grotesk", "Schibsted Grotesk", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-decoration: none;
+}
+
+.zephir-admin-shell .admin-navbar {
+  justify-content: flex-end;
+}
+
+.zephir-admin-shell .admin-nav-list {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.zephir-admin-shell .admin-nav-link {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: var(--ops-muted);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 140ms ease, background-color 140ms ease;
+}
+
+.zephir-admin-shell .admin-nav-link:hover,
+.zephir-admin-shell .admin-nav-link.is-active {
+  background: var(--ops-accent);
+  color: var(--ops-ink);
+}
+
+.zephir-admin-shell .admin-menu-toggle {
+  display: none;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--ops-border);
+  border-radius: 50%;
+  background: var(--ops-surface);
+  color: var(--ops-ink);
+}
+
+.zephir-admin-shell .admin-menu-toggle:focus-visible,
+.zephir-admin-shell .admin-nav-link:focus-visible {
+  outline: 2px solid var(--ops-accent);
+  outline-offset: 3px;
+}
+
+.zephir-admin-shell .admin-route-content {
+  width: min(100%, 1680px);
+  margin: 0 auto;
+  padding: 24px 32px 40px;
+}
+
+.zephir-admin-shell main {
+  min-width: 0;
+  color: var(--ops-ink);
+}
+
+.zephir-admin-shell .card {
+  border: 1px solid var(--ops-border);
+  border-radius: 20px;
+  background: var(--ops-surface);
+  color: var(--ops-ink);
+  box-shadow: 0 8px 28px rgb(26 26 26 / 4%);
+}
+
+.zephir-admin-shell .card-body {
+  color: var(--ops-ink);
+}
+
+.zephir-admin-shell .card-heading,
+.zephir-admin-shell .font-color {
+  color: var(--ops-ink);
+}
+
+.zephir-admin-shell .card-text,
+.zephir-admin-shell .product-card-price {
+  color: var(--ops-muted);
+}
+
+.zephir-admin-shell .bag {
+  color: var(--ops-accent);
+}
+
+.zephir-admin-shell .bg-color {
+  background: var(--ops-raised);
+}
+
+.zephir-admin-shell .bg-color:hover {
+  background: var(--ops-accent);
+}
+
+.zephir-admin-shell .btn {
+  border-radius: 999px;
+  font-family: "Space Grotesk", "Schibsted Grotesk", sans-serif;
+}
+
+.zephir-admin-shell .filter-btn {
+  min-height: 40px;
+  border-color: var(--ops-border);
+  border-radius: 999px;
+  background: var(--ops-surface);
+  color: var(--ops-ink);
+}
+
+.zephir-admin-shell .login-input,
+.zephir-admin-shell input,
+.zephir-admin-shell select,
+.zephir-admin-shell textarea {
+  border-color: var(--ops-border);
+  border-radius: 12px;
+  background-color: var(--ops-surface);
+  color: var(--ops-ink);
+  font-family: "Space Grotesk", "Schibsted Grotesk", sans-serif;
+}
+
+.zephir-admin-shell .login-input:focus,
+.zephir-admin-shell input:focus-visible,
+.zephir-admin-shell select:focus-visible,
+.zephir-admin-shell textarea:focus-visible {
+  border-color: var(--ops-accent);
+  box-shadow: 0 0 0 3px rgb(245 158 11 / 18%);
+  outline: none;
+}
+
+.zephir-admin-shell .table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--ops-ink);
+  --bs-table-border-color: var(--ops-border);
+  margin-bottom: 0;
+}
+
+.zephir-admin-shell .table thead th {
+  color: var(--ops-muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.zephir-admin-shell .table td,
+.zephir-admin-shell .table th {
+  border-color: var(--ops-border);
+  vertical-align: middle;
+}
+
+@media (max-width: 991.98px) {
+  .zephir-admin-shell .admin-topbar-inner {
+    flex-wrap: wrap;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .zephir-admin-shell .admin-menu-toggle {
+    display: inline-flex;
+  }
+
+  .zephir-admin-shell .admin-navbar {
+    flex-basis: 100%;
+    justify-content: flex-start;
+  }
+
+  .zephir-admin-shell .admin-nav-list {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 8px 0 12px;
+  }
+
+  .zephir-admin-shell .admin-nav-link {
+    justify-content: flex-start;
+  }
+
+  .zephir-admin-shell .admin-route-content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .zephir-admin-shell .admin-topbar-inner {
+    min-height: 64px;
+    padding: 10px 16px;
+  }
+
+  .zephir-admin-shell .admin-route-content {
+    padding: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zephir-admin-shell *,
+  .zephir-admin-shell *::before,
+  .zephir-admin-shell *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
