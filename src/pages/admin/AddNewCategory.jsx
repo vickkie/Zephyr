@@ -65,14 +65,13 @@ const AddNewCategory = () => {
     }
 
     try {
-      // console.log(category, subCategories, categoryPicUrl[0].toString());
       const response = await axios.post(
         `${VITE_SERVER}/api/admin/add-category`,
         {
           category,
           subCategories,
           categoryPic:
-            categoryPicUrl[0].toString() ||
+            categoryPicUrl?.[0]?.toString() ||
             "https://res.cloudinary.com/dgcgemsn7/image/upload/f_auto,q_auto/viefnhtx7mver3tgw1ye",
         },
         { withCredentials: true }
@@ -83,7 +82,6 @@ const AddNewCategory = () => {
         toast.success("Category added successfully!");
         navigate("/admin/categories");
       } else {
-        // console.log(response);
         toast.error("Failed to add category!");
       }
     } catch (error) {
@@ -97,7 +95,10 @@ const AddNewCategory = () => {
   };
 
   return (
-    <form onSubmit={addCategoryHandler} className="container-fluid p-0">
+    <form
+      onSubmit={addCategoryHandler}
+      className="container-fluid p-0 admin-form-page admin-add-category-page"
+    >
       <div className="row g-3">
         <div className="col-sm-8">
           <div className="card container-fluid p-3 mb-3">
@@ -118,20 +119,25 @@ const AddNewCategory = () => {
             <div className="card-body p-3">
               <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Subcategories</h2>
               {subCategories.map((subCategory, index) => (
-                <div key={index} className="d-flex gap-3">
+                <div key={index} className="admin-subcategory-row d-flex gap-3">
                   <input
                     type="text"
                     className="login-input font-color d-block w-100 mb-2"
                     value={subCategory}
                     onChange={(e) => handleSubCategoryChange(index, e.target.value)}
                   />
-                  <div onClick={() => removeSubCategory(index)} className="">
+                  <button
+                    aria-label="Remove subcategory"
+                    className="admin-subcategory-remove"
+                    onClick={() => removeSubCategory(index)}
+                    type="button"
+                  >
                     <img
                       src="/images/del.svg"
-                      alt="del image"
+                      alt=""
                       style={{ height: 30, width: 30, justifySelf: "center", alignSelf: "center" }}
-                    ></img>
-                  </div>
+                    />
+                  </button>
                 </div>
               ))}
               <button
@@ -148,7 +154,7 @@ const AddNewCategory = () => {
             <div className="card-body p-3">
               <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Category Picture *</h2>
               <label className="d-block p-3 px-5" htmlFor="categoryImage">
-                <div className="d-flex justify-content-center align-items-center border border-dashed rounded bg-color p-5">
+                <div className="admin-upload-zone d-flex justify-content-center align-items-center border border-dashed rounded bg-color p-5">
                   <i className="ai ai-plus bag me-2"></i>
                   <i className="ai ai-file-image-fill fs-1 bag"></i>
                 </div>
@@ -164,16 +170,17 @@ const AddNewCategory = () => {
               </label>
 
               {selectedImage.length > 0 && (
-                <div className="d-flex justify-content-center p-3 flex-wrap gap-3">
+                <div className="admin-image-preview-grid d-flex justify-content-center p-3 flex-wrap gap-3">
                   {selectedImage.map((image, index) => (
                     <div
                       key={index}
-                      className="position-relative border rounded overflow-hidden"
+                      className="admin-image-preview-tile position-relative border rounded overflow-hidden"
                       style={{ width: "120px", height: "120px" }}
                     >
                       <button
                         type="button"
                         className="btn-close position-absolute top-0 end-0 m-1"
+                        aria-label={`Remove category image ${index + 1}`}
                         onClick={() => removeImage(index)}
                       ></button>
                       <img
@@ -188,7 +195,7 @@ const AddNewCategory = () => {
             </div>
           </div>
 
-          <div className="card container-fluid p-3 mb-3">
+          <div className="card container-fluid p-3 mb-3 admin-existing-categories-card">
             <div className="card-body p-3">
               <button
                 type="submit"

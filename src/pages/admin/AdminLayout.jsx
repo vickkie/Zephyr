@@ -1,17 +1,17 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
-import FloatingButton from "../../components/FloatingButton";
+import "./AdminLayout.css";
 
 const AdminHeader = () => {
   const [storedValue, setStoredValue] = useLocalStorage("themeMode", []);
+  const location = useLocation();
 
   useEffect(() => {
     const storedThemeMode = localStorage.getItem("themeMode");
 
-    console.log(storedThemeMode);
     if (storedThemeMode) {
       setStoredValue(JSON.parse(storedThemeMode));
     }
@@ -23,11 +23,12 @@ const AdminHeader = () => {
     } else {
       setStoredValue("darkMode");
     }
-    console.log(storedValue);
   }, [storedValue, setStoredValue]);
 
   const lightmode = "lightmode";
   const darkmode = "darkmode";
+  const navClass = ({ isActive }) =>
+    `admin-nav-link${isActive ? " is-active" : ""}`;
 
   useEffect(() => {
     const element = document.querySelector(".body");
@@ -40,24 +41,28 @@ const AdminHeader = () => {
     }
   }, []);
   return (
-    <nav className="navbar navbar-expand-lg">
-      <div className="container-fluid px-4 py-2">
-        <NavLink className="navbar-brand font-color position-relative" to="/">
+    <nav
+      aria-label="Admin navigation"
+      className="navbar navbar-expand-lg admin-topbar"
+    >
+      <div className="admin-topbar-inner">
+        <NavLink
+          aria-label="Zephir home"
+          className="admin-brand"
+          to="/"
+        >
           ZEPHIR
-          <span className="position-absolute top-0 start-50 translate-middle fs-6">
-            <i className="ai ai-crown-fill bag"></i>
-          </span>
         </NavLink>
 
         <button
-          className="navbar-toggler"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle admin navigation"
+          className="navbar-toggler admin-menu-toggle"
           type="button"
           data-bs-toggle="collapse"
           data-bs-theme="dark"
           data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
         >
           <svg
             width="30px"
@@ -87,83 +92,77 @@ const AdminHeader = () => {
             />
           </svg>
         </button>
-        <div
-          className="admin-navbar collapse navbar-collapse row navbarNav"
-          id="navbarNav"
-        >
-          <ul className="navbar-nav  col font-color justify-content-end gap-">
-            <li className="nav-link">
+        <div className="admin-navbar collapse navbar-collapse" id="navbarNav">
+          <ul className="admin-nav-list">
+            <li>
               <NavLink
                 to="dashboard"
-                id="login"
-                className="btn d-flex align-items-center nav-link font-color bg-color px-2 py-2 mx-2 text-uppercase"
+                end
+                className={({ isActive }) =>
+                  `admin-nav-link${
+                    isActive || location.pathname === "/admin"
+                      ? " is-active"
+                      : ""
+                  }`
+                }
               >
                 Dashboard
               </NavLink>
             </li>
-            <li className="nav-link">
+            <li>
               <NavLink
                 to="orders"
-                id="login"
-                className="btn d-flex align-items-center nav-link font-color bg-color px-2 py-2 mx-2 text-uppercase"
+                className={navClass}
               >
                 Orders
               </NavLink>
             </li>
-            <li className="nav-link">
+            <li>
               <NavLink
                 to="transactions"
-                id="transactions"
-                className="btn d-flex align-items-center nav-link font-color bg-color px-2 py-2 mx-2 text-uppercase"
+                className={navClass}
               >
                 Transactions
               </NavLink>
             </li>
-            <li className="nav-link">
+            <li>
               <NavLink
                 to="categories"
-                id="login"
-                className="btn d-flex align-items-center nav-link font-color bg-color px-2  py-2 mx-2 text-uppercase"
+                className={navClass}
               >
                 Categories
               </NavLink>
             </li>
-            <li className="nav-link">
+            <li>
               <NavLink
                 to="products"
-                id="products"
-                className="btn d-flex align-items-center nav-link font-color bg-color px-2 py-2 mx-2 text-uppercase"
+                className={navClass}
               >
                 Products
               </NavLink>
             </li>
-            <li className="nav-link">
+            <li>
               <NavLink
                 to="customers"
-                id="customers"
-                className="btn d-flex align-items-center nav-link font-color bg-color  py-2 mx-2 text-uppercase"
+                className={navClass}
               >
                 Customers
               </NavLink>
             </li>
-            <li className="nav-link">
+            <li>
               <NavLink
                 to="settings"
-                id="settings"
-                className="btn d-flex align-items-center nav-link font-color bg-color px-2 py-2 mx-2 text-uppercase"
-                style={{ fontSize: 0.88 + "rem" }}
+                className={navClass}
               >
                 Settings
               </NavLink>
             </li>
-            <li className="nav-link">
+            <li>
               <NavLink
                 to="/logout"
-                id="login"
-                className="btn d-flex align-items-center nav-link font-color bg-color px-2 py-2 mx-2 text-uppercase"
+                className={navClass}
               >
                 Logout
-                {/* <i className="ai ai-sign-out-fill ms-2"></i> */}
               </NavLink>
             </li>
           </ul>
@@ -186,18 +185,18 @@ const AdminLayout = () => {
   }, []);
 
   useEffect(() => {
-    console.log(authData);
     if (!authData) {
       navigate("/logout");
       navigate("/login");
     }
   }, [authData, navigate]);
   return (
-    <>
+    <div className="zephir-admin-shell">
       <AdminHeader />
-      {/* <FloatingButton /> */}
-      <Outlet />
-    </>
+      <div className="admin-route-content">
+        <Outlet />
+      </div>
+    </div>
   );
 };
 

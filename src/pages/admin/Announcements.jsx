@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import { PageTitle } from "../../components";
 import Lazyload from "../../utils/lazyload";
 
 const { VITE_SERVER } = import.meta.env;
 
 const Announcements = () => {
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [announcements, setAnnouncements] = useState([]);
 
@@ -25,7 +23,6 @@ const Announcements = () => {
         withCredentials: true,
       });
       setAnnouncements([response.data]);
-      console.log(response.data);
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -71,17 +68,17 @@ const Announcements = () => {
 
   return (
     <>
-      <section className="container-fluid mt-3">
+      <section className="admin-page admin-list-page admin-announcements-page container-fluid mt-3">
         <div className="row gap-3">
           <div className="col p-0">
-            <div className="card container-fluid bg-colo h-100">
+            <div className="card container-fluid bg-colo h-100 admin-list-card">
               <div className="card-body p-4">
-                <div className="d-flex justify-content-between">
+                <div className="d-flex justify-content-between admin-list-header">
                   <h3 className="card-heading font-color fs-4 text-uppercase">Announcements</h3>
-                  <div
-                    onClick={() => {
-                      navigate("/admin/add-announcement");
-                    }}
+                  <Link
+                    aria-label="Add announcement"
+                    className="admin-add-action"
+                    to="/admin/add-announcement"
                   >
                     <svg width={32} height={32} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
@@ -101,19 +98,22 @@ const Announcements = () => {
                         ></path>{" "}
                       </g>
                     </svg>
-                  </div>
+                  </Link>
                 </div>
 
-                <p className="card-text font-color fs-6">View and manage your announcements below.</p>
+                <p className="card-text font-color fs-6 admin-list-helper">
+                  View and manage your announcements below.
+                </p>
                 <div className="table-responsive">
-                  {loading && (
+                  {loading ? (
                     <div className="d-flex h-100 justify-content-center align-items-center">
                       <span className="spinner-grow spinner-grow bag" aria-hidden="true"></span>
                     </div>
-                  )}
-
-                  {announcements.length > 0 ? (
-                    <table className="order-table w-100">
+                  ) : announcements.length > 0 ? (
+                    <table
+                      aria-label="Announcements"
+                      className="order-table w-100 admin-list-table"
+                    >
                       <thead className="card-heading text-uppercase font-color fs-6 bag">
                         <tr className="border-bottom border-warning border-opacity-10">
                           <th className="p-1">#</th>
@@ -126,14 +126,16 @@ const Announcements = () => {
                         {announcements.map((announcement, index) => (
                           <tr className="border-bottom border-warning border-opacity-10" key={announcement._id}>
                             <td className="p-2">{index + 1}</td>
-                            <td>{announcement.message}</td>
-                            <td>{announcement.isActive ? "Yes" : "No"}</td>
-                            <td>
-                              <Link
-                                to={`/admin/edit-announcement/${announcement._id}`}
-                                className="text-decoration-none me-3"
-                              >
-                                <svg
+                              <td>{announcement.message}</td>
+                              <td>{announcement.isActive ? "Yes" : "No"}</td>
+                              <td>
+                                <Link
+                                  aria-label={`Edit announcement ${announcement._id}`}
+                                  className="admin-order-action admin-order-view"
+                                  to={`/admin/edit-announcement/${announcement._id}`}
+                                >
+                                  <svg
+                                    aria-hidden="true"
                                   width="30px"
                                   height="30px"
                                   viewBox="0 -0.5 25 25"
@@ -146,16 +148,22 @@ const Announcements = () => {
                                   />
                                 </svg>
                               </Link>
-                              <Link className="delete-btn" onClick={() => deleteHandler(announcement._id)}>
-                                <img src="/images/del.svg" alt="del image" style={{ height: 30, width: 30 }} />
-                              </Link>
+                                <button
+                                  aria-label="Delete announcement"
+                                  className="admin-order-action admin-order-delete"
+                                  disabled={loading}
+                                  onClick={() => deleteHandler(announcement._id)}
+                                  type="button"
+                                >
+                                  <img src="/images/del.svg" alt="" />
+                                </button>
                             </td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                   ) : (
-                    <p>No announcements found.</p>
+                    <div className="admin-list-empty">No announcements found.</div>
                   )}
                 </div>
               </div>

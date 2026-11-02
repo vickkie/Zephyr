@@ -1,5 +1,8 @@
 import axios from "axios";
-import { Footer, Header, PageTitle } from "../components";
+import { PageTitle } from "../components";
+import CustomerDashboardHeader from "./customer/CustomerDashboardHeader";
+import CustomerDashboardFooter from "./customer/CustomerDashboardFooter";
+import "./customer/CustomerDashboard.css";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import IsAuthenticatedContext from "../contexts/IsAuthenticatedContext";
@@ -13,7 +16,6 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const [customer, setCustomer] = useState({});
-  const [myOrders, setMyOrders] = useState([]);
 
   const { user, isAuthenticated } = useContext(IsAuthenticatedContext);
 
@@ -52,7 +54,7 @@ const Profile = () => {
         withCredentials: true,
       });
       // console.log("myOders", response);
-      response ? setMyOrders(response.data.orders) : navigate("/404");
+      if (!response) navigate("/404");
     } catch (error) {
       console.error(error);
       error.message ? toast.error(error.message, { className: "toastify" }) : null;
@@ -71,28 +73,28 @@ const Profile = () => {
   }, [user, isAuthenticated, navigate]);
 
   return (
-    <>
-      <Header />
+    <div className="zephir-customer-shell customer-profile-page">
+      <CustomerDashboardHeader />
       <PageTitle title={"Profile"} />
-      <section className="container-fluid mt-3 p-0">
+      <section className="container-fluid mt-3 p-0 customer-profile-content">
         <div className="row justify-content-start gap-3">
           <div className="col-span-4 sm:col-span-12">
             <button
               onClick={() => navigate("/logout")}
-              className="d-none d-sm-block btn btn-sm filter-btn border bag w-100 py-2 overflow-hidden"
+              className="d-none d-sm-block btn btn-sm customer-logout-btn overflow-hidden"
             >
               Log Out
             </button>
             <button
               onClick={() => navigate("/logout")}
-              className="d-sm-none btn btn-sm filter-btn border bag w-100 overflow-hidden"
+              className="d-sm-none btn btn-sm customer-logout-btn overflow-hidden"
             >
               <span className="p-4">LOGOUT</span>
             </button>
           </div>
         </div>
-        <div className="d-flex flex-wrap gap-3 my-3">
-          <div className="card w-100 ">
+        <div className="customer-profile-grid">
+          <div className="card customer-avatar-card w-100 ">
             <div className="card-body p-4">
               <div className="row h-100  overflow-hidden justify-content-center">
                 <label htmlFor="dp" className="justify-content-center d-flex">
@@ -114,61 +116,51 @@ const Profile = () => {
             </div>
           </div>
 
-          <div className="card flex-grow-1">
+          <div className="card customer-info-card flex-grow-1">
             <div className="p-5">
               <div className="mx-auto">
                 <h3 className="card-headin font-color fs-1">
                   {/* Frederick C. Frazier */}
                   {customer.fullName}
                 </h3>
-                <p className="card-text bag fs-6">
-                  <span className="bag">Email: </span> {customer.email} <br />
-                  <span className="bag">Phone: </span> {customer.phone} <br />
-                  <span className="bag">Address: </span> {customer.address?.street} {customer.address?.city}{" "}
-                  {customer.address?.state} {customer.address?.pincode} {customer.address?.country}
+                <p className="card-text font-color fs-6 customer-info-lines">
+                  <span className="customer-info-label">Email: </span> {customer.email} <br />
+                  <span className="customer-info-label">Phone: </span> {customer.phone} <br />
+                  <span className="customer-info-label">Address: </span> {customer.address?.street}{" "}
+                  {customer.address?.city} {customer.address?.state} {customer.address?.pincode}{" "}
+                  {customer.address?.country}
                 </p>
               </div>
             </div>
           </div>
         </div>
-        <div className="row g-3">
+        <div className="row g-3 customer-profile-actions">
           <div className="col-sm-12 col-md-6 ">
-            <div className="card p-4">
-              <div>
-                <button className="myButton" onClick={() => navigate("/orders")}>
-                  View all orders
-                </button>
-              </div>
-            </div>
+            <button className="myButton" onClick={() => navigate("/orders")}>
+              View all orders
+            </button>
           </div>
           <div className="col-sm-12 col-md-6 ">
-            <div className="card p-4">
-              <div>
-                <button
-                  className="myButton"
-                  onClick={() => {
-                    // console.log(customer),
-                    navigate(`/profile/settings`, {
-                      state: {
-                        user: authData,
-                        id: user?._id,
-                      },
-                    });
-                  }}
-                >
-                  Profile settings
-                </button>
-              </div>
-            </div>
+            <button
+              className="myButton"
+              onClick={() => {
+                // console.log(customer),
+                navigate(`/profile/settings`, {
+                  state: {
+                    user: authData,
+                    id: user?._id,
+                  },
+                });
+              }}
+            >
+              Profile settings
+            </button>
           </div>
-        </div>
-        <div className="row g-3">
-          <div className="col-sm-12"></div>
         </div>
       </section>
 
-      <Footer />
-    </>
+      <CustomerDashboardFooter />
+    </div>
   );
 };
 

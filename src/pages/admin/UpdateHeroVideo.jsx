@@ -52,8 +52,8 @@ const UpdateHeroVideo = () => {
   const VideoHere = () => {
     return (
       videoUrl && (
-        <div className="d-flex justify-content-center p-3">
-          <video className="rounded" width="200" controls>
+        <div className="admin-video-preview d-flex justify-content-center p-3">
+          <video className="admin-video-preview-player rounded" width="200" controls>
             <source src={videoUrl} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
@@ -63,15 +63,19 @@ const UpdateHeroVideo = () => {
   };
 
   return (
-    <form onSubmit={updateVideoHandler} className="container-fluid p-0">
+    <form
+      onSubmit={updateVideoHandler}
+      className="container-fluid p-0 admin-form-page admin-edit-hero-video-page"
+    >
       <div className="row g-3">
         <div className="col-sm-8">
-          <div className="card container-fluid p-3 mb-3">
+          <div className="card container-fluid p-3 mb-3 admin-video-url-card">
             <div className="card-body p-3">
               <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Update Hero Video</h2>
 
               {/* Input for video URL */}
               <input
+                aria-label="Hero video URL"
                 type="text"
                 className="login-input font-color d-block w-100 mb-2"
                 value={videoUrl}
@@ -83,7 +87,7 @@ const UpdateHeroVideo = () => {
         </div>
 
         <div className="col-sm-4">
-          <div className="card container-fluid p-3 mb-3 d-flex">
+          <div className="card container-fluid p-3 mb-3 d-flex admin-video-preview-card">
             {/* Live Preview of Video */}
             <VideoHere />
 

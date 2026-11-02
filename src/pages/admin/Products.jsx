@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import { PageTitle } from "../../components";
+import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import Lazyload from "../../utils/lazyload";
@@ -12,8 +11,6 @@ const { VITE_SERVER } = import.meta.env;
 
 const Products = () => {
   const [loading, setLoading] = useState();
-  const navigate = useNavigate();
-
   const [allProducts, setAllProducts] = useState([]);
 
   Lazyload();
@@ -156,8 +153,6 @@ const Products = () => {
         const response = await axios.delete(`${VITE_SERVER}/api/admin/delete-product/${id}`, {
           withCredentials: true,
         });
-        console.log("deleteHandler", response.data);
-
         response.data.success ? toast.success("Product deleted successfully!", { className: "toastify" }) : null;
 
         setLoading(false);
@@ -179,19 +174,18 @@ const Products = () => {
 
   return (
     <>
-      {/* <PageTitle title={"Products"} /> */}
-      <section className="container-fluid mt-3">
+      <section className="admin-page admin-list-page admin-products-page container-fluid mt-3">
         <div className="row gap-3">
           <div className="col p-0">
-            <div className="card container-fluid bg-colo h-100">
+            <div className="card container-fluid bg-colo h-100 admin-list-card">
               <div className="card-body p-4">
                 <div className="row h-100 ">
-                  <div className="d-flex justify-content-between">
+                  <div className="d-flex justify-content-between admin-list-header">
                     <h3 className="card-heading font-color fs-4 text-uppercase">All Products</h3>
-                    <div
-                      onClick={() => {
-                        navigate("/admin/add-product");
-                      }}
+                    <Link
+                      aria-label="Add product"
+                      className="admin-add-action"
+                      to="/admin/add-product"
                     >
                       <svg width={32} height={32} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
@@ -211,11 +205,16 @@ const Products = () => {
                           ></path>{" "}
                         </g>
                       </svg>
-                    </div>
+                    </Link>
                   </div>
-                  <p className="card-text font-color fs-6">Find all your products and their details below.</p>
+                  <p className="card-text font-color fs-6 admin-list-helper">
+                    Find all your products and their details below.
+                  </p>
                   <div className="table-responsive">
-                    <table className="order-table w-100">
+                    <table
+                      aria-label="Products"
+                      className="order-table w-100 admin-list-table"
+                    >
                       <thead className="card-heading text-uppercase font-color fs-6 bag">
                         <tr className="border-bottom border-warning border-opacity-10">
                           <th className="p-1">#</th>
@@ -248,21 +247,14 @@ const Products = () => {
                                 <td>{product?.category}</td>
                                 <td>{product?.subCategory}</td>
                                 <td className="edit-delete">
-                                  {/* <Link to={`/admin/editproduct/${product._id}`}  */}
-
-                                  {/* className="text-decoration-none me-3">
-                                    <i className="ai ai-eye-fill action bag"> */}
-                                  <a
-                                    onClick={() => {
-                                      navigate(`/admin/editproduct/${product._id}`, {
-                                        state: {
-                                          existingProduct: product,
-                                        },
-                                      });
-                                    }}
-                                    className="text-decoration-none me-3"
+                                  <Link
+                                    aria-label={`Edit product ${product?.productName}`}
+                                    className="admin-order-action admin-order-view"
+                                    state={{ existingProduct: product }}
+                                    to={`/admin/editproduct/${product._id}`}
                                   >
                                     <svg
+                                      aria-hidden="true"
                                       width="30px"
                                       height="30px"
                                       viewBox="0 -0.5 25 25"
@@ -274,35 +266,28 @@ const Products = () => {
                                         fill="var(--font-color)"
                                       />
                                     </svg>
-                                  </a>
-                                  {/* </i>
-                                  </Link> */}
-                                  <Link
-                                    onClick={() => {
-                                      deleteHandler(product._id);
-                                    }}
-                                    aria-disabled={loading}
-                                    className="text-decoration-none"
+                                  </Link>
+                                  <button
+                                    aria-label={`Delete product ${product?.productName}`}
+                                    className="admin-order-action admin-order-delete"
+                                    disabled={loading}
+                                    onClick={() => deleteHandler(product._id)}
+                                    type="button"
                                   >
                                     {loading ? (
                                       <span className="spinner-grow spinner-grow-sm bag me-2" aria-hidden="true"></span>
                                     ) : (
-                                      // <i className="ai ai-trash-fill action bag">del</i>
-
-                                      <img src="/images/del.svg" alt="del image" style={{ height: 30, width: 30 }} />
+                                      <img src="/images/del.svg" alt="" />
                                     )}
-                                  </Link>
+                                  </button>
                                 </td>
                               </tr>
                             ))
                           ) : (
-                            <tr className="border-bottom border-warning border-opacity-10">
-                              <td>No</td>
-                              <td> </td>
-                              <td className="p-2 text-center text-wrap">Products</td>
-                              <td> to</td>
-                              <td>show</td>
-                              <td>here</td>
+                            <tr className="admin-empty-row">
+                              <td className="admin-list-empty" colSpan={7}>
+                                No Products to show here
+                              </td>
                             </tr>
                           )
                         ) : (

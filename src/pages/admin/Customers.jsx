@@ -1,6 +1,5 @@
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { PageTitle } from "../../components";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
@@ -22,7 +21,6 @@ const Customers = () => {
       const response = await axios.get(`${VITE_SERVER}/api/admin/all-customers`, {
         withCredentials: true,
       });
-      console.log("all-customers", response.data.allCustomers);
       setAllCustomers(response.data.allCustomers);
       setLoading(false);
     } catch (error) {
@@ -54,8 +52,6 @@ const Customers = () => {
         const response = await axios.delete(`${VITE_SERVER}/api/admin/delete-customer/${id}`, {
           withCredentials: true,
         });
-        console.log("deleteHandler", response.data);
-
         response.data.success ? toast.success("Customer deleted successfully!", { className: "toastify" }) : null;
 
         setLoading(false);
@@ -77,15 +73,16 @@ const Customers = () => {
 
   return (
     <>
-      {/* <PageTitle title={"Products"} /> */}
-      <section className="container-fluid mt-3">
+      <section className="admin-page admin-list-page admin-customers-page container-fluid mt-3">
         <div className="row gap-3">
           <div className="col p-0">
-            <div className="card container-fluid bg-colo h-100">
+            <div className="card container-fluid bg-colo h-100 admin-list-card">
               <div className="card-body p-4">
                 <div className="row h-100 ">
-                  <h3 className="card-heading font-color fs-4 text-uppercase">Customers</h3>
-                  <p className="card-text font-color fs-6">
+                  <h3 className="card-heading font-color fs-4 text-uppercase admin-list-heading">
+                    Customers
+                  </h3>
+                  <p className="card-text font-color fs-6 admin-list-helper">
                     Find all your customers and their details below. Lorem ipsum, dolor sit amet consectetur adipisicing
                     elit.
                   </p>
@@ -94,9 +91,11 @@ const Customers = () => {
                       <div className="d-flex h-100 justify-content-center align-items-center">
                         <span className="spinner-grow spinner-grow bag" aria-hidden="true"></span>
                       </div>
-                    ) : allCustomers.length > 0 ? (
-                      <>
-                        <table className="order-table w-100">
+                    ) : (
+                        <table
+                          aria-label="Customers"
+                          className="order-table w-100 admin-list-table"
+                        >
                           <thead className="card-heading text-uppercase font-color fs-6 bag">
                             <tr className="border-bottom border-warning border-opacity-10">
                               <th className="p-1">#</th>
@@ -105,29 +104,40 @@ const Customers = () => {
                               <th>Email</th>
                               <th>Pincode</th>
                               <th>Country</th>
-                              {/* <th>Total Spent {'($)'}</th> */}
                               <th>Action</th>
                             </tr>
                           </thead>
                           <tbody className="font-color fs-6">
-                            {allCustomers.map((customer, index) => (
-                              <tr className="border-bottom border-warning border-opacity-10" key={customer._id}>
-                                <td className="p-2">{index + 1}</td>
-                                <td className="table-image">
-                                  <img
-                                    className="object-fit-cover rounded-circle p-3"
-                                    src={customer?.profilePicture}
-                                    alt="dp"
-                                  />
-                                </td>
-                                <td>{customer?.fullName}</td>
-                                <td>{customer?.email}</td>
-                                <td>{customer?.address?.pincode}</td>
-                                <td>{customer?.address?.country}</td>
-                                {/* <td>328</td> */}
-                                <td>
-                                  <Link to={customer._id} className="text-decoration-none me-3">
+                            {allCustomers.length > 0 ? (
+                              allCustomers.map((customer, index) => (
+                                <tr
+                                  className="border-bottom border-warning border-opacity-10"
+                                  key={customer._id}
+                                >
+                                  <td className="p-2">{index + 1}</td>
+                                  <td className="table-image">
+                                    <img
+                                      className="object-fit-cover rounded-circle p-3"
+                                      src={customer?.profilePicture}
+                                      alt={
+                                        customer?.fullName
+                                          ? `${customer.fullName} profile`
+                                          : "Customer profile"
+                                      }
+                                    />
+                                  </td>
+                                  <td>{customer?.fullName}</td>
+                                  <td>{customer?.email}</td>
+                                  <td>{customer?.address?.pincode}</td>
+                                  <td>{customer?.address?.country}</td>
+                                  <td>
+                                  <Link
+                                    aria-label={`View customer ${customer?.fullName || customer?.email || ""}`}
+                                    className="admin-order-action admin-order-view"
+                                    to={customer._id}
+                                  >
                                     <svg
+                                      aria-hidden="true"
                                       width="30px"
                                       height="30px"
                                       viewBox="0 -0.5 25 25"
@@ -140,22 +150,46 @@ const Customers = () => {
                                       />
                                     </svg>
                                   </Link>
-                                  <Link
-                                    onClick={() => {
-                                      deleteHandler(customer._id);
-                                    }}
-                                    className="text-decoration-none"
-                                  >
-                                    <img src="/images/del.svg" alt="del image" style={{ height: 30, width: 30 }} />
-                                  </Link>
+                                    <button
+                                      aria-label={`Delete customer ${customer?.fullName || ""}`}
+                                      className="admin-order-action admin-order-delete"
+                                      disabled={loading}
+                                      onClick={() => deleteHandler(customer._id)}
+                                      type="button"
+                                    >
+                                      <img src="/images/del.svg" alt="" />
+                                    </button>
+                                  </td>
+                                </tr>
+                              ))
+                            ) : (
+                              <tr className="admin-empty-row">
+                                <td className="admin-list-empty" colSpan={7}>
+                                  <div className="admin-empty-content">
+                                    <svg
+                                      aria-hidden="true"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        d="M16 11a4 4 0 1 0-8 0 4 4 0 0 0 8 0Z"
+                                        stroke="currentColor"
+                                        strokeWidth="1.6"
+                                      />
+                                      <path
+                                        d="M3.5 19a5 5 0 0 1 5-5h7a5 5 0 0 1 5 5"
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeWidth="1.6"
+                                      />
+                                    </svg>
+                                    <span>No Customers to show!</span>
+                                  </div>
                                 </td>
                               </tr>
-                            ))}
+                            )}
                           </tbody>
                         </table>
-                      </>
-                    ) : (
-                      <div className="font-color text-center w-100">No Customers to show!</div>
                     )}
                   </div>
                 </div>

@@ -4,14 +4,14 @@ import { Fade, Slide } from "react-awesome-reveal";
 const Settings = () => {
   const navigate = useNavigate();
   return (
-    <main>
+    <main className="admin-page admin-settings-page">
       <section className="features container-fluid mt-3 p-0">
         <Fade cascade damping={0.2}>
           <div className="row g-3">
             <div className="col-sm-12 col-md-6 col-lg-3">
               <Slide className="h-100">
                 <div
-                  className="card container-fluid bg-color h-100"
+                  className="card container-fluid bg-color h-100 admin-settings-clickable"
                   onClick={() => {
                     navigate("/admin/announcements");
                   }}
@@ -29,7 +29,7 @@ const Settings = () => {
             <div className="col-sm-12 col-md-6 col-lg-3">
               <Slide delay={50} className="h-100">
                 <div
-                  className="card container-fluid bg-color h-100"
+                  className="card container-fluid bg-color h-100 admin-settings-clickable"
                   onClick={() => {
                     navigate("/admin/hero-settings");
                   }}

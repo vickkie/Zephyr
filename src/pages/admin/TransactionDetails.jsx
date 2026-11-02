@@ -68,7 +68,7 @@ const TransactionDetails = () => {
 
   if (loading) {
     return (
-      <main className="container-fluid mt-3">
+      <main className="admin-page admin-transaction-details-page container-fluid mt-3">
         <div className="d-flex justify-content-center align-items-center py-5">
           <span className="spinner-grow spinner-grow bag" aria-hidden="true"></span>
         </div>
@@ -78,7 +78,7 @@ const TransactionDetails = () => {
 
   if (error || !record) {
     return (
-      <main className="container-fluid mt-3">
+      <main className="admin-page admin-transaction-details-page container-fluid mt-3">
         <div className="card container-fluid p-3">
           <div className="card-body p-4 text-center">
             <p className="font-color product-card-price">{error || "Transaction not found."}</p>
@@ -96,8 +96,8 @@ const TransactionDetails = () => {
   const customer = tx.user;
 
   return (
-    <main className="container-fluid mt-3">
-      <div className="card container-fluid p-3">
+    <main className="admin-page admin-transaction-details-page container-fluid mt-3">
+      <div className="card container-fluid p-3 admin-transaction-card">
         <div className="card-body p-4">
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h2 className="card-heading text-uppercase fs-5 font-color mb-0">
@@ -108,12 +108,12 @@ const TransactionDetails = () => {
             </Link>
           </div>
 
-          <div className="row g-4">
-            <div className="col-md-6">
+          <div className="row g-4 admin-transaction-details-grid">
+            <div className="col-md-6 admin-transaction-section">
               <h3 className="card-heading font-color fs-6 text-uppercase mb-3">
                 Payment
               </h3>
-              <ul className="list-unstyled product-card-price font-color">
+              <ul className="list-unstyled product-card-price font-color admin-detail-list">
                 <li className="mb-2">
                   <strong>Reference:</strong> {tx.reference}
                 </li>
@@ -150,11 +150,11 @@ const TransactionDetails = () => {
               </ul>
             </div>
 
-            <div className="col-md-6">
+            <div className="col-md-6 admin-transaction-section">
               <h3 className="card-heading font-color fs-6 text-uppercase mb-3">
                 Customer & Order
               </h3>
-              <ul className="list-unstyled product-card-price font-color">
+              <ul className="list-unstyled product-card-price font-color admin-detail-list">
                 <li className="mb-2">
                   <strong>Customer:</strong>{" "}
                   {customer ? (
@@ -191,7 +191,7 @@ const TransactionDetails = () => {
 
           <hr className="font-color my-4" />
 
-          <div className="d-flex flex-wrap gap-2 align-items-center">
+          <div className="d-flex flex-wrap gap-2 align-items-center admin-transaction-actions">
             <span className="product-card-price font-color me-2">
               Admin actions:
             </span>

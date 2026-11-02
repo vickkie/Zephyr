@@ -1,325 +1,404 @@
-.profile-settings {
+.zephir-customer-shell .profile-settings {
+  width: min(100%, 960px);
   margin: 0 auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
+  padding: 12px 24px 0;
+  font-family: "Space Grotesk", "Schibsted Grotesk", sans-serif;
 }
 
-.profile-header {
-  display: flex;
+.zephir-customer-shell .profile-header {
   margin-bottom: 20px;
-  flex-direction: column;
+  padding: 32px;
 }
 
-.profile-image {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  /* overflow: hidden; */
-  margin-right: 20px;
-  border-radius: 200px;
-  padding: 2px;
-  border: solid 2px grey;
-  position: relative;
-}
-@media screen and (min-width: 768px) {
-  .profile-header-inner {
-    justify-content: start !important;
-    gap: 10px;
-    flex-direction: row !important;
-  }
-  .profile-settings-inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-  }
-}
-.profile-header-inner {
-  flex-direction: column;
+.zephir-customer-shell .profile-header-inner {
   display: flex;
-  padding: 10px;
-  justify-content: center;
   align-items: center;
+  justify-content: flex-start;
+  gap: 24px;
 }
 
-.profile-image img {
+.zephir-customer-shell .profile-image {
+  position: relative;
+  flex: 0 0 auto;
+  width: 112px;
+  height: 112px;
+  border: 2px solid var(--cust-border);
+  border-radius: 50%;
+}
+
+.zephir-customer-shell .profile-image img,
+.zephir-customer-shell .profileImg2 {
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
   object-fit: cover;
-  border-radius: 200px;
+  border-radius: 50%;
 }
 
-.profile-info h1 {
-  margin: 0;
-  font-size: 24px;
+.zephir-customer-shell .profileImg2 {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-.profile-info p {
-  margin: 5px 0 0;
-  color: #666;
+.zephir-customer-shell .profileImgWrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 50%;
 }
 
-.view-profile-btn {
-  margin-left: auto;
-  padding: 8px 16px;
-  background-color: var(--primary-color);
-  border: none;
-  border-radius: 20px;
+.zephir-customer-shell .editPicButton {
+  position: absolute;
+  right: -4px;
+  bottom: 4px;
+  display: flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--cust-border);
+  border-radius: 50%;
+  background: var(--cust-ink);
+  box-shadow: 0 4px 12px rgb(26 26 26 / 18%);
+}
+
+.zephir-customer-shell .editPicButton svg {
+  width: 50%;
+  height: 50%;
+}
+
+.zephir-customer-shell .editPicButton label {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
 
-.settings-tabs {
+.zephir-customer-shell .profile-info {
+  min-width: 0;
+  flex: 1;
+  text-align: left;
+}
+
+.zephir-customer-shell .profile-info p {
+  margin: 0;
+}
+
+.zephir-customer-shell .profile-info .font-3 {
+  min-height: 28px;
+  color: var(--cust-ink);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.zephir-customer-shell .profile-info .font-1 {
+  min-height: 20px;
+  margin-top: 4px;
+  color: var(--cust-muted);
+  font-size: 14px;
+}
+
+.zephir-customer-shell .image-upload-section {
+  margin-top: 14px;
+}
+
+.zephir-customer-shell .uploadImageBtn {
+  min-height: 40px;
+  padding: 9px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--cust-accent);
+  color: var(--cust-ink);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 140ms ease;
+}
+
+.zephir-customer-shell .uploadImageBtn:hover {
+  background: var(--cust-accent-hover);
+  color: #ffffff;
+}
+
+/* Tab switcher */
+
+.zephir-customer-shell .settings-tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
-  border-bottom: solid 0.0058vw var(--secondary-color);
-  margin: 10px 0;
+  gap: 8px;
+  margin: 0 0 20px;
+  border: 0;
 }
 
-.settings-tabs div {
-  background-color: var(--font-color);
-  border: none;
+.zephir-customer-shell .settings-tabs .actionTab {
+  min-height: 40px;
+  padding: 9px 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--cust-raised);
+  color: var(--cust-ink);
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s;
-  color: var(--secondary-color);
-  border-radius: 5px;
+  transition: background-color 140ms ease;
 }
 
-.settings-tabs div.active {
-  background-color: var(--primary-color);
-  font-weight: bold;
-  border-bottom: solid 1px var(--font-color);
+.zephir-customer-shell .settings-tabs .actionTab:hover {
+  background: var(--cust-border);
 }
 
-.password-form h2 {
-  margin-top: 0;
+.zephir-customer-shell .settings-tabs .actionTab.active {
+  background: var(--cust-accent);
+  color: var(--cust-ink);
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgb(245 158 11 / 25%);
 }
 
-.form-group label {
+.zephir-customer-shell .settings-tabs .actionTab:focus-visible {
+  outline: 2px solid var(--cust-accent);
+  outline-offset: 2px;
+}
+
+/* Detail panels */
+
+.zephir-customer-shell .profile-wrap {
+  padding: 28px;
+  border: 1px solid var(--cust-border);
+  border-radius: 24px;
+  background: var(--cust-surface);
+  box-shadow: 0 8px 28px rgb(26 26 26 / 4%);
+}
+
+.zephir-customer-shell .plainHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--cust-border);
+}
+
+.zephir-customer-shell .plainHead {
+  color: var(--cust-ink);
+  font-family: "Space Grotesk", "Schibsted Grotesk", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.zephir-customer-shell .plainDetails {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.zephir-customer-shell .plainDetails label {
   display: block;
-  margin-bottom: 5px;
-  font-size: var(--zy-sm);
-  font-family: var(--paragraph-font);
-}
-.my-details-form input {
-  width: 100%;
+  margin-bottom: 8px;
+  color: var(--cust-muted);
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.form-group input {
-  padding: 0.5rem 0.75rem;
-  margin-bottom: 1rem;
-  border: 1px solid #8d8c8947;
-  border-radius: 0.9rem;
-  background-color: var(--lightgray);
-  color: var(--font-color);
-  font-size: 1rem;
-  font-family: var(--heading-font);
+.zephir-customer-shell .plainDetails span {
+  min-height: 24px;
+  color: var(--cust-ink);
+  font-family: inherit;
+  font-size: 16px;
 }
-.form-group {
+
+.zephir-customer-shell .editButton {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--cust-ink);
+  color: var(--cust-surface);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 140ms ease;
+}
+
+.zephir-customer-shell .editButton:hover {
+  opacity: 0.85;
+}
+
+.zephir-customer-shell .editButton svg {
+  fill: var(--cust-surface);
+}
+
+.zephir-customer-shell .editButton svg path {
+  fill: var(--cust-surface);
+}
+
+/* Forms */
+
+.zephir-customer-shell .profile-settings-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.zephir-customer-shell .form-group {
   margin: 0;
 }
 
-.password-hint {
+.zephir-customer-shell .form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--cust-muted);
+  font-family: "Space Grotesk", "Schibsted Grotesk", sans-serif;
   font-size: 14px;
-  color: #666;
-  margin-bottom: 20px;
+  font-weight: 500;
 }
 
-.form-actions {
+.zephir-customer-shell .form-group input {
+  width: 100%;
+  min-height: 46px;
+  margin-bottom: 1rem;
+  padding: 10px 14px;
+  border: 1px solid var(--cust-border);
+  border-radius: 12px;
+  background-color: var(--cust-surface);
+  color: var(--cust-ink);
+  font-family: "Space Grotesk", "Schibsted Grotesk", sans-serif;
+  font-size: 14px;
+}
+
+.zephir-customer-shell .form-group input:focus-visible {
+  border-color: var(--cust-accent);
+  box-shadow: 0 0 0 3px rgb(245 158 11 / 18%);
+  outline: none;
+}
+
+.zephir-customer-shell .form-group input.input-error {
+  border-color: #dc2626;
+}
+
+.zephir-customer-shell .my-details-form input {
+  width: 100%;
+  font-family: inherit;
+}
+
+.zephir-customer-shell .changePassForm {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  max-width: 640px;
+}
+
+.zephir-customer-shell .form-actions {
   display: flex;
+  align-items: center;
   justify-content: flex-start;
-  gap: 10px;
+  gap: 12px;
   margin-top: 0;
 }
 
-.cancel-btn,
-.update-btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
+.zephir-customer-shell .form-actions .btn,
+.zephir-customer-shell .cancel-btn,
+.zephir-customer-shell .update-btn {
+  min-height: 44px;
+  padding: 10px 24px;
+  border: 0;
+  border-radius: 999px;
+  font-family: "Space Grotesk", "Schibsted Grotesk", sans-serif;
+  font-size: 14px;
   cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease;
 }
 
-.cancel-btn {
-  background-color: var(--primary);
+.zephir-customer-shell .cancel-btn {
+  background: transparent;
+  color: var(--cust-ink);
+  font-weight: 500;
 }
 
-.update-btn {
-  background-color: var(--primary-color);
-  color: var(--font-color);
+.zephir-customer-shell .cancel-btn:hover {
+  background: var(--cust-raised);
 }
-.actionTab {
-  padding: 2px 12px;
+
+.zephir-customer-shell .update-btn,
+.zephir-customer-shell .form-actions .bg-prm {
+  background: var(--cust-accent);
+  color: var(--cust-ink);
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgb(245 158 11 / 25%);
 }
-.changePassForm {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 1rem;
+
+.zephir-customer-shell .update-btn:hover,
+.zephir-customer-shell .form-actions .bg-prm:hover {
+  background: var(--cust-accent-hover);
+  color: #ffffff;
 }
-.userNameGroup {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+
+.zephir-customer-shell .update-btn:disabled,
+.zephir-customer-shell .form-actions .bg-prm:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
 }
-.changePassForm .form-group {
-  display: grid;
-  grid-template-columns: 20% 80%;
-  justify-content: space-around;
-  align-items: start;
+
+.zephir-customer-shell .error {
+  margin-top: -8px;
+  color: #dc2626;
+  font-size: 12px;
 }
-.error {
-  color: var(--red);
+
+.zephir-customer-shell .toggleEditable {
+  padding: 10px;
+  border-radius: 10px;
+  background: var(--cust-raised);
+  color: var(--cust-ink);
 }
-.form-group .error {
-  grid-area: 2/2/2/2;
+
+.zephir-customer-shell .updateSubmit {
+  background: var(--cust-ink);
+}
+
+.zephir-customer-shell .phoneNumberh {
+  cursor: not-allowed;
 }
 
 @media screen and (max-width: 767px) {
-  .profile-settings {
-    padding: 5px;
+  .zephir-customer-shell .profile-settings {
+    padding: 8px 16px 0;
   }
-  .plainHead {
-    font-size: var(--hc-md) !important;
+
+  .zephir-customer-shell .profile-header {
+    padding: 22px;
   }
-  .plainDetails label {
-    font-size: var(--hc-base) !important;
-  }
-  .plainDetails {
-    grid-template-columns: 1fr !important;
-  }
-  .changePassForm .form-group,
-  .userNameGroup {
-    grid-template-columns: 1fr;
-  }
-  .form-group .error {
-    grid-area: 1 / 1;
-  }
-  .my-details-form input {
-    width: 100% !important;
-    margin-bottom: 0.3rem;
-  }
-  .profile-header,
-  .image-upload-section {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    justify-content: center;
+
+  .zephir-customer-shell .profile-header-inner {
     align-items: center;
-  }
-  .profile-info,
-  .profile-image {
-    justify-self: center;
+    flex-direction: column;
     text-align: center;
   }
-  .profile-info h1 {
-    display: none;
+
+  .zephir-customer-shell .profile-info {
+    text-align: center;
   }
-  .profile-info {
-    margin: 10px;
+
+  .zephir-customer-shell .plainDetails,
+  .zephir-customer-shell .profile-settings-inner {
+    grid-template-columns: 1fr;
   }
-}
-.toggleEditable {
-  padding: 10px;
-  background-color: var(--primary);
-  border-radius: 10px;
-  color: var(--font-color);
-}
-.my-details-form input {
-  font-family: inherit;
-}
-.updateSubmit {
-  background-color: var(--secondary-color);
-}
-.editPicButton {
-  position: absolute;
-  right: -6px;
-  background: var(--font-color);
-  border-radius: 200px;
-  width: 38px;
-  height: 38px;
-  display: flex;
-  bottom: 10px;
-  justify-content: center;
-  align-items: center;
-  padding: 1.2px;
-  border: solid 2px grey;
-}
-.editPicButton svg {
-  height: 50%;
-  width: 50%;
-}
-.editPicButton label {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-.uploadImageBtn {
-  width: 246px;
-  justify-self: center;
-  margin: 13px;
-  background-color: var(--secondary-color);
-  border-radius: 10px;
-  justify-self: center;
-  padding: 10px 20px;
-  color: var(--font-color);
-  cursor: pointer;
-}
-.profileImg2 {
-  height: 100%;
-  width: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-.profileImgWrapper {
-  height: 100%;
-  width: 100%;
-  border-radius: 100%;
-  overflow: hidden;
-}
-.phoneNumberh {
-  cursor: not-allowed;
-}
-.profile-wrap {
-  border: solid 0.0158vw var(--primary-color);
-  padding: 30px 20px;
-  border-radius: 25px;
-}
-.plainDetails {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-.plainHeader {
-  padding: 0px 0 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.plainHead {
-  font-family: var(--heading-font);
-  font-size: var(--zy-base);
-  font-weight: 700;
-}
-.plainDetails label {
-  font-size: var(--zy-base);
-}
-.plainDetails span {
-  font-family: inherit;
-  font-size: var(--hc-sm);
-}
-.editButton {
-  color: var(--secondary-color);
-  background: var(--font-color);
-  padding: 2px;
-  text-decoration: underline;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-.flex-center {
+
+  .zephir-customer-shell .plainHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .zephir-customer-shell .form-actions {
+    flex-wrap: wrap;
+  }
 }

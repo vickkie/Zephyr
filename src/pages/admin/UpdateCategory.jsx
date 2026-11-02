@@ -106,7 +106,10 @@ const EditCategory = () => {
   };
 
   return (
-    <form onSubmit={updateCategoryHandler} className="container-fluid p-0 ">
+    <form
+      onSubmit={updateCategoryHandler}
+      className="container-fluid p-0 admin-form-page admin-edit-category-page"
+    >
       <div className="row g-3">
         <div className="col-sm-8">
           <div className="card container-fluid p-3 mb-3">
@@ -127,20 +130,25 @@ const EditCategory = () => {
               <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Subcategories</h2>
               {Array.isArray(subCategories) &&
                 subCategories.map((subCategory, index) => (
-                  <div key={index} className="d-flex gap-3">
+                  <div key={index} className="admin-subcategory-row d-flex gap-3">
                     <input
                       type="text"
                       className="login-input font-color d-block w-100 mb-2"
                       value={subCategory}
                       onChange={(e) => handleSubCategoryChange(index, e.target.value)}
                     />
-                    <div onClick={() => removeSubCategory(index)}>
+                    <button
+                      aria-label="Remove subcategory"
+                      className="admin-subcategory-remove"
+                      onClick={() => removeSubCategory(index)}
+                      type="button"
+                    >
                       <img
                         src="/images/del.svg"
-                        alt="del image"
+                        alt=""
                         style={{ height: 30, width: 30, justifySelf: "center", alignSelf: "center" }}
-                      ></img>
-                    </div>
+                      />
+                    </button>
                   </div>
                 ))}
               <button type="button" onClick={addSubCategory} className="btn back-primary py-3 my-2">
@@ -151,21 +159,28 @@ const EditCategory = () => {
         </div>
 
         <div className="col-sm-4">
-          <div className="card container-fluid p-3 mb-3">
+          <div className="card container-fluid p-3 mb-3 admin-category-picture-card">
             <div className="card-body p-3">
               <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Category Picture</h2>
-              <input type="file" accept="image/*" multiple onChange={handleFileChange} className="d-block mb-3" />
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleFileChange}
+                className="admin-category-file-input d-block mb-3"
+              />
               {selectedImage.length > 0 && (
-                <div className="d-flex flex-wrap gap-3">
+                <div className="admin-image-preview-grid d-flex flex-wrap gap-3">
                   {selectedImage.map((image, index) => (
                     <div
                       key={index}
-                      className="position-relative border rounded overflow-hidden"
+                      className="admin-image-preview-tile position-relative border rounded overflow-hidden"
                       style={{ width: "120px", height: "120px" }}
                     >
                       <button
                         type="button"
                         className="btn-close position-absolute top-0 end-0 m-1"
+                        aria-label="Remove image"
                         onClick={removeImage}
                       ></button>
                       <img className="object-fit-cover rounded w-100 h-100" src={image} alt="Preview" />

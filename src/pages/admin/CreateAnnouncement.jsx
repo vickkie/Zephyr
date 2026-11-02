@@ -2,7 +2,6 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { PageTitle } from "../../components";
 
 const { VITE_SERVER } = import.meta.env;
 
@@ -30,10 +29,10 @@ const CreateAnnouncement = () => {
 
   return (
     <>
-      <section className="container-fluid mt-3">
+      <section className="admin-page admin-form-page admin-create-announcement-page container-fluid mt-3">
         <div className="row gap-3">
           <div className="col p-0">
-            <div className="card container-fluid bg-colo h-100">
+            <div className="card container-fluid bg-colo h-100 admin-announcement-card">
               <div className="card-body p-4">
                 <div className="d-flex justify-content-between">
                   <h3 className="card-heading font-color fs-4 text-uppercase">Create New Announcement</h3>
@@ -63,6 +62,7 @@ const CreateAnnouncement = () => {
                   </label>
                 </div>
                 <button
+                  type="button"
                   onClick={createAnnouncementHandler}
                   className="btn back-primary text-uppercase d-block my-2 py-3 w-100 fw-bold"
                   disabled={loading}

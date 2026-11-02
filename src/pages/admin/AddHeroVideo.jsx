@@ -34,7 +34,6 @@ const AddHeroVideo = () => {
     try {
       const uploadedUrl = await uploadVideo([videoFile]); // Upload to Cloudinary
       if (uploadedUrl.length > 0) {
-        console.log("final", uploadedUrl);
         setVideoUrl(uploadedUrl); // Set the uploaded video URL
         toast.success("Video uploaded successfully!");
       }
@@ -69,10 +68,13 @@ const AddHeroVideo = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="container-fluid p-0">
+    <form
+      onSubmit={handleSubmit}
+      className="container-fluid p-0 admin-form-page admin-add-hero-video-page"
+    >
       <div className="row g-3">
         <div className="col-sm-8">
-          <div className="card container-fluid p-3 mb-3">
+          <div className="card container-fluid p-3 mb-3 admin-video-url-card">
             <div className="card-body p-3">
               <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Hero Video *</h2>
               <input
@@ -87,11 +89,11 @@ const AddHeroVideo = () => {
             </div>
           </div>
 
-          <div className="card container-fluid p-3 mb-3">
+          <div className="card container-fluid p-3 mb-3 admin-video-upload-card">
             <div className="card-body p-3">
               <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Upload Video</h2>
               <label className="d-block p-3 px-5" htmlFor="videoUpload">
-                <div className="d-flex justify-content-center align-items-center border border-dashed rounded bg-color p-5">
+                <div className="admin-upload-zone d-flex justify-content-center align-items-center border border-dashed rounded bg-color p-5">
                   <i className="ai ai-plus bag me-2"></i>
                   <i className="ai ai-file-image-fill fs-1 bag"></i>
                 </div>
@@ -116,10 +118,10 @@ const AddHeroVideo = () => {
             </div>
           </div>
         </div>
-        <div className="col-sm-4 card container-fluid p-3 mb-3 d-flex">
+        <div className="col-sm-4 card container-fluid p-3 mb-3 d-flex admin-video-preview-card">
           {videoPreview && (
-            <div className="d-flex justify-content-center p-3">
-              <video className="rounded" width="200" controls>
+            <div className="admin-video-preview d-flex justify-content-center p-3">
+              <video className="admin-video-preview-player rounded" width="200" controls>
                 <source src={videoPreview} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>

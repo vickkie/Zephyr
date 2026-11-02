@@ -73,11 +73,11 @@ const Transactions = () => {
   };
 
   return (
-    <main className="container-fluid mt-3">
-      <div className="row gap-3">
+    <main className="admin-page admin-transactions-page">
+      <div className="row gap-3 admin-transactions-layout">
         {/* Filters sidebar */}
-        <div className="col-md-3 p-0">
-          <div className="card container-fluid position-sticky top-0">
+        <div className="col-md-3 p-0 admin-transactions-filters">
+          <div className="card container-fluid position-sticky top-0 admin-filter-card">
             <div className="card-body p-4">
               <div className="row h-100">
                 <h3 className="card-heading font-color fs-6 text-uppercase">
@@ -86,15 +86,17 @@ const Transactions = () => {
 
                 <form onSubmit={onSearchSubmit} className="my-3">
                   <input
+                    aria-label="Search transactions by reference or email"
                     type="text"
                     className="login-input font-color d-block w-100 mb-2"
+                    id="transaction-search"
                     placeholder="Reference or email"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />
                   <button
                     type="submit"
-                    className="btn btn-sm w-100"
+                    className="btn btn-sm w-100 admin-filter-submit"
                     style={{ fontSize: "0.8rem" }}
                   >
                     Search
@@ -145,28 +147,32 @@ const Transactions = () => {
                     </div>
                   ))}
 
-                  <span
+                  <label
                     className="product-card-price font-color mt-3"
                     style={{ fontSize: "0.8rem" }}
+                    htmlFor="transaction-method"
                   >
                     Method
-                  </span>
+                  </label>
                   <input
                     type="text"
                     className="login-input font-color d-block w-100"
+                    id="transaction-method"
                     placeholder="card, mpesa, bank…"
                     value={method}
                     onChange={(e) => setMethod(e.target.value)}
                   />
 
-                  <span
+                  <label
                     className="product-card-price font-color mt-3"
                     style={{ fontSize: "0.8rem" }}
+                    htmlFor="transaction-sort-field"
                   >
                     Sort
-                  </span>
+                  </label>
                   <select
                     className="login-input font-color d-block w-100"
+                    id="transaction-sort-field"
                     value={sort}
                     onChange={(e) => setSort(e.target.value)}
                   >
@@ -175,7 +181,9 @@ const Transactions = () => {
                     <option value="status">Status</option>
                   </select>
                   <select
+                    aria-label="Sort order"
                     className="login-input font-color d-block w-100"
+                    id="transaction-sort-order"
                     value={order}
                     onChange={(e) => setOrder(e.target.value)}
                   >
@@ -189,15 +197,15 @@ const Transactions = () => {
         </div>
 
         {/* Table */}
-        <div className="col p-0">
-          <div className="card container-fluid p-3">
+        <div className="col p-0 admin-transactions-table-column">
+          <div className="card container-fluid p-3 admin-transactions-card">
             <div className="card-body p-3">
               <div className="d-flex justify-content-between align-items-center mb-3">
                 <h2 className="card-heading text-uppercase fs-5 font-color mb-0">
                   Transactions
                 </h2>
                 <span
-                  className="product-card-price font-color"
+                  className="product-card-price font-color admin-transaction-total"
                   style={{ fontSize: "0.8rem" }}
                 >
                   {total} total
@@ -229,7 +237,7 @@ const Transactions = () => {
                 </div>
               ) : (
                 <div className="table-responsive">
-                  <table className="table align-middle">
+                  <table className="table align-middle admin-transactions-table">
                     <thead>
                       <tr>
                         <th>Reference</th>
@@ -238,7 +246,7 @@ const Transactions = () => {
                         <th>Method</th>
                         <th>Status</th>
                         <th>Date</th>
-                        <th></th>
+                        <th aria-label="Actions"></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -268,7 +276,7 @@ const Transactions = () => {
                           <td>
                             <Link
                               to={`/admin/transactions/${tx._id}`}
-                              className="btn btn-sm"
+                              className="btn btn-sm admin-transaction-view"
                             >
                               View
                             </Link>
@@ -279,7 +287,7 @@ const Transactions = () => {
                   </table>
 
                   {pages > 1 && (
-                    <div className="d-flex justify-content-between align-items-center mt-3">
+                    <div className="d-flex justify-content-between align-items-center mt-3 admin-pagination">
                       <button
                         className="btn btn-sm"
                         disabled={page <= 1}

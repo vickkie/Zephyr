@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
-import { PageTitle } from "../../components";
 
 const { VITE_SERVER } = import.meta.env;
 
@@ -49,10 +48,10 @@ const UpdateAnnouncement = () => {
 
   return (
     <>
-      <section className="container-fluid mt-3">
+      <section className="container-fluid mt-3 admin-page admin-form-page admin-edit-announcement-page">
         <div className="row gap-3">
           <div className="col p-0">
-            <div className="card container-fluid bg-colo h-100">
+            <div className="card container-fluid bg-colo h-100 admin-announcement-card">
               <div className="card-body p-4">
                 <div className="d-flex justify-content-between">
                   <h3 className="card-heading font-color fs-4 text-uppercase">Edit Announcement</h3>

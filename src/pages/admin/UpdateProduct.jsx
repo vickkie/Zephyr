@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { uploadImages } from "../../utils/uploadImages"; // Utility function for image upload
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -16,9 +16,7 @@ const UpdateProduct = () => {
 
   const existingProduct = location.state?.existingProduct;
 
-  const { data: allCategories, isLoading, error, errorMessage, statusCode, refetch } = useGet("admin/all-categories");
-
-  // console.log(existingProduct);
+  const { data: allCategories, isLoading } = useGet("admin/all-categories");
 
   const [productName, setProductName] = useState(existingProduct?.productName);
   const [shortDescription, setShortDescription] = useState(existingProduct?.shortDescription);
@@ -48,11 +46,7 @@ const UpdateProduct = () => {
     featured,
     selectedStatus,
   };
-  useEffect(() => {
-    console.log(existingProduct);
-  }, [existingProduct]);
-
-  const successMessage = (productId) => (
+  const successMessage = () => (
     <div>
       Product added successfully!
       <Link to={`/admin/products`} className="ms-2 text-dark">
@@ -72,7 +66,6 @@ const UpdateProduct = () => {
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
-    // console.log("Files selected:", files);
     // Avoid adding duplicate files
     const newFiles = files.filter((file) => !images.some((img) => img.name === file.name));
 
@@ -116,16 +109,9 @@ const UpdateProduct = () => {
     try {
       // combine new aND old
       const allUpdatedImgs = [imageUrls.flat(), allImages.flat()].flat();
-      console.log(allUpdatedImgs);
-
       const finalImgs = allUpdatedImgs.filter(removedef);
-      const allproducts = { ...productData, images: finalImgs };
-
-      // console.log(allproducts);
-
       if (allUpdatedImgs.includes(defaultImg, 0) && allUpdatedImgs.length <= 1) {
         toast.error("You must have atleast 1 image!", { className: "toastify" });
-        console.log("CANNOT CONTINUE");
       } else {
         setLoading(true);
         const response = await axios.patch(
@@ -141,12 +127,10 @@ const UpdateProduct = () => {
           }
         );
 
-        // console.log(response);
-
         setLoading(false);
 
         if (response.data.success) {
-          toast.success(successMessage(response.data.product._id), {
+          toast.success(successMessage(), {
             className: "toastify",
             autoClose: 15000,
           });
@@ -173,13 +157,11 @@ const UpdateProduct = () => {
   }, [salePrice, regularPrice]);
 
   const reverseme = () => {
-    console.log(allImages, "b4");
     setisreversing(true);
-    let imagesrev = allImages.reverse();
+    const imagesrev = [...allImages].reverse();
     setAllImages(imagesrev);
     toast.success("Images reversed successfully", { className: "toastify" });
     setisreversing(false);
-    console.log(allImages, "af");
   };
 
   if (isreversing) {
@@ -190,7 +172,10 @@ const UpdateProduct = () => {
     return <Loading />;
   } else {
     return (
-      <form className="container-fluid p-0" onSubmit={updateProductHandler}>
+      <form
+        className="container-fluid p-0 admin-form-page admin-edit-product-page"
+        onSubmit={updateProductHandler}
+      >
         <div className="row g-3">
           <div className="col-sm-8">
             {/* <!-- Bag Items section  --> */}
@@ -255,32 +240,46 @@ const UpdateProduct = () => {
               </div>
             </div>
             <div className="card container-fluid p-3 mb-3">
-              <div className="top-1 end-0 position-absolute" onClick={reverseme} title="reverse image order">
-                <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <button
+                aria-label="Reverse image order"
+                className="admin-reverse-images"
+                onClick={reverseme}
+                title="Reverse image order"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  width="50px"
+                  height="50px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     fillRule="evenodd"
                     clipRule="evenodd"
                     d="M8.73167 5.77133L5.66953 9.91436C4.3848 11.6526 3.74244 12.5217 4.09639 13.205C4.10225 13.2164 4.10829 13.2276 4.1145 13.2387C4.48945 13.9117 5.59888 13.9117 7.81775 13.9117C9.05079 13.9117 9.6673 13.9117 10.054 14.2754L10.074 14.2946L13.946 9.72466L13.926 9.70541C13.5474 9.33386 13.5474 8.74151 13.5474 7.55682V7.24712C13.5474 3.96249 13.5474 2.32018 12.6241 2.03721C11.7007 1.75425 10.711 3.09327 8.73167 5.77133Z"
-                    fill="#1C274C"
+                    fill="currentColor"
                   />
                   <path
                     opacity="0.5"
                     d="M10.4527 16.4432L10.4527 16.7528C10.4527 20.0374 10.4527 21.6798 11.376 21.9627C12.2994 22.2457 13.2891 20.9067 15.2685 18.2286L18.3306 14.0856C19.6154 12.3474 20.2577 11.4783 19.9038 10.7949C19.8979 10.7836 19.8919 10.7724 19.8857 10.7613C19.5107 10.0883 18.4013 10.0883 16.1824 10.0883C14.9494 10.0883 14.3329 10.0883 13.9462 9.72461L10.0742 14.2946C10.4528 14.6661 10.4527 15.2585 10.4527 16.4432Z"
-                    fill="#1C274C"
+                    fill="currentColor"
                   />
                 </svg>
-              </div>
+                <span>Reverse order</span>
+              </button>
               <div className="card-body p-3">
                 <div className="row">
                   <div className="col">
                     <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Existing Pictures *</h2>
 
                     {allImages.length > 0 && !isreversing && (
-                      <div className="d-flex justify-content-center p-3 flex-wrap gap-3">
+                      <div className="admin-image-preview-grid d-flex justify-content-center p-3 flex-wrap gap-3">
                         {allImages.map((image, index) => (
                           <div
                             key={index}
-                            className="position-relative border rounded overflow-hidden"
+                            className="admin-image-preview-tile position-relative border rounded overflow-hidden"
                             style={{ width: "120px", height: "120px" }}
                           >
                             {/* Remove button */}
@@ -312,7 +311,7 @@ const UpdateProduct = () => {
                     <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Updating Pictures *</h2>
 
                     <label className="d-block p-3 px-5" htmlFor="productImage">
-                      <div className="d-flex justify-content-center align-items-center border border-dashed rounded bg-color p-5">
+                      <div className="admin-upload-zone d-flex justify-content-center align-items-center border border-dashed rounded bg-color p-5">
                         <i className="ai ai-plus bag me-2"></i>
                         <i className="ai ai-file-image-fill fs-1 bag"></i>
                       </div>
@@ -329,11 +328,11 @@ const UpdateProduct = () => {
                     </label>
 
                     {selectedImage.length > 0 && (
-                      <div className="d-flex justify-content-center p-3 flex-wrap gap-3">
+                      <div className="admin-image-preview-grid d-flex justify-content-center p-3 flex-wrap gap-3">
                         {selectedImage.map((image, index) => (
                           <div
                             key={index}
-                            className="position-relative border rounded overflow-hidden"
+                            className="admin-image-preview-tile position-relative border rounded overflow-hidden"
                             style={{ width: "120px", height: "120px" }}
                           >
                             {/* Remove button */}
@@ -368,7 +367,7 @@ const UpdateProduct = () => {
 
                     <div className="row gap-3 px-2">
                       <div className="col-md p-0">
-                        <label htmlFor="pincode" className="font-color product-card-price mb-1">
+                        <label htmlFor="regularPrice" className="font-color product-card-price mb-1">
                           Regular Price *
                         </label>
                         <input
@@ -383,7 +382,7 @@ const UpdateProduct = () => {
                         />
                       </div>
                       <div className="col-md p-0">
-                        <label htmlFor="country" className="font-color product-card-price mb-1">
+                        <label htmlFor="salePrice" className="font-color product-card-price mb-1">
                           Sale Price *
                         </label>
                         <input

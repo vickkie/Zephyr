@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -6,7 +6,6 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import usePatch from "../../hooks/usePatch";
-usePatch;
 
 const PasswordSettings = () => {
   const { patchData, isLoading, error, errorMessage, updateStatus } = usePatch("user/updateCred");

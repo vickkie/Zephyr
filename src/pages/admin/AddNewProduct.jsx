@@ -11,7 +11,7 @@ const AddNewProduct = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { data: allCategories, isLoading, error, errorMessage, statusCode, refetch } = useGet("admin/all-categories");
+  const { data: allCategories, isLoading } = useGet("admin/all-categories");
 
   const [productName, setProductName] = useState("");
   const [shortDescription, setShortDescription] = useState("");
@@ -50,7 +50,6 @@ const AddNewProduct = () => {
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
-    // console.log("Files selected:", files);
     // Avoid adding duplicate files
     const newFiles = files.filter((file) => !images.some((img) => img.name === file.name));
 
@@ -89,9 +88,6 @@ const AddNewProduct = () => {
 
     try {
       setLoading(true);
-      // const allproducts = { ...productData, images: imageUrls.flat() };
-      // console.log(allproducts);
-
       const response = await axios.post(
         `${VITE_SERVER}/api/admin/add-product`,
         {
@@ -102,8 +98,6 @@ const AddNewProduct = () => {
           withCredentials: true,
         }
       );
-
-      // console.log(response);
 
       setLoading(false);
 
@@ -142,7 +136,10 @@ const AddNewProduct = () => {
   }, [allCategories, isLoading]);
 
   return (
-    <form className="container-fluid p-0" onSubmit={addProductHandler}>
+    <form
+      className="container-fluid p-0 admin-form-page admin-add-product-page"
+      onSubmit={addProductHandler}
+    >
       <div className="row g-3">
         <div className="col-sm-8">
           {/* <!-- Bag Items section  --> */}
@@ -211,7 +208,7 @@ const AddNewProduct = () => {
                   <h2 className="card-heading text-uppercase fs-4 font-color mb-4">Upload Pictures *</h2>
 
                   <label className="d-block p-3 px-5" htmlFor="productImage">
-                    <div className="d-flex justify-content-center align-items-center border border-dashed rounded bg-color p-5">
+                    <div className="admin-upload-zone d-flex justify-content-center align-items-center border border-dashed rounded bg-color p-5">
                       <i className="ai ai-plus bag me-2"></i>
                       <i className="ai ai-file-image-fill fs-1 bag"></i>
                     </div>
@@ -228,11 +225,11 @@ const AddNewProduct = () => {
                   </label>
 
                   {selectedImage.length > 0 && (
-                    <div className="d-flex justify-content-center p-3 flex-wrap gap-3">
+                    <div className="admin-image-preview-grid d-flex justify-content-center p-3 flex-wrap gap-3">
                       {selectedImage.map((image, index) => (
                         <div
                           key={index}
-                          className="position-relative border rounded overflow-hidden"
+                          className="admin-image-preview-tile position-relative border rounded overflow-hidden"
                           style={{ width: "120px", height: "120px" }}
                         >
                           {/* Remove button */}
@@ -267,7 +264,7 @@ const AddNewProduct = () => {
 
                   <div className="row gap-3 px-2">
                     <div className="col-md p-0">
-                      <label htmlFor="pincode" className="font-color product-card-price mb-1">
+                      <label htmlFor="regularPrice" className="font-color product-card-price mb-1">
                         Regular Price *
                       </label>
                       <input
@@ -281,7 +278,7 @@ const AddNewProduct = () => {
                       />
                     </div>
                     <div className="col-md p-0">
-                      <label htmlFor="country" className="font-color product-card-price mb-1">
+                      <label htmlFor="salePrice" className="font-color product-card-price mb-1">
                         Sale Price *
                       </label>
                       <input

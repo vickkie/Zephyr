@@ -3,13 +3,16 @@ import { Link } from "react-router-dom";
 
 const OrdersTable = ({ orders, action, deleteHandler }) => {
   return (
-    <div className="card container-fluid bg-colo h-100">
+    <div className="card container-fluid bg-colo h-100 admin-orders-card">
       <div className="card-body p-4">
         <div className="row h-100 ">
           <h3 className="card-heading font-color fs-4 text-uppercase">Orders</h3>
           <p className="card-text font-color fs-6">Find all your oders and their status below.</p>
           <div className="table-responsive">
-            <table className="order-table w-100">
+            <table
+              aria-label="Orders"
+              className="order-table w-100 admin-orders-table"
+            >
               <thead className="card-heading text-uppercase font-color fs-6 bag">
                 <tr className="border-bottom border-warning border-opacity-10">
                   <th className="p-1">#Order</th>
@@ -31,8 +34,13 @@ const OrdersTable = ({ orders, action, deleteHandler }) => {
                         <td className="p-4">${order?.total}.00</td>
                         {action ? (
                           <td className="p-4">
-                            <Link to={`${order?._id}`} className="text-decoration-none me-3">
+                            <Link
+                              aria-label={`View order ${order?.orderId}`}
+                              className="admin-order-action admin-order-view"
+                              to={`${order?._id}`}
+                            >
                               <svg
+                                aria-hidden="true"
                                 width="30px"
                                 height="30px"
                                 viewBox="0 -0.5 25 25"
@@ -45,24 +53,26 @@ const OrdersTable = ({ orders, action, deleteHandler }) => {
                                 />
                               </svg>
                             </Link>
-                            <Link
-                              onClick={() => {
-                                deleteHandler(order._id);
-                              }}
-                              className="text-decoration-none"
+                            <button
+                              aria-label={`Delete order ${order?.orderId}`}
+                              className="admin-order-action admin-order-delete"
+                              onClick={() => deleteHandler(order._id)}
+                              type="button"
                             >
-                              <img src="/images/del.svg" alt="del image" style={{ height: 30, width: 30 }} />
-                            </Link>
+                              <img src="/images/del.svg" alt="" />
+                            </button>
                           </td>
                         ) : null}
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td className="p-2">No</td>
-                      <td>Orders</td>
-                      <td>Found</td>
-                      <td></td>
+                      <td
+                        className="admin-orders-empty"
+                        colSpan={action ? 5 : 4}
+                      >
+                        No Orders Found
+                      </td>
                     </tr>
                   )
                 }

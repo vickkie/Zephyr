@@ -149,7 +149,10 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <main>
+    <main
+      aria-label="Admin dashboard"
+      className="admin-page admin-dashboard-page"
+    >
       <section className="features container-fluid mt-3 p-0">
         <Fade cascade damping={0.2}>
           <div className="row g-3">
